@@ -86,7 +86,7 @@ public class PlanetsMain extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_about) {
-
+            selectItem(9, false, false);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,6 +108,68 @@ public class PlanetsMain extends AppCompatActivity
                 ft.replace(R.id.content_frame, new Navigation());
                 if (back)
                     ft.addToBackStack(null);
+                ft.commit();
+                break;
+//            case 1:
+//                if (longitude == 0)
+//                    loadLocation();
+//                title = "Solar Eclipse";
+//                ft.replace(R.id.content_frame, new SolarEclipse());
+//                if (back)
+//                    ft.addToBackStack(null);
+//                ft.commit();
+//                break;
+//            case 3:
+//                title = "Lunar Eclipse";
+//                ft.replace(R.id.content_frame, new LunarEclipse());
+//                if (back)
+//                    ft.addToBackStack(null);
+//                ft.commit();
+//                break;
+//            case 4:
+//                title = "Lunar Occultation";
+//                ft.replace(R.id.content_frame, new LunarOccultation());
+//                if (back)
+//                    ft.addToBackStack(null);
+//                ft.commit();
+//                break;
+//            case 5:
+//                if (longitude == 0)
+//                    loadLocation();
+//                title = "Sky Position";
+//                ft.replace(R.id.content_frame, new SkyPosition());
+//                if (back)
+//                    ft.addToBackStack(null);
+//                ft.commit();
+//                break;
+//            case 6:
+//                if (longitude == 0)
+//                    loadLocation();
+//                title = "What's Up Now";
+//                ft.replace(R.id.content_frame, new WhatsUpNow());
+//                if (back)
+//                    ft.addToBackStack(null);
+//                ft.commit();
+//                break;
+//            case 7:
+//                title = "User Location";
+//                UserLocation userLoc = new UserLocation();
+//                args.putBoolean("edit", edit);
+//                userLoc.setArguments(args);
+//                ft.replace(R.id.content_frame, userLoc);
+//                if (back)
+//                    ft.addToBackStack(null);
+//                ft.commit();
+//                break;
+//            case 8:
+//                title = "Settings";
+//                Intent i = new Intent(this, SettingsActivity.class);
+//                startActivity(i);
+//                break;
+            case 9:
+                title = "About";
+                ft.replace(R.id.content_frame, new About());
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
         }

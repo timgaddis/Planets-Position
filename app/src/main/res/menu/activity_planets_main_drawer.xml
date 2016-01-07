@@ -4,10 +4,6 @@
     <group
         android:id="@+id/menu_main"
         android:checkableBehavior="single">
-        <!--<item-->
-            <!--android:id="@+id/nav_camera"-->
-            <!--android:icon="@drawable/ic_menu_camera"-->
-            <!--android:title="@string/nav_home" />-->
         <item
             android:id="@+id/nav_solar_ecl"
             android:title="@string/nav_solar_eclipse" />

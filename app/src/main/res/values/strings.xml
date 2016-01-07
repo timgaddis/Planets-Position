@@ -22,4 +22,7 @@
     <string name="nav_sky_position">Sky Position</string>
     <string name="nav_whats_up">What\'s Up Now</string>
     <string name="nav_location">Location</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -17,6 +17,7 @@
 
 package planets.position;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class Navigation extends Fragment {
+
+    private FragmentListener mCallbacks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +77,11 @@ public class Navigation extends Fragment {
 //                ((PlanetsMain) getActivity()).navigate(6, false, true);
             }
         });
+
+        if (mCallbacks != null) {
+            mCallbacks.onToolbarTitleChange("Planet's Position", true);
+        }
+
         return view;
     }
 
@@ -89,4 +97,16 @@ public class Navigation extends Fragment {
         super.onResume();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getTargetFragment() == null) {
+            // attach to PlanetsMain
+            if (!(context instanceof FragmentListener)) {
+                throw new IllegalStateException(
+                        "Activity must implement the FragmentListener interface.");
+            }
+            mCallbacks = (FragmentListener) context;
+        }
+    }
 }

@@ -1,9 +1,8 @@
 package planets.position;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,49 +12,45 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.List;
-
 public class PlanetsMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener {
+
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getDelegate().installViewFactory();
+        getDelegate().onCreate(savedInstanceState);
         setContentView(R.layout.activity_planets_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        if (toolbar != null) {
+            getDelegate().setSupportActionBar(toolbar);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        getDelegate().getSupportActionBar().setHomeButtonEnabled(true);
+        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // This gets the top fragment on the back stack and calls its onResume
-        getSupportFragmentManager().addOnBackStackChangedListener(
-                new FragmentManager.OnBackStackChangedListener() {
-                    public void onBackStackChanged() {
-                        FragmentManager manager = getSupportFragmentManager();
-                        Fragment fragment = null;
-                        if (manager != null) {
-                            int backStackEntryCount = manager
-                                    .getBackStackEntryCount();
-                            if (backStackEntryCount == 0) {
-                                return;
-                            }
-                            List<Fragment> fragments = manager.getFragments();
-                            if (backStackEntryCount < fragments.size())
-                                fragment = fragments.get(backStackEntryCount);
-                            if (fragment != null)
-                                fragment.onResume();
-                        }
-                    }
-                });
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        selectItem(0, false, true);
+        if (savedInstanceState == null) {
+            selectItem(0, false, false);
+        }
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        getDelegate().onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        toggle.syncState();
     }
 
     @Override
@@ -69,15 +64,9 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     @Override
-    protected void onResumeFragments() {
-//        getDelegate().getSupportActionBar().setTitle("Planet's Position");
-        super.onResumeFragments();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.planets_main, menu);
+//        getMenuInflater().inflate(R.menu.planets_main, menu);
         return true;
     }
 
@@ -131,12 +120,10 @@ public class PlanetsMain extends AppCompatActivity
 
     private void selectItem(int position, boolean edit, boolean back) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        CharSequence title = "";
         Bundle args = new Bundle();
 
         switch (position) {
-            case 0:
-                title = "Planet\'s Position";
+            case 0: // Main navigaton
                 ft.replace(R.id.content_frame, new Navigation());
                 if (back)
                     ft.addToBackStack(null);
@@ -183,8 +170,7 @@ public class PlanetsMain extends AppCompatActivity
 //                    ft.addToBackStack(null);
 //                ft.commit();
 //                break;
-            case 7:
-                title = "User Location";
+            case 7: // User Location
                 UserLocation userLoc = new UserLocation();
                 args.putBoolean("edit", edit);
                 userLoc.setArguments(args);
@@ -198,13 +184,27 @@ public class PlanetsMain extends AppCompatActivity
 //                Intent i = new Intent(this, SettingsActivity.class);
 //                startActivity(i);
 //                break;
-            case 9:
-                title = "About";
+            case 9: // About
                 ft.replace(R.id.content_frame, new About());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
         }
+    }
+
+    @Override
+    public void onTaskFinished(Location location, int index) {
+
+    }
+
+    @Override
+    public void onToolbarTitleChange(CharSequence title, boolean home) {
         getDelegate().getSupportActionBar().setTitle(title);
+        if (home) {
+            //clear previous selection
+            for (int i = 0; i <= 7; i++) {
+                navigationView.getMenu().getItem(i).setChecked(false);
+            }
+        }
     }
 }

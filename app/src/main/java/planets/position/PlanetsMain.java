@@ -2,6 +2,8 @@ package planets.position;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.List;
 
 public class PlanetsMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,10 +31,31 @@ public class PlanetsMain extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // This gets the top fragment on the back stack and calls its onResume
+        getSupportFragmentManager().addOnBackStackChangedListener(
+                new FragmentManager.OnBackStackChangedListener() {
+                    public void onBackStackChanged() {
+                        FragmentManager manager = getSupportFragmentManager();
+                        Fragment fragment = null;
+                        if (manager != null) {
+                            int backStackEntryCount = manager
+                                    .getBackStackEntryCount();
+                            if (backStackEntryCount == 0) {
+                                return;
+                            }
+                            List<Fragment> fragments = manager.getFragments();
+                            if (backStackEntryCount < fragments.size())
+                                fragment = fragments.get(backStackEntryCount);
+                            if (fragment != null)
+                                fragment.onResume();
+                        }
+                    }
+                });
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        selectItem(0, false, false);
+        selectItem(0, false, true);
     }
 
     @Override
@@ -41,6 +66,12 @@ public class PlanetsMain extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResumeFragments() {
+//        getDelegate().getSupportActionBar().setTitle("Planet's Position");
+        super.onResumeFragments();
     }
 
     @Override
@@ -82,11 +113,11 @@ public class PlanetsMain extends AppCompatActivity
         } else if (id == R.id.nav_whats_up) {
 
         } else if (id == R.id.nav_location) {
-
+            selectItem(7, false, true);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_about) {
-            selectItem(9, false, false);
+            selectItem(9, false, true);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -101,6 +132,7 @@ public class PlanetsMain extends AppCompatActivity
     private void selectItem(int position, boolean edit, boolean back) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         CharSequence title = "";
+        Bundle args = new Bundle();
 
         switch (position) {
             case 0:
@@ -151,16 +183,16 @@ public class PlanetsMain extends AppCompatActivity
 //                    ft.addToBackStack(null);
 //                ft.commit();
 //                break;
-//            case 7:
-//                title = "User Location";
-//                UserLocation userLoc = new UserLocation();
-//                args.putBoolean("edit", edit);
-//                userLoc.setArguments(args);
-//                ft.replace(R.id.content_frame, userLoc);
-//                if (back)
-//                    ft.addToBackStack(null);
-//                ft.commit();
-//                break;
+            case 7:
+                title = "User Location";
+                UserLocation userLoc = new UserLocation();
+                args.putBoolean("edit", edit);
+                userLoc.setArguments(args);
+                ft.replace(R.id.content_frame, userLoc);
+                if (back)
+                    ft.addToBackStack(null);
+                ft.commit();
+                break;
 //            case 8:
 //                title = "Settings";
 //                Intent i = new Intent(this, SettingsActivity.class);

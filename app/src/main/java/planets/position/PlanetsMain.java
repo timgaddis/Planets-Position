@@ -2,6 +2,7 @@ package planets.position;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +39,8 @@ public class PlanetsMain extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (savedInstanceState == null) {
             selectItem(0, false, false);
@@ -104,7 +107,7 @@ public class PlanetsMain extends AppCompatActivity
         } else if (id == R.id.nav_location) {
             selectItem(7, false, true);
         } else if (id == R.id.nav_settings) {
-
+            selectItem(8, false, true);
         } else if (id == R.id.nav_about) {
             selectItem(9, false, true);
         }
@@ -179,11 +182,11 @@ public class PlanetsMain extends AppCompatActivity
                     ft.addToBackStack(null);
                 ft.commit();
                 break;
-//            case 8:
-//                title = "Settings";
-//                Intent i = new Intent(this, SettingsActivity.class);
-//                startActivity(i);
-//                break;
+            case 8: // Settings
+                ft.replace(R.id.content_frame, new SettingsFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
             case 9: // About
                 ft.replace(R.id.content_frame, new About());
                 ft.addToBackStack(null);

@@ -38,4 +38,11 @@ public class UserLocation extends Fragment {
             mCallbacks = (FragmentListener) context;
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
 }

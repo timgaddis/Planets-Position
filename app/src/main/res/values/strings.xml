@@ -40,5 +40,4 @@
     <string name="loc_edit_lat">Enter the latitude in degrees.</string>
     <string name="loc_edit_long">Edit the longitude in degrees.</string>
     <string name="loc_edit_ele">Enter the elevation in meters.</string>
-
 </resources>

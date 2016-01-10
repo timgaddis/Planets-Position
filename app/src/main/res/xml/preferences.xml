@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="pref_display_settings"
+        android:title="@string/pref_header_display">
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_ra_titles"
+            android:entryValues="@array/pref_ra_values"
+            android:key="ra_format"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_ra_format" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_dec_titles"
+            android:entryValues="@array/pref_dec_values"
+            android:key="dec_format"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_dec_format" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_az_titles"
+            android:entryValues="@array/pref_az_values"
+            android:key="az_format"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_az_format" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_alt_titles"
+            android:entryValues="@array/pref_alt_values"
+            android:key="alt_format"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_alt_format" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

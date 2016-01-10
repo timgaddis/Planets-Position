@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Display settings -->
+    <string name="pref_header_display">Display</string>
+    <string name="pref_title_ra_format">Right ascension format</string>
+    <string name="pref_title_dec_format">Declination format</string>
+    <string name="pref_title_az_format">Azimuth format</string>
+    <string name="pref_title_alt_format">Altitude format</string>
+
+    <string-array name="pref_ra_titles">
+        <item>HH MM SS</item>
+        <item>HH MM.MM</item>
+        <item>HH.HHHHHH</item>
+    </string-array>
+    <string-array name="pref_ra_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="pref_dec_titles">
+        <item>DD MM SS</item>
+        <item>DD MM.MM</item>
+        <item>DD.DDDDDD</item>
+    </string-array>
+    <string-array name="pref_dec_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="pref_az_titles">
+        <item>DDD MM SS</item>
+        <item>DDD MM.MM</item>
+        <item>DDD.DDDDDD</item>
+        <item>QDD.DQ</item>
+    </string-array>
+    <string-array name="pref_az_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="pref_alt_titles">
+        <item>DD MM SS</item>
+        <item>DD MM.MM</item>
+        <item>DD.DDDDDD</item>
+    </string-array>
+    <string-array name="pref_alt_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+</resources>

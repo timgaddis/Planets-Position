@@ -6,18 +6,23 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_solar_ecl"
+            android:icon="@drawable/ic_nav_solar_ecl"
             android:title="@string/nav_solar_eclipse" />
         <item
             android:id="@+id/nav_lunar_ecl"
+            android:icon="@drawable/ic_nav_lunar_ecl"
             android:title="@string/nav_lunar_eclipse" />
         <item
             android:id="@+id/nav_lunar_occ"
+            android:icon="@drawable/ic_nav_lunar_occ"
             android:title="@string/nav_lunar_occultion" />
         <item
             android:id="@+id/nav_sky_pos"
+            android:icon="@drawable/ic_nav_sky_pos"
             android:title="@string/nav_sky_position" />
         <item
             android:id="@+id/nav_whats_up"
+            android:icon="@drawable/ic_nav_whats_up"
             android:title="@string/nav_whats_up" />
     </group>
 

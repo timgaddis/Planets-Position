@@ -92,12 +92,6 @@ public class Navigation extends Fragment {
     }
 
     @Override
-    public void onResume() {
-//        ((PlanetsMain) getActivity()).setActionNav(0, "Planet\'s Position");
-        super.onResume();
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (getTargetFragment() == null) {

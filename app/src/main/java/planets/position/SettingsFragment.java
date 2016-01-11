@@ -8,7 +8,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
-public class SettingsFragment extends PreferenceFragmentCompat  {
+public class SettingsFragment extends PreferenceFragmentCompat {
     private FragmentListener mCallbacks;
 
     public SettingsFragment() {
@@ -19,7 +19,7 @@ public class SettingsFragment extends PreferenceFragmentCompat  {
         super.onCreate(savedInstanceState);
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Settings", false);
+            mCallbacks.onToolbarTitleChange("Settings", 6);
         }
     }
 
@@ -31,6 +31,7 @@ public class SettingsFragment extends PreferenceFragmentCompat  {
         bindPreferenceSummaryToValue(findPreference("dec_format"));
         bindPreferenceSummaryToValue(findPreference("az_format"));
         bindPreferenceSummaryToValue(findPreference("alt_format"));
+        bindPreferenceSummaryToValue(findPreference("time_display"));
 
     }
 

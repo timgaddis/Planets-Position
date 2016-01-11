@@ -201,13 +201,14 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     @Override
-    public void onToolbarTitleChange(CharSequence title, boolean home) {
+    public void onToolbarTitleChange(CharSequence title, int index) {
+        //clear previous selection
+        for (int i = 0; i <= 7; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
         getDelegate().getSupportActionBar().setTitle(title);
-        if (home) {
-            //clear previous selection
-            for (int i = 0; i <= 7; i++) {
-                navigationView.getMenu().getItem(i).setChecked(false);
-            }
+        if (index >= 0) {
+            navigationView.getMenu().getItem(index).setChecked(true);
         }
     }
 }

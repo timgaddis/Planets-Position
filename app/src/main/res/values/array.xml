@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string-array name="occult_array">
+        <item>All Planets</item>
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+        <item>Pluto</item>
+    </string-array>
+    <string-array name="planets_array">
+        <item>Sun</item>
+        <item>Moon</item>
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+        <item>Pluto</item>
+    </string-array>
+    <string-array name="gmt_array">
+        <item>-12:00</item>
+        <item>-11:00</item>
+        <item>-10:00</item>
+        <item>-9:30</item>
+        <item>-9:00</item>
+        <item>-8:00</item>
+        <item>-7:00</item>
+        <item>-6:00</item>
+        <item>-5:00</item>
+        <item>-4:30</item>
+        <item>-4:00</item>
+        <item>-3:30</item>
+        <item>-3:00</item>
+        <item>-2:00</item>
+        <item>-1:00</item>
+        <item>0:00</item>
+        <item>+1:00</item>
+        <item>+2:00</item>
+        <item>+3:00</item>
+        <item>+3:30</item>
+        <item>+4:00</item>
+        <item>+4:30</item>
+        <item>+5:00</item>
+        <item>+5:30</item>
+        <item>+5:45</item>
+        <item>+6:00</item>
+        <item>+7:00</item>
+        <item>+8:00</item>
+        <item>+8:45</item>
+        <item>+9:00</item>
+        <item>+9:30</item>
+        <item>+10:00</item>
+        <item>+10:30</item>
+        <item>+11:00</item>
+        <item>+11:30</item>
+        <item>+12:00</item>
+        <item>+12:45</item>
+        <item>+13:00</item>
+        <item>+14:00</item>
+    </string-array>
+    <string-array name="gmt_values">
+        <item>-12.0</item>
+        <item>-11.0</item>
+        <item>-10.0</item>
+        <item>-9.5</item>
+        <item>-9.0</item>
+        <item>-8.0</item>
+        <item>-7.0</item>
+        <item>-6.0</item>
+        <item>-5.0</item>
+        <item>-4.5</item>
+        <item>-4.0</item>
+        <item>-3.5</item>
+        <item>-3.0</item>
+        <item>-2.0</item>
+        <item>-1.0</item>
+        <item>0.0</item>
+        <item>1.0</item>
+        <item>2.0</item>
+        <item>3.0</item>
+        <item>3.5</item>
+        <item>4.0</item>
+        <item>4.5</item>
+        <item>5.0</item>
+        <item>5.5</item>
+        <item>5.75</item>
+        <item>6.0</item>
+        <item>7.0</item>
+        <item>8.0</item>
+        <item>8.75</item>
+        <item>9.0</item>
+        <item>9.5</item>
+        <item>10.0</item>
+        <item>10.5</item>
+        <item>11.0</item>
+        <item>11.5</item>
+        <item>12.0</item>
+        <item>12.75</item>
+        <item>13.0</item>
+        <item>14.0</item>
+    </string-array>
+
+</resources>

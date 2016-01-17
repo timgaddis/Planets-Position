@@ -1,13 +1,22 @@
 package planets.position.Location;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -19,9 +28,20 @@ import planets.position.R;
 
 public class UserLocation extends Fragment {
 
+    private final static int LATITUDE_REQUEST = 100;
+    private final static int LONGITUDE_REQUEST = 200;
+    private final static int ELEVATION_REQUEST = 300;
+    private final static int OFFSET_REQUEST = 400;
+
     private FragmentListener mCallbacks;
     private TextView latitudeText, longitudeText, elevationText, gmtOffsetText,
             editLocText;
+    private View mLayout;
+    private MenuItem editLoc, saveLoc;
+    private UserLocationDialog offsetDialog;
+    private LocationLib locationLib;
+    private LocationTask locationTask;
+    private FragmentManager fm;
     private int ioffset = -1;
     private double latitude, longitude, elevation, offset;
     private boolean edit = false;
@@ -30,7 +50,6 @@ public class UserLocation extends Fragment {
 
     public UserLocation() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +65,7 @@ public class UserLocation extends Fragment {
         elevationText = (TextView) v.findViewById(R.id.newElevationText);
         gmtOffsetText = (TextView) v.findViewById(R.id.newGMTOffsetText);
         editLocText = (TextView) v.findViewById(R.id.locEditText);
+        mLayout = v.findViewById(R.id.user_main);
 
         gmtArray = Arrays.asList(getResources().getStringArray(
                 R.array.gmt_array));
@@ -54,6 +74,12 @@ public class UserLocation extends Fragment {
 
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.LOC_PREFS, 0);
+
+        locationLib = new LocationLib(getActivity().getApplicationContext(),
+                getActivity(), null, -1);
+
+        fm = getFragmentManager();
+        locationTask = (LocationTask) fm.findFragmentByTag("locationTask");
 
         if (savedInstanceState == null) {
             // load bundle from previous activity
@@ -67,6 +93,55 @@ public class UserLocation extends Fragment {
 
         loadLocation();
 
+        latitudeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edit) {
+                    offsetDialog = UserLocationDialog.newInstance(
+                            R.string.loc_edit_lat, -1, 0, latitude);
+                    offsetDialog.setTargetFragment(UserLocation.this,
+                            LATITUDE_REQUEST);
+                    offsetDialog.show(getFragmentManager(), "latitudeDialog");
+                }
+            }
+        });
+        longitudeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edit) {
+                    offsetDialog = UserLocationDialog.newInstance(
+                            R.string.loc_edit_long, -1, 1, longitude);
+                    offsetDialog.setTargetFragment(UserLocation.this,
+                            LONGITUDE_REQUEST);
+                    offsetDialog.show(getFragmentManager(), "longitudeDialog");
+                }
+            }
+        });
+        elevationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edit) {
+                    offsetDialog = UserLocationDialog.newInstance(
+                            R.string.loc_edit_ele, -1, 2, elevation);
+                    offsetDialog.setTargetFragment(UserLocation.this,
+                            ELEVATION_REQUEST);
+                    offsetDialog.show(getFragmentManager(), "elevationDialog");
+                }
+            }
+        });
+        gmtOffsetText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edit) {
+                    offsetDialog = UserLocationDialog.newInstance(
+                            R.string.loc_gmt, R.array.gmt_array, 3, -1.0);
+                    offsetDialog.setTargetFragment(UserLocation.this,
+                            OFFSET_REQUEST);
+                    offsetDialog.show(getFragmentManager(), "offsetDialog");
+                }
+            }
+        });
+
         return v;
     }
 
@@ -76,6 +151,62 @@ public class UserLocation extends Fragment {
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             edit = savedInstanceState.getBoolean("edit");
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.location_menu, menu);
+        // inflater.inflate(R.menu.base_menu, menu);
+        editLoc = menu.findItem(R.id.action_edit);
+        saveLoc = menu.findItem(R.id.action_save);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (edit) {
+            editLoc.setVisible(false);
+            saveLoc.setVisible(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle actionbar item selection
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                edit = false;
+                editLocText.setVisibility(View.GONE);
+                editLoc.setVisible(true);
+                saveLoc.setVisible(false);
+                if (saveLocation()) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Location saved.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Location not saved.", Toast.LENGTH_LONG).show();
+                }
+                displayLocation();
+                return true;
+            case R.id.action_edit:
+                edit = true;
+                editLocText.setVisibility(View.VISIBLE);
+                editLoc.setVisible(false);
+                saveLoc.setVisible(true);
+                return true;
+            case R.id.action_gps:
+                if (locationTask == null) {
+                    locationTask = new LocationTask();
+                    locationTask.setData(getActivity(), getActivity().getApplicationContext(), mLayout);
+                    locationTask.setTargetFragment(this, LocationLib.LOCATION_TASK);
+                    locationTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                    locationTask.show(fm, "locationTask");
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -92,6 +223,118 @@ public class UserLocation extends Fragment {
         if (edit)
             saveLocation();
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getTargetFragment() == null) {
+            // attach to PlanetsMain
+            if (!(context instanceof FragmentListener)) {
+                throw new IllegalStateException(
+                        "Activity must implement the FragmentListener interface.");
+            }
+            mCallbacks = (FragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Decide what to do based on the original request code
+        switch (requestCode) {
+            case LocationLib.CONNECTION_FAILURE_RESOLUTION_REQUEST:
+                // If the result code is Activity.RESULT_OK, try to connect again
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        // Try the request again
+                        locationLib.connect();
+                        break;
+                }
+            case LATITUDE_REQUEST:
+                // Enter an latitude value
+                if (resultCode == DialogInterface.BUTTON_POSITIVE) {
+                    String value = data.getStringExtra("value");
+                    boolean south = data.getBooleanExtra("south", false);
+                    try {
+                        latitude = Double.parseDouble(value);
+                        if (south)
+                            latitude *= -1;
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Enter a number for the latitude.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case LONGITUDE_REQUEST:
+                // Enter an longitude value
+                if (resultCode == DialogInterface.BUTTON_POSITIVE) {
+                    String value = data.getStringExtra("value");
+                    boolean west = data.getBooleanExtra("west", false);
+                    try {
+                        longitude = Double.parseDouble(value);
+                        if (west)
+                            longitude *= -1;
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Enter a number for the longitude.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case ELEVATION_REQUEST:
+                // Enter an elevation value
+                if (resultCode == DialogInterface.BUTTON_POSITIVE) {
+                    String value = data.getStringExtra("value");
+                    try {
+                        elevation = Double.parseDouble(value);
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Enter a number for the elevation.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case OFFSET_REQUEST:
+                // Select a value from the GMT offset list
+                ioffset = resultCode;
+                if (ioffset >= 0) {
+                    offset = Double.parseDouble(gmtValues.get(ioffset));
+                    gmtOffsetText.setText(gmtArray.get(ioffset));
+                } else {
+                    offset = -1.0;
+                }
+                break;
+            case LocationLib.LOCATION_TASK:
+                Bundle b = data.getExtras();
+                if (b.getBoolean("locationNull")) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Location not found.", Toast.LENGTH_LONG).show();
+                } else {
+                    latitude = b.getDouble("latitude");
+                    longitude = b.getDouble("longitude");
+                    elevation = b.getDouble("elevation");
+                    offset = b.getDouble("offset");
+                    ioffset = gmtValues.indexOf(offset + "");
+                }
+                locationTask = null;
+                break;
+        }
+        if (saveLocation()) {
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "Location saved.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "Location not saved.", Toast.LENGTH_LONG).show();
+        }
+        displayLocation();
     }
 
     private void loadLocation() {
@@ -155,25 +398,6 @@ public class UserLocation extends Fragment {
 //                        PlanetsContentProvider.LOCATION_URI, String.valueOf(0)),
 //                values, null, null);
 //        return rows == 1 && out;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (getTargetFragment() == null) {
-            // attach to PlanetsMain
-            if (!(context instanceof FragmentListener)) {
-                throw new IllegalStateException(
-                        "Activity must implement the FragmentListener interface.");
-            }
-            mCallbacks = (FragmentListener) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
     }
 
 }

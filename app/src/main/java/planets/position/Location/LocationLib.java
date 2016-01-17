@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2014. Tim Gaddis
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package planets.position.Location;
 
 import android.Manifest;
@@ -28,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -37,27 +19,38 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
-
 public class LocationLib implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-//    public final static int LOCATION_TASK = 500;
+    public final static int LOCATION_TASK = 500;
 
     private GoogleApiClient googleApiClient;
     private GoogleApiAvailability gaa;
-    //    private LocationRequest mLocationRequest;
     private Context context;
     private FragmentActivity activity;
     private Location location;
-    FragmentListener mListener;
+    private int index;
+    LocationCallback locationListener;
+    LocationTaskCallback locationTaskListener;
 
-    public LocationLib(Context c, FragmentActivity a) {
+    public interface LocationCallback {
+        void onLocationFound(Location location);
+    }
+
+    public interface LocationTaskCallback {
+        void onLocationTaskFound(Location location);
+    }
+
+    public LocationLib(Context c, FragmentActivity fa, DialogFragment df, int i) {
         context = c;
-        activity = a;
-        mListener = (FragmentListener) a;
+        activity = fa;
+        index = i;
+        locationListener = (LocationCallback) fa;
+        if (df != null)
+            locationTaskListener = (LocationTaskCallback) df;
+        else
+            locationTaskListener = null;
         googleApiClient = new GoogleApiClient.Builder(c)
                 .addApi(LocationServices.API).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
@@ -69,8 +62,6 @@ public class LocationLib implements GoogleApiClient.ConnectionCallbacks,
     }
 
     public void connect() {
-        Log.d(PlanetsMain.TAG, "LocationLib connect");
-        Log.d(PlanetsMain.TAG, "googleApiClient:" + googleApiClient.toString());
         googleApiClient.connect();
     }
 
@@ -79,57 +70,7 @@ public class LocationLib implements GoogleApiClient.ConnectionCallbacks,
     }
 
     public Location getLocation() {
-//        Location loc = null;
-        Log.d(PlanetsMain.TAG, "LocationLib getLocation");
-        Log.d(PlanetsMain.TAG, "location:" + location);
         return location;
-//        Log.d(PlanetsMain.TAG, "fine:" + ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION));
-//        Log.d(PlanetsMain.TAG, "coarse:" + ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION));
-//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED &&
-//                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-//                        == PackageManager.PERMISSION_GRANTED) {
-//            loc = LocationServices.FusedLocationApi
-//                    .getLastLocation(googleApiClient);
-//        }
-//        Log.d(PlanetsMain.TAG, "location:" + loc);
-//        return loc;
-    }
-
-    public boolean gConnect() {
-        Log.d(PlanetsMain.TAG, "gConnect:" + googleApiClient.isConnected());
-        return googleApiClient.isConnected();
-    }
-
-    public boolean servicesConnected() {
-        // Check that Google Play services is available
-        int resultCode = gaa.isGooglePlayServicesAvailable(context);
-        // If Google Play services is available
-        if (resultCode == ConnectionResult.SUCCESS) {
-            // In debug mode, log the status
-            Log.d("Location Updates", "Google Play services is available.");
-            // Continue
-            return true;
-            // Google Play services was not available for some reason
-        } else {
-            // Get the error code
-            // int errorCode = connectionResult.getErrorCode();
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = gaa.getErrorDialog(activity, resultCode,
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                // Create a new DialogFragment for the error dialog
-                ErrorDialogFragment errorFragment = new ErrorDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(errorDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show((activity).getSupportFragmentManager(),
-                        "Location Updates");
-            }
-            return false;
-        }
     }
 
     // Define a DialogFragment that displays the error dialog
@@ -179,27 +120,25 @@ public class LocationLib implements GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        // Toast.makeText(activity, "Connected", Toast.LENGTH_SHORT).show();
-        Log.d(PlanetsMain.TAG, "onConnected:" + googleApiClient.isConnected());
-//        Log.d(PlanetsMain.TAG, "onConnected");
-        Log.d(PlanetsMain.TAG, "fine:" + ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION));
-        Log.d(PlanetsMain.TAG, "coarse:" + ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION));
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
             location = LocationServices.FusedLocationApi
                     .getLastLocation(googleApiClient);
-            mListener.onLocationFound(location,0);
+
+        } else {
+            location = null;
+        }
+        if (index == 100) {
+            // PlanetsMain
+            locationListener.onLocationFound(location);
+        } else if (index == 200) {
+            // LocationTask
+            if (locationTaskListener != null)
+                locationTaskListener.onLocationTaskFound(location);
         }
     }
-
-    // @Override
-    // public void onDisconnected() {
-    // // Display the connection status
-    // // Toast.makeText(activity, "Disconnected. Please re-connect.",
-    // // Toast.LENGTH_SHORT).show();
-    // }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

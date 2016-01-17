@@ -226,4 +226,5 @@ public class UserLocationDialog extends DialogFragment {
         }
         return alert.create();
     }
+
 }

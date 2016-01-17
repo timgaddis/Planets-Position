@@ -31,7 +31,7 @@ import planets.position.Location.LocationLib;
 import planets.position.Location.UserLocation;
 
 public class PlanetsMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationLib.LocationCallback {
 
     public static final String TAG = "PlanetsMain";
     public static final String LOC_PREFS = "LocationPrefsFile";
@@ -61,7 +61,7 @@ public class PlanetsMain extends AppCompatActivity
 
         mLayout = findViewById(R.id.content_frame);
         permissionLib = new PermissionLib(this);
-        locationLib = new LocationLib(this, this);
+        locationLib = new LocationLib(this, this, null, 100);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -306,8 +306,11 @@ public class PlanetsMain extends AppCompatActivity
         }
     }
 
+    // ********************************
+    // ***** LocationLib callback *****
+    // ********************************
     @Override
-    public void onLocationFound(Location location, int index) {
+    public void onLocationFound(Location location) {
 
         locationLib.disconnect();
         if (location != null) {

@@ -17,7 +17,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Settings", 6);
         }

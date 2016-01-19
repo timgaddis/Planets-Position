@@ -11,6 +11,13 @@ android {
         versionCode 2
         versionName "2.0"
     }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['src/main/libs']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -32,6 +39,22 @@ android {
         }
     }
 }
+
+//task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
+//    def ndkDir = project.getPlugins().getPlugin('android').sdkHandler.getNdkFolder()
+//    commandLine "$ndkDir/ndk-build",
+//            '-C', file('src/main/jni').absolutePath
+//}
+//task cleanNative(type: Exec, description: 'Clean JNI object files') {
+//    def ndkDir = project.getPlugins().getPlugin('android').sdkHandler.getNdkFolder()
+//    commandLine "$ndkDir/ndk-build",
+//            '-C', file('src/main/jni').absolutePath,
+//            'clean'
+//}
+//clean.dependsOn 'cleanNative'
+//tasks.withType(JavaCompile) {
+//    compileTask -> compileTask.dependsOn buildNative
+//}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

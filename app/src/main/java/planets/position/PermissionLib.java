@@ -37,7 +37,4 @@ public class PermissionLib {
         }
     }
 
-    public void requestStoragePermission(View mLayout) {
-
-    }
 }

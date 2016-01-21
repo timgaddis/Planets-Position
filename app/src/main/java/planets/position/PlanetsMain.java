@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 
 import planets.position.Location.LocationDialog;
@@ -31,7 +32,8 @@ import planets.position.Location.LocationLib;
 import planets.position.Location.UserLocation;
 
 public class PlanetsMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationLib.LocationCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationLib.LocationCallback,
+        FileCopyTask.FileCopyCallback {
 
     public static final String TAG = "PlanetsMain";
     public static final String LOC_PREFS = "LocationPrefsFile";
@@ -43,6 +45,7 @@ public class PlanetsMain extends AppCompatActivity
     private SharedPreferences settings;
     private PermissionLib permissionLib;
     private LocationLib locationLib;
+    private FileCopyTask copyTask;
     private int ioffset = -1;
     private double latitude, longitude, elevation, offset;
     private FragmentManager fm;
@@ -79,10 +82,14 @@ public class PlanetsMain extends AppCompatActivity
         loadLocation();
 
         fm = getSupportFragmentManager();
-//        copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
+        copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
 
-        if (latitude < -90) {
-            startLocationTask();
+        if (!(checkFiles("semo_18.se1") && checkFiles("sepl_18.se1"))) {
+            startCopyFileTask();
+        } else {
+            if (latitude < -90) {
+                startLocationTask();
+            }
         }
 
         if (savedInstanceState == null) {
@@ -174,8 +181,6 @@ public class PlanetsMain extends AppCompatActivity
                 Snackbar.make(mLayout, R.string.permision_not_location,
                         Snackbar.LENGTH_SHORT).show();
             }
-        } else if (requestCode == REQUEST_STORAGE) {
-
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -371,5 +376,35 @@ public class PlanetsMain extends AppCompatActivity
         DialogFragment newFragment = new LocationDialog();
         newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         newFragment.show(getSupportFragmentManager(), "locationDialog");
+    }
+
+    private void startCopyFileTask() {
+        if (copyTask == null) {
+            // copy files task
+            copyTask = new FileCopyTask();
+            copyTask.setTask(copyTask.new CopyFilesTask());
+            copyTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            copyTask.show(fm, "copyTask");
+        }
+    }
+
+    /**
+     * Checks to see if the given file exists in internal storage.
+     *
+     * @param name file name to check
+     * @return true if exists, false otherwise
+     */
+    private boolean checkFiles(String name) {
+
+        String p = getApplicationContext().getFilesDir().getAbsolutePath() +
+                File.separator + "ephemeris" + File.separator + name;
+        File f = new File(p);
+        return f.exists();
+    }
+
+    @Override
+    public void onCopyFinished() {
+        copyTask = null;
+        startLocationTask();
     }
 }

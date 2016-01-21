@@ -38,7 +38,6 @@ public class PlanetsMain extends AppCompatActivity
     public static final String TAG = "PlanetsMain";
     public static final String LOC_PREFS = "LocationPrefsFile";
     public static final int REQUEST_LOCATION = 100;
-    public static final int REQUEST_STORAGE = 200;
 
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
@@ -271,15 +270,14 @@ public class PlanetsMain extends AppCompatActivity
 //                    ft.addToBackStack(null);
 //                ft.commit();
 //                break;
-//            case 5:
-//                if (longitude == 0)
-//                    loadLocation();
-//                title = "Sky Position";
-//                ft.replace(R.id.content_frame, new SkyPosition());
-//                if (back)
-//                    ft.addToBackStack(null);
-//                ft.commit();
-//                break;
+            case 5: // Sky Position
+                if (longitude == 0)
+                    loadLocation();
+                ft.replace(R.id.content_frame, new SkyPosition());
+                if (back)
+                    ft.addToBackStack(null);
+                ft.commit();
+                break;
 //            case 6:
 //                if (longitude == 0)
 //                    loadLocation();

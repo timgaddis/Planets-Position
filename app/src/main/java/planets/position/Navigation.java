@@ -46,7 +46,7 @@ public class Navigation extends Fragment {
         skyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ((PlanetsMain) getActivity()).navigate(5, false, true);
+                ((PlanetsMain) getActivity()).navigate(5, false, true);
             }
         });
 

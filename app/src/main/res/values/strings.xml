@@ -41,6 +41,17 @@
     <string name="loc_edit_long">Edit the longitude in degrees.</string>
     <string name="loc_edit_ele">Enter the elevation in meters.</string>
 
+    <string name="data_ra">Right Ascension</string>
+    <string name="data_dec">Declination</string>
+    <string name="data_az">Azimuth</string>
+    <string name="data_alt">Altitude</string>
+    <string name="data_dis">Distance</string>
+    <string name="data_mag">Magnitude</string>
+    <string name="data_rs">Rise/Set Time</string>
+    <string name="data_set">Set Time</string>
+    <string name="data_rise">Rise Time</string>
+    <string name="below_hor">Object below horizon</string>
+
     <string name="alert_string">There is no location data saved.
         You can either download the data using GPS or manually enter the data.</string>
     <string name="alert_manual">Manual</string>

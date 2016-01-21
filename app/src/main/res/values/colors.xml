@@ -7,4 +7,6 @@
     <color name="button_text">#FFF</color>
     <color name="text_color">#FFFFFF</color>
     <color name="alt_text_color">#B3FFFFFF</color>
+    <color name="alert_color">#FFFF0000</color>
+    <color name="divider_color">#1FFFFFFF</color>
 </resources>

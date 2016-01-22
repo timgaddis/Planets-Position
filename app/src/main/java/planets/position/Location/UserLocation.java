@@ -73,7 +73,7 @@ public class UserLocation extends Fragment {
                 R.array.gmt_values));
 
         settings = getActivity()
-                .getSharedPreferences(PlanetsMain.LOC_PREFS, 0);
+                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
         locationLib = new LocationLib(getActivity().getApplicationContext(),
                 getActivity(), null, -1);

@@ -60,7 +60,6 @@ public class PlanetDatePicker extends DialogFragment implements DatePickerDialog
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // Set
-         Log.i("DatePicker", "onDateSet");
         Intent data = new Intent();
         Bundle b = new Bundle();
         b.putInt("year", year);

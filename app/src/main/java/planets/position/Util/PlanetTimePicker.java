@@ -60,7 +60,6 @@ public class PlanetTimePicker extends DialogFragment implements TimePickerDialog
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Set
-         Log.i("TimePicker", "onTimeSet");
         Intent data = new Intent();
         Bundle b = new Bundle();
         b.putInt("hour", hourOfDay);

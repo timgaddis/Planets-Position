@@ -1,4 +1,3 @@
-
 #include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,7 +45,7 @@ jdoubleArray Java_planets_position_Util_JDUTC_utc2jd(JNIEnv *env, jobject this,
  * Input: Julian date
  * Output: String containing a calendar date
  */
-jstring Java_planetsposition_Util_JDUTC_jd2utc(JNIEnv *env, jobject this,
+jstring Java_planets_position_Util_JDUTC_jd2utc(JNIEnv *env, jobject this,
                                                 jdouble juldate) {
 
     char *outFormat = "_%i_%i_%i_%i_%i_%2.1f_";
@@ -58,4 +57,144 @@ jstring Java_planetsposition_Util_JDUTC_jd2utc(JNIEnv *env, jobject this,
 
     i = sprintf(output, outFormat, y, mo, d, h, mi, s);
     return (*env)->NewStringUTF(env, output);
+}
+
+/*
+ * Return the rise time for a given planet at a given date.
+ * Swiss Ephemeris function called:
+ * 		swe_set_ephe_path
+ * 		swe_rise_trans
+ * 		swe_close
+ * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
+ * Output: Julian date as a double
+ */
+jdouble Java_planets_position_Util_RiseSet_planetRise(JNIEnv *env, jobject this, jstring eph,
+                                                      jdouble d_ut, jint p, jdoubleArray loc,
+                                                      jdouble atpress, jdouble attemp) {
+
+    char serr[256];
+    double g[3], riseT;
+    int i;
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, 0);
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    swe_set_ephe_path(ephString);
+
+    i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_RISE, g, atpress, attemp, &riseT, serr);
+    if (i == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetRise", "JNI ERROR swe_rise_trans: %-256s",
+                            serr);
+        swe_close();
+        return -1.0;
+    }
+    swe_close();
+    (*env)->ReleaseStringUTFChars(env, eph, ephString);
+
+    return riseT;
+}
+
+/*
+ * Return the set time for a given planet at a given date.
+ * Swiss Ephemeris function called:
+ * 		swe_set_ephe_path
+ * 		swe_rise_trans
+ * 		swe_close
+ * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
+ * Output: Julian date as a double
+ */
+jdouble Java_planets_position_Util_RiseSet_planetSet(JNIEnv *env, jobject this, jstring eph,
+                                                     jdouble d_ut, jint p, jdoubleArray loc,
+                                                     jdouble atpress, jdouble attemp) {
+
+    char serr[256];
+    double g[3], setT;
+    int i;
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, 0);
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    swe_set_ephe_path(ephString);
+
+    i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_SET, g, atpress, attemp, &setT, serr);
+    if (i == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetSet", "JNI ERROR swe_rise_trans: %-256s",
+                            serr);
+        swe_close();
+        return -1.0;
+    }
+    swe_close();
+    (*env)->ReleaseStringUTFChars(env, eph, ephString);
+
+    return setT;
+}
+
+/*
+ * Calculate the position of a given planet in the sky.
+ * Swiss Ephemeris functions called:
+ * 		swe_set_ephe_path
+ * 		swe_set_topo
+ * 		swe_calc
+ * 		swe_azalt
+ * 		swe_pheno_ut
+ * 		swe_close
+ * Input: Julian date in ephemeris time, Julian date in ut1, planet number,
+ * 		location array, atmospheric pressure and temperature.
+ * Output: Double array containing RA, Dec, distance, azimuth, altitude,
+ * 		magnitude, set time, and rise time of planet.
+ */
+jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this, jstring eph,
+                                                             jdouble d_et, jdouble d_ut, jint p,
+                                                             jdoubleArray loc, jdouble atpress,
+                                                             jdouble attemp) {
+
+    char serr[256];
+    double x2[3], az[3], g[3], attr[20], setT, riseT;
+    int i, iflag = SEFLG_SWIEPH | SEFLG_EQUATORIAL | SEFLG_TOPOCTR;
+
+    jdoubleArray result;
+    result = (*env)->NewDoubleArray(env, 8);
+    if (result == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetPosData",
+                            "JNI ERROR NewDoubleArray: out of memory error");
+        return NULL; /* out of memory error thrown */
+    }
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, 0);
+    swe_set_ephe_path(ephString);
+
+    swe_set_topo(g[0], g[1], g[2]);
+    i = swe_calc(d_et, p, iflag, x2, serr);
+    if (i == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetPosData",
+                            "JNI ERROR swe_calc: %-256s", serr);
+        swe_close();
+        return NULL;
+    } else {
+        swe_azalt(d_ut, SE_EQU2HOR, g, atpress, attemp, x2, az);
+        i = swe_pheno_ut(d_ut, p, SEFLG_SWIEPH, attr, serr);
+        if (i == ERR) {
+            __android_log_print(ANDROID_LOG_ERROR, "planetPosData",
+                                "JNI ERROR swe_pheno_ut: %-256s", serr);
+            swe_close();
+            return NULL;
+        }
+        swe_close();
+
+        /*rotates azimuth origin to north*/
+        az[0] += 180;
+        if (az[0] > 360)
+            az[0] -= 360;
+
+        // move from the temp structure to the java structure
+        (*env)->SetDoubleArrayRegion(env, result, 0, 3, x2);
+        (*env)->SetDoubleArrayRegion(env, result, 3, 2, az);
+        (*env)->SetDoubleArrayRegion(env, result, 5, 1, &attr[4]);
+
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
+
+        return result;
+    }
 }

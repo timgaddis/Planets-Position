@@ -26,8 +26,8 @@ import java.util.GregorianCalendar;
 import planets.position.Util.JDUTC;
 import planets.position.Util.PlanetDatePicker;
 import planets.position.Util.PlanetTimePicker;
+import planets.position.Util.PositionFormat;
 import planets.position.Util.RiseSet;
-
 
 public class SkyPosition extends Fragment {
 
@@ -46,6 +46,17 @@ public class SkyPosition extends Fragment {
     private PlanetTimePicker timePickerFragment;
     private SharedPreferences settings;
     private FragmentListener mCallbacks;
+    private PositionFormat pf;
+
+    // load c library
+    static {
+        System.loadLibrary("planets_swiss");
+    }
+
+    // c function prototype
+    @SuppressWarnings("JniMissingFunction")
+    public native double[] planetPosData(String eph, double d1, double d2, int p,
+                                         double[] loc, double press, double temp);
 
     public SkyPosition() {
     }
@@ -69,7 +80,7 @@ public class SkyPosition extends Fragment {
         pRiseText = (TextView) v.findViewById(R.id.pos_riseTime_text);
         pSetText = (TextView) v.findViewById(R.id.pos_setTime_text);
         jdUTC = new JDUTC();
-        riseSet = new RiseSet();
+        pf = new PositionFormat(getActivity().getApplicationContext());
 
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
@@ -77,7 +88,9 @@ public class SkyPosition extends Fragment {
                 .getTimeFormat(getActivity().getApplicationContext());
 
         settings = getActivity()
-                .getSharedPreferences(PlanetsMain.LOC_PREFS, 0);
+                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+
+        riseSet = new RiseSet(settings.getString("ephPath", ""));
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 ((AppCompatActivity) getActivity()).getSupportActionBar()
@@ -243,13 +256,10 @@ public class SkyPosition extends Fragment {
 
     private void computeLocation() {
         if (planetNum >= 0 && planetNum < 10) {
-//            double jd=2457408.5;
             double[] data;
-//            double ra, dec, t, d;
+            double ra, dec, t, d;
             int m;
             Calendar utc;
-
-            pRAText.setText(String.format("%d", planetNum));
 
             utc = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute, 0);
             m = (int) (offset * 60);
@@ -260,19 +270,62 @@ public class SkyPosition extends Fragment {
                     utc.get(Calendar.HOUR_OF_DAY), utc.get(Calendar.MINUTE),
                     utc.get(Calendar.SECOND));
 
-            // jdTT = data[0];
-            // jdUT = data[1];
-
             if (data == null) {
                 Log.e("Date error", "pos date error");
-//                return;
-            } else {
-                pRiseText.setText(String.format("%f", data[0]));
-                pSetText.setText(String.format("%f", data[1]));
+                return;
             }
+            // jdTT = data[0];
+            // jdUT = data[1];
+            d = data[1];
 
-//            pSetText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
-//                    mTimeFormat.format(utc.getTime())));
+            data = planetPosData(settings.getString("ephPath", ""), data[0], data[1],
+                    planetNum, g, 0.0, 0.0);
+            if (data == null) {
+                Log.e("Position error", "planetPosData error");
+                return;
+            }
+            ra = data[0];
+            dec = data[1];
+
+            // convert ra to hours
+            ra = ra / 15;
+
+            pRAText.setText(pf.formatRA(ra));
+            pDecText.setText(pf.formatDec(dec));
+            pAzText.setText(pf.formatAZ(data[3]));
+            pAltText.setText(pf.formatALT(data[4]));
+
+            if (planetNum == 1)
+                pDistText.setText(String.format("%.4f AU", data[2]));
+            else
+                pDistText.setText(String.format("%.2f AU", data[2]));
+            pMagText.setText(String.format("%.2f", data[5]));
+
+            t = riseSet.getSet(d, planetNum);
+            if (t < 0) {
+                Log.e("Position error", "planetPosData set error");
+                return;
+            }
+            utc.setTimeInMillis(jdUTC.jdmills(t, offset));
+            pSetText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
+                    mTimeFormat.format(utc.getTime())));
+
+            t = riseSet.getRise(d, planetNum);
+            if (t < 0) {
+                Log.e("Position error", "planetPosData rise error");
+                return;
+            }
+            utc.setTimeInMillis(jdUTC.jdmills(t, offset));
+            pRiseText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
+                    mTimeFormat.format(utc.getTime())));
+
+            if (data[4] <= 0.0) {
+                // below horizon
+                pBelowText.setVisibility(View.VISIBLE);
+            } else {
+                // above horizon
+                pBelowText.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

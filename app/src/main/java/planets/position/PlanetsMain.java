@@ -36,7 +36,7 @@ public class PlanetsMain extends AppCompatActivity
         FileCopyTask.FileCopyCallback {
 
     public static final String TAG = "PlanetsMain";
-    public static final String LOC_PREFS = "LocationPrefsFile";
+    public static final String MAIN_PREFS = "MainPrefsFile";
     public static final int REQUEST_LOCATION = 100;
 
     private ActionBarDrawerToggle toggle;
@@ -76,7 +76,7 @@ public class PlanetsMain extends AppCompatActivity
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        settings = getSharedPreferences(LOC_PREFS, 0);
+        settings = getSharedPreferences(MAIN_PREFS, 0);
 
         loadLocation();
 
@@ -95,6 +95,9 @@ public class PlanetsMain extends AppCompatActivity
             selectItem(0, false, false);
         }
 
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("ephPath", getFilesDir().getPath() + File.separator + "ephemeris");
+        editor.apply();
     }
 
     @Override
@@ -210,7 +213,7 @@ public class PlanetsMain extends AppCompatActivity
         editor.putFloat("elevation", (float) elevation);
         editor.putFloat("offset", (float) offset);
         editor.putInt("ioffset", ioffset);
-        editor.putLong("date", date);
+        editor.putLong("locDate", date);
 //        boolean out = editor.commit();
         Log.d(TAG, "saveLocation");
         return editor.commit();

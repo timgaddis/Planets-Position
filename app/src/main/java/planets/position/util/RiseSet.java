@@ -1,4 +1,4 @@
-package planets.position.Util;
+package planets.position.util;
 
 public class RiseSet {
 

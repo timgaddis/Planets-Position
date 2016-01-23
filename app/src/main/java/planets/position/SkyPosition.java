@@ -23,11 +23,11 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import planets.position.Util.JDUTC;
-import planets.position.Util.PlanetDatePicker;
-import planets.position.Util.PlanetTimePicker;
-import planets.position.Util.PositionFormat;
-import planets.position.Util.RiseSet;
+import planets.position.util.JDUTC;
+import planets.position.util.PlanetDatePicker;
+import planets.position.util.PlanetTimePicker;
+import planets.position.util.PositionFormat;
+import planets.position.util.RiseSet;
 
 public class SkyPosition extends Fragment {
 

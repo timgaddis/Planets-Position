@@ -15,27 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package planets.position.Util;
+package planets.position.util;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.widget.DatePicker;
+import android.text.format.DateFormat;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class PlanetDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class PlanetTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    private int mYear = -1, mMonth = -1, mDay = -1;
+    private int mHour = -1, mMinute = -1;
 
-    public void setData(int year, int month, int day) {
-        mYear = year;
-        mMonth = month;
-        mDay = day;
+    public void setData(int hour, int minute) {
+        mHour = hour;
+        mMinute = minute;
     }
 
     @Override
@@ -47,26 +46,25 @@ public class PlanetDatePicker extends DialogFragment implements DatePickerDialog
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if (mYear < 0) {
+        if (mHour < 0) {
             Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
+            mHour = c.get(Calendar.HOUR_OF_DAY);
+            mMinute = c.get(Calendar.MINUTE);
         }
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+        // Create a new instance of TimePickerDialog and return it
+        return new TimePickerDialog(getTargetFragment().getActivity(), this, mHour, mMinute,
+                DateFormat.is24HourFormat(getTargetFragment().getActivity()));
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Set
         Intent data = new Intent();
         Bundle b = new Bundle();
-        b.putInt("year", year);
-        b.putInt("month", monthOfYear);
-        b.putInt("day", dayOfMonth);
+        b.putInt("hour", hourOfDay);
+        b.putInt("minute", minute);
         data.putExtras(b);
-        getTargetFragment().onActivityResult(50, 60, data);
+        getTargetFragment().onActivityResult(50, 65, data);
     }
 
 }

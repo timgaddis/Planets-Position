@@ -27,9 +27,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.Calendar;
 
-import planets.position.Location.LocationDialog;
-import planets.position.Location.LocationLib;
-import planets.position.Location.UserLocation;
+import planets.position.location.LocationDialog;
+import planets.position.location.LocationLib;
+import planets.position.location.UserLocation;
 
 public class PlanetsMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationLib.LocationCallback,

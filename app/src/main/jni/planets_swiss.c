@@ -11,7 +11,7 @@
  * Input: year, month, day, hour, min, sec
  * Output: double array with Julian date in ut1 and tt values.
  */
-jdoubleArray Java_planets_position_Util_JDUTC_utc2jd(JNIEnv *env, jobject this,
+jdoubleArray Java_planets_position_util_JDUTC_utc2jd(JNIEnv *env, jobject this,
                                                      jint m, jint d, jint y, jint hr, jint min,
                                                      jdouble sec) {
 
@@ -45,7 +45,7 @@ jdoubleArray Java_planets_position_Util_JDUTC_utc2jd(JNIEnv *env, jobject this,
  * Input: Julian date
  * Output: String containing a calendar date
  */
-jstring Java_planets_position_Util_JDUTC_jd2utc(JNIEnv *env, jobject this,
+jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jobject this,
                                                 jdouble juldate) {
 
     char *outFormat = "_%i_%i_%i_%i_%i_%2.1f_";
@@ -68,7 +68,7 @@ jstring Java_planets_position_Util_JDUTC_jd2utc(JNIEnv *env, jobject this,
  * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
  * Output: Julian date as a double
  */
-jdouble Java_planets_position_Util_RiseSet_planetRise(JNIEnv *env, jobject this, jstring eph,
+jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jstring eph,
                                                       jdouble d_ut, jint p, jdoubleArray loc,
                                                       jdouble atpress, jdouble attemp) {
 
@@ -103,7 +103,7 @@ jdouble Java_planets_position_Util_RiseSet_planetRise(JNIEnv *env, jobject this,
  * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
  * Output: Julian date as a double
  */
-jdouble Java_planets_position_Util_RiseSet_planetSet(JNIEnv *env, jobject this, jstring eph,
+jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jstring eph,
                                                      jdouble d_ut, jint p, jdoubleArray loc,
                                                      jdouble atpress, jdouble attemp) {
 

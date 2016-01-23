@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package planets.position.Location;
+package planets.position.location;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

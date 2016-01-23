@@ -1,4 +1,4 @@
-package planets.position.Location;
+package planets.position.location;
 
 import android.app.Activity;
 import android.content.Context;

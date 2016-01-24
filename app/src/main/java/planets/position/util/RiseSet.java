@@ -12,11 +12,11 @@ public class RiseSet {
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native static double planetRise(String eph, double dUT, int p, double[] loc, double press,
+    public native static double planetRise(byte[] eph, double dUT, int p, double[] loc, double press,
                                            double temp);
 
     @SuppressWarnings("JniMissingFunction")
-    public native static double planetSet(String eph, double dUT, int p, double[] loc, double press,
+    public native static double planetSet(byte[] eph, double dUT, int p, double[] loc, double press,
                                           double temp);
 
     public RiseSet(double[] loc) {
@@ -38,11 +38,11 @@ public class RiseSet {
     }
 
     public double getRise(double jdate, int planet) {
-        return planetRise(ephPath, jdate, planet, g, 0.0, 0.0);
+        return planetRise(ephPath.getBytes(), jdate, planet, g, 0.0, 0.0);
     }
 
     public double getSet(double jdate, int planet) {
-        return planetSet(ephPath, jdate, planet, g, 0.0, 0.0);
+        return planetSet(ephPath.getBytes(), jdate, planet, g, 0.0, 0.0);
     }
 
 }

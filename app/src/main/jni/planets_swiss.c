@@ -68,14 +68,15 @@ jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jobject this,
  * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
  * Output: Julian date as a double
  */
-jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jstring eph,
+jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jbyteArray eph,
                                                       jdouble d_ut, jint p, jdoubleArray loc,
                                                       jdouble atpress, jdouble attemp) {
 
     char serr[256];
     double g[3], riseT;
     int i;
-    const char *ephString = (*env)->GetStringUTFChars(env, eph, 0);
+    jboolean isCopy;
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
@@ -89,7 +90,9 @@ jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this,
         return -1.0;
     }
     swe_close();
-    (*env)->ReleaseStringUTFChars(env, eph, ephString);
+    if (isCopy) {
+        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+    }
 
     return riseT;
 }
@@ -103,14 +106,15 @@ jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this,
  * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
  * Output: Julian date as a double
  */
-jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jstring eph,
+jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jbyteArray eph,
                                                      jdouble d_ut, jint p, jdoubleArray loc,
                                                      jdouble atpress, jdouble attemp) {
 
     char serr[256];
     double g[3], setT;
     int i;
-    const char *ephString = (*env)->GetStringUTFChars(env, eph, 0);
+    jboolean isCopy;
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
@@ -124,7 +128,9 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
         return -1.0;
     }
     swe_close();
-    (*env)->ReleaseStringUTFChars(env, eph, ephString);
+    if (isCopy) {
+        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+    }
 
     return setT;
 }
@@ -143,7 +149,8 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
  * Output: Double array containing RA, Dec, distance, azimuth, altitude,
  * 		magnitude, set time, and rise time of planet.
  */
-jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this, jstring eph,
+jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this,
+                                                             jbyteArray eph,
                                                              jdouble d_et, jdouble d_ut, jint p,
                                                              jdoubleArray loc, jdouble atpress,
                                                              jdouble attemp) {
@@ -151,8 +158,9 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
     char serr[256];
     double x2[3], az[3], g[3], attr[20], setT, riseT;
     int i, iflag = SEFLG_SWIEPH | SEFLG_EQUATORIAL | SEFLG_TOPOCTR;
-
+    jboolean isCopy;
     jdoubleArray result;
+
     result = (*env)->NewDoubleArray(env, 8);
     if (result == NULL) {
         __android_log_print(ANDROID_LOG_ERROR, "planetPosData",
@@ -162,7 +170,7 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    const char *ephString = (*env)->GetStringUTFChars(env, eph, 0);
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
     swe_set_ephe_path(ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
@@ -193,7 +201,9 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
         (*env)->SetDoubleArrayRegion(env, result, 3, 2, az);
         (*env)->SetDoubleArrayRegion(env, result, 5, 1, &attr[4]);
 
-        (*env)->ReleaseStringUTFChars(env, eph, ephString);
+        if (isCopy) {
+            (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        }
 
         return result;
     }

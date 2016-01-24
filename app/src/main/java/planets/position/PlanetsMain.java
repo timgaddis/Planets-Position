@@ -1,6 +1,7 @@
 package planets.position;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -27,6 +28,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.Calendar;
 
+import planets.position.database.LocationTable;
+import planets.position.database.PlanetsDatabase;
 import planets.position.location.LocationDialog;
 import planets.position.location.LocationLib;
 import planets.position.location.UserLocation;
@@ -45,6 +48,7 @@ public class PlanetsMain extends AppCompatActivity
     private PermissionLib permissionLib;
     private LocationLib locationLib;
     private FileCopyTask copyTask;
+    private PlanetsDatabase planetsDB;
     private int ioffset = -1;
     private double latitude, longitude, elevation, offset;
     private FragmentManager fm;
@@ -64,6 +68,7 @@ public class PlanetsMain extends AppCompatActivity
         mLayout = findViewById(R.id.content_frame);
         permissionLib = new PermissionLib(this);
         locationLib = new LocationLib(this, this, null, 100);
+        planetsDB = new PlanetsDatabase(this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -197,7 +202,16 @@ public class PlanetsMain extends AppCompatActivity
             offset = settings.getFloat("offset", 0);
             ioffset = settings.getInt("ioffset", 15);
         } else {
-            latitude = -100.0;
+            // Read location from database
+            planetsDB.open();
+            Bundle loc = planetsDB.getLocation();
+            planetsDB.close();
+
+            latitude = loc.getDouble("latitude");
+            longitude = loc.getDouble("longitude");
+            elevation = loc.getDouble("elevation");
+            offset = loc.getDouble("offset");
+            ioffset = loc.getInt("ioffset");
         }
     }
 
@@ -214,25 +228,25 @@ public class PlanetsMain extends AppCompatActivity
         editor.putFloat("offset", (float) offset);
         editor.putInt("ioffset", ioffset);
         editor.putLong("locDate", date);
-//        boolean out = editor.commit();
-        Log.d(TAG, "saveLocation");
-        return editor.commit();
+        boolean out = editor.commit();
 
         // save to database
-//        ContentValues values = new ContentValues();
-//        values.put(LocationTable.COLUMN_LATITUDE, latitude);
-//        values.put(LocationTable.COLUMN_LONGITUDE, longitude);
-//        values.put(LocationTable.COLUMN_TEMP, 0.0);
-//        values.put(LocationTable.COLUMN_PRESSURE, 0.0);
-//        values.put(LocationTable.COLUMN_ELEVATION, elevation);
-//        values.put(LocationTable.COLUMN_DATE, date);
-//        values.put(LocationTable.COLUMN_OFFSET, offset);
-//        values.put(LocationTable.COLUMN_IOFFSET, ioffset);
-//
-//        int rows = cr.update(Uri.withAppendedPath(
-//                        PlanetsContentProvider.LOCATION_URI, String.valueOf(0)),
-//                values, null, null);
-//        return rows == 1 && out;
+        ContentValues values = new ContentValues();
+        values.put(LocationTable.COLUMN_NAME, "Home");
+        values.put(LocationTable.COLUMN_LATITUDE, latitude);
+        values.put(LocationTable.COLUMN_LONGITUDE, longitude);
+        values.put(LocationTable.COLUMN_TEMP, 0.0);
+        values.put(LocationTable.COLUMN_PRESSURE, 0.0);
+        values.put(LocationTable.COLUMN_ELEVATION, elevation);
+        values.put(LocationTable.COLUMN_DATE, date);
+        values.put(LocationTable.COLUMN_OFFSET, offset);
+        values.put(LocationTable.COLUMN_IOFFSET, ioffset);
+
+        planetsDB.open();
+        long row = planetsDB.addLocation(values);
+        planetsDB.close();
+
+        return row > -1 && out;
     }
 
     public void navigate(int position, boolean edit, boolean back) {

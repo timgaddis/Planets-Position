@@ -28,11 +28,9 @@ public class WhatsUpTask extends DialogFragment {
     private List<String> planetNames;
     private double offset;
     private double[] g;
-    //    private String eph;
     private JDUTC jdUTC;
     private RiseSet riseSet;
     private SharedPreferences settings;
-    //    private PlanetsDatabase planetsDB;
     private ProgressBar pb;
     private TextView tv;
 
@@ -77,7 +75,6 @@ public class WhatsUpTask extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(false);
         String eph = settings.getString("ephPath", "");
         riseSet = new RiseSet(eph);
-//        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         riseSet.setLocation(g);
         return v;
     }
@@ -112,13 +109,6 @@ public class WhatsUpTask extends DialogFragment {
         if (isResumed())
             dismiss();
         mTask = null;
-//        Log.d(PlanetsMain.TAG, "vList size " + vList.size());
-//        planetsDB.open();
-//        for (ContentValues cv : vList) {
-//            Log.d(PlanetsMain.TAG, "save planet:" + cv.getAsString(PlanetsTable.COLUMN_NAME));
-//            planetsDB.addPlanet(cv);
-//        }
-//        planetsDB.close();
         if (getTargetFragment() != null)
             getTargetFragment().onActivityResult(0, Activity.RESULT_OK, null);
     }
@@ -128,7 +118,6 @@ public class WhatsUpTask extends DialogFragment {
         WhatsUpTask mFragment;
         double[] data = null, time;
         double t;
-        //        ArrayList<ContentValues> valuesList;
         PlanetsDatabase planetsDB;
         private ContentValues values;
 
@@ -141,7 +130,6 @@ public class WhatsUpTask extends DialogFragment {
             values = new ContentValues();
             time = jdUTC.getCurrentTime(offset);
             planetsDB = new PlanetsDatabase(mFragment.getActivity().getApplicationContext());
-//            valuesList = new ArrayList<>();
         }
 
         protected void onProgressUpdate(Integer... values) {
@@ -183,11 +171,7 @@ public class WhatsUpTask extends DialogFragment {
                 values.put(PlanetsTable.COLUMN_MAGNITUDE, data[5]);
                 values.put(PlanetsTable.COLUMN_SET_TIME, jdUTC.jdmills(t, offset));
 
-                int x = planetsDB.addPlanet(values, i);
-                Log.d(PlanetsMain.TAG, "save planet:" + values.getAsString(PlanetsTable.COLUMN_NAME));
-                Log.d(PlanetsMain.TAG, "save planet:" + x);
-//                valuesList.add(values);
-//                Log.d(PlanetsMain.TAG, "valuesList size " + valuesList.size());
+                planetsDB.addPlanet(values, i);
             }
             planetsDB.close();
             return null;

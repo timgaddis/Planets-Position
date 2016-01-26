@@ -108,7 +108,9 @@ public class WhatsUpData extends Fragment {
         pDate.setText(mDateFormat.format(c.getTime()));
         pTime.setText(mTimeFormat.format(c.getTime()));
 
+        planetsDB.open();
         b = planetsDB.getPlanet(planetNum);
+        planetsDB.close();
 
         pNameText.setText(b.getString("name"));
         pRAText.setText(pf.formatRA(b.getDouble("ra")));

@@ -37,8 +37,8 @@ public class PlanetsDatabase {
     }
 
     public int addLocation(ContentValues values) {
-//        return database.insert(LocationTable.TABLE_LOCATION, null, values);
-        return database.update(LocationTable.TABLE_LOCATION, values, "0", null);
+        return database.update(LocationTable.TABLE_LOCATION, values,
+                LocationTable.COLUMN_ID + " = 0", null);
     }
 
     public Bundle getLocation() {
@@ -86,7 +86,7 @@ public class PlanetsDatabase {
     }
 
     public int addPlanet(ContentValues values, int row) {
-//        return database.insert(PlanetsTable.TABLE_PLANET, null, values);
-        return database.update(PlanetsTable.TABLE_PLANET, values, String.valueOf(row), null);
+        return database.update(PlanetsTable.TABLE_PLANET, values, PlanetsTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
     }
 }

@@ -121,7 +121,7 @@ public class WhatsUpData extends Fragment {
             pDistText.setText(String.format("%.4f AU", b.getDouble("distance")));
         else
             pDistText.setText(String.format("%.2f AU", b.getDouble("distance")));
-        pMagText.setText(String.format("%.2f AU", b.getDouble("mag")));
+        pMagText.setText(String.format("%.2f", b.getDouble("mag")));
         pSetText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));
     }
 }

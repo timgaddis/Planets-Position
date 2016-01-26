@@ -68,7 +68,8 @@ public class PlanetsDatabase {
 
         Bundle out = new Bundle();
         Cursor c = database.query(PlanetsTable.TABLE_PLANET, planetDataColumns,
-                String.valueOf(planet), null, null, null, null);
+                PlanetsTable.COLUMN_ID + " = ?", new String[]{String.valueOf(planet)},
+                null, null, null);
         c.moveToFirst();
 
         out.putString("name", c.getString(c.getColumnIndex(PlanetsTable.COLUMN_NAME)));

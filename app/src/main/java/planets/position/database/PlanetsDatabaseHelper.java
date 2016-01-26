@@ -19,7 +19,7 @@ public class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         LocationTable.onCreate(database);
-//        PlanetsTable.onCreate(database);
+        PlanetsTable.onCreate(database);
 //        SolarEclipseTable.onCreate(database);
 //        LunarEclipseTable.onCreate(database);
 //        LunarOccultationTable.onCreate(database);
@@ -31,7 +31,7 @@ public class PlanetsDatabaseHelper extends SQLiteOpenHelper {
         // clear existing preferences
         mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().commit();
         LocationTable.onUpgrade(database, oldVersion, newVersion);
-//        PlanetsTable.onUpgrade(database, oldVersion, newVersion);
+        PlanetsTable.onUpgrade(database, oldVersion, newVersion);
 //        SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);
 //        LunarEclipseTable.onUpgrade(database, oldVersion, newVersion);
 //        LunarOccultationTable.onUpgrade(database, oldVersion, newVersion);

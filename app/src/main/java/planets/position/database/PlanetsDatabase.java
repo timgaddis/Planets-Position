@@ -15,6 +15,14 @@ public class PlanetsDatabase {
             LocationTable.COLUMN_LATITUDE, LocationTable.COLUMN_LONGITUDE,
             LocationTable.COLUMN_ELEVATION, LocationTable.COLUMN_OFFSET,
             LocationTable.COLUMN_IOFFSET};
+    private String[] whatsUpColumns = {PlanetsTable.COLUMN_ID,
+            PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_AZ,
+            PlanetsTable.COLUMN_ALT};
+    private String[] planetDataColumns = {PlanetsTable.COLUMN_ID,
+            PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_RA,
+            PlanetsTable.COLUMN_DEC, PlanetsTable.COLUMN_AZ,
+            PlanetsTable.COLUMN_ALT, PlanetsTable.COLUMN_DISTANCE,
+            PlanetsTable.COLUMN_MAGNITUDE, PlanetsTable.COLUMN_SET_TIME};
 
     public PlanetsDatabase(Context context) {
         dbHelper = new PlanetsDatabaseHelper(context);
@@ -28,8 +36,9 @@ public class PlanetsDatabase {
         database.close();
     }
 
-    public long addLocation(ContentValues values) {
-        return database.insert(LocationTable.TABLE_LOCATION, null, values);
+    public int addLocation(ContentValues values) {
+//        return database.insert(LocationTable.TABLE_LOCATION, null, values);
+        return database.update(LocationTable.TABLE_LOCATION, values, "0", null);
     }
 
     public Bundle getLocation() {
@@ -48,5 +57,36 @@ public class PlanetsDatabase {
         c.close();
 
         return out;
+    }
+
+    public Cursor getPlanets() {
+        return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, "alt > 0.0",
+                null, null, null, null);
+    }
+
+    public Bundle getPlanet(long planet) {
+
+        Bundle out = new Bundle();
+        Cursor c = database.query(PlanetsTable.TABLE_PLANET, planetDataColumns,
+                String.valueOf(planet), null, null, null, null);
+        c.moveToFirst();
+
+        out.putString("name", c.getString(c.getColumnIndex(PlanetsTable.COLUMN_NAME)));
+        out.putDouble("ra", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_RA)));
+        out.putDouble("dec", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_DEC)));
+        out.putDouble("az", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_AZ)));
+        out.putDouble("alt", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_ALT)));
+        out.putDouble("distance", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_DISTANCE)));
+        out.putDouble("mag", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_MAGNITUDE)));
+        out.putLong("setTime", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_SET_TIME)));
+
+        c.close();
+
+        return out;
+    }
+
+    public int addPlanet(ContentValues values, int row) {
+//        return database.insert(PlanetsTable.TABLE_PLANET, null, values);
+        return database.update(PlanetsTable.TABLE_PLANET, values, String.valueOf(row), null);
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="88dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp" >
+
+    <ImageView
+        android:id="@+id/rowImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/wup_desc"
+        android:paddingEnd="32dp"
+        android:paddingRight="32dp" />
+
+    <TextView
+        android:id="@+id/rowName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rowImage"
+        android:textColor="@color/text_color"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/azRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rowName"
+        android:layout_alignStart="@+id/rowName"
+        android:layout_below="@+id/rowName" >
+
+        <TextView
+            android:id="@+id/rowAZtext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:text="@string/data_az"
+            android:textColor="@color/alt_text_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/rowAZ"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textColor="@color/alt_text_color"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/altRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/rowName"
+        android:layout_alignStart="@+id/rowName"
+        android:layout_below="@+id/azRow" >
+
+        <TextView
+            android:id="@+id/rowALTtext"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:text="@string/data_alt"
+            android:textColor="@color/alt_text_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/rowALT"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textColor="@color/alt_text_color"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</RelativeLayout>

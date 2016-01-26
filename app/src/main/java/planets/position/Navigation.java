@@ -74,7 +74,7 @@ public class Navigation extends Fragment {
         whatsupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ((PlanetsMain) getActivity()).navigate(6, false, true);
+                ((PlanetsMain) getActivity()).navigate(6, false, true);
             }
         });
 

@@ -1,0 +1,204 @@
+package planets.position;
+
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.util.Arrays;
+import java.util.List;
+
+import planets.position.database.PlanetsDatabase;
+import planets.position.database.PlanetsTable;
+import planets.position.util.JDUTC;
+import planets.position.util.RiseSet;
+
+public class WhatsUpTask extends DialogFragment {
+
+    private ComputePlanetsTask mTask;
+    private List<String> planetNames;
+    private double offset;
+    private double[] g;
+    //    private String eph;
+    private JDUTC jdUTC;
+    private RiseSet riseSet;
+    private SharedPreferences settings;
+    //    private PlanetsDatabase planetsDB;
+    private ProgressBar pb;
+    private TextView tv;
+
+    // load c library
+    static {
+        System.loadLibrary("planets_swiss");
+    }
+
+    // c function prototypes
+    @SuppressWarnings("JniMissingFunction")
+    public native double[] planetUpData(byte[] eph, double d1, double d2, int p,
+                                        double[] loc, double press, double temp);
+
+    public void setData(ComputePlanetsTask task, double[] loc, double off) {
+        mTask = task;
+        offset = off;
+        g = loc;
+        mTask.setFragment(this);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        jdUTC = new JDUTC();
+        planetNames = Arrays.asList(getResources().getStringArray(
+                R.array.planets_array));
+        settings = getActivity()
+                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        setRetainInstance(true);
+        if (mTask != null)
+            mTask.execute();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.progress_dialog_hor, container,
+                false);
+        tv = (TextView) v.findViewById(R.id.progress_text);
+        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+        pb.setMax(10);
+        getDialog().setCanceledOnTouchOutside(false);
+        String eph = settings.getString("ephPath", "");
+        riseSet = new RiseSet(eph);
+//        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        riseSet.setLocation(g);
+        return v;
+    }
+
+    /**
+     * workaround for issue #17423
+     * https://code.google.com/p/android/issues/detail?id=17423
+     */
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance())
+            getDialog().setOnDismissListener(null);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mTask != null) {
+            mTask.cancel(false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mTask == null)
+            dismiss();
+    }
+
+    public void taskFinished() {
+        if (isResumed())
+            dismiss();
+        mTask = null;
+//        Log.d(PlanetsMain.TAG, "vList size " + vList.size());
+//        planetsDB.open();
+//        for (ContentValues cv : vList) {
+//            Log.d(PlanetsMain.TAG, "save planet:" + cv.getAsString(PlanetsTable.COLUMN_NAME));
+//            planetsDB.addPlanet(cv);
+//        }
+//        planetsDB.close();
+        if (getTargetFragment() != null)
+            getTargetFragment().onActivityResult(0, Activity.RESULT_OK, null);
+    }
+
+    public class ComputePlanetsTask extends AsyncTask<Void, Integer, Void> {
+
+        WhatsUpTask mFragment;
+        double[] data = null, time;
+        double t;
+        //        ArrayList<ContentValues> valuesList;
+        PlanetsDatabase planetsDB;
+        private ContentValues values;
+
+        void setFragment(WhatsUpTask fragment) {
+            mFragment = fragment;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            values = new ContentValues();
+            time = jdUTC.getCurrentTime(offset);
+            planetsDB = new PlanetsDatabase(mFragment.getActivity().getApplicationContext());
+//            valuesList = new ArrayList<>();
+        }
+
+        protected void onProgressUpdate(Integer... values) {
+            pb.setProgress(values[0]);
+            tv.setText(String.format("Calculating %s", planetNames.get(values[1])));
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            planetsDB.open();
+            for (int i = 0; i < 10; i++) {
+                if (this.isCancelled()) {
+                    getTargetFragment().onActivityResult(0,
+                            Activity.RESULT_CANCELED, null);
+                    break;
+                }
+                values.clear();
+                publishProgress(i + 1, i);
+                data = planetUpData(settings.getString("ephPath", "").getBytes(),
+                        time[0], time[1], i, g, 0.0, 0.0);
+                if (data == null) {
+                    Log.e("Position error",
+                            "WhatsUpTask - ComputePlanetsTask error");
+                    getTargetFragment().onActivityResult(0, 100, null);
+                    break;
+                }
+                t = riseSet.getSet(time[1], i);
+                if (t < 0) {
+                    Log.e("Position error", "ComputePlanetsTask set error");
+                    break;
+                }
+
+                values.put(PlanetsTable.COLUMN_NAME, planetNames.get(i));
+                values.put(PlanetsTable.COLUMN_RA, data[0]);
+                values.put(PlanetsTable.COLUMN_DEC, data[1]);
+                values.put(PlanetsTable.COLUMN_AZ, data[3]);
+                values.put(PlanetsTable.COLUMN_ALT, data[4]);
+                values.put(PlanetsTable.COLUMN_DISTANCE, data[2]);
+                values.put(PlanetsTable.COLUMN_MAGNITUDE, data[5]);
+                values.put(PlanetsTable.COLUMN_SET_TIME, jdUTC.jdmills(t, offset));
+
+                int x = planetsDB.addPlanet(values, i);
+                Log.d(PlanetsMain.TAG, "save planet:" + values.getAsString(PlanetsTable.COLUMN_NAME));
+                Log.d(PlanetsMain.TAG, "save planet:" + x);
+//                valuesList.add(values);
+//                Log.d(PlanetsMain.TAG, "valuesList size " + valuesList.size());
+            }
+            planetsDB.close();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (mFragment == null)
+                return;
+            mFragment.taskFinished();
+        }
+    }
+
+}

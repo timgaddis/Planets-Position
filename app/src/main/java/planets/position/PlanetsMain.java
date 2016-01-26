@@ -158,9 +158,9 @@ public class PlanetsMain extends AppCompatActivity
         } else if (id == R.id.nav_lunar_occ) {
 
         } else if (id == R.id.nav_sky_pos) {
-
+            selectItem(5, false, true);
         } else if (id == R.id.nav_whats_up) {
-
+            selectItem(6, false, true);
         } else if (id == R.id.nav_location) {
             selectItem(7, false, true);
         } else if (id == R.id.nav_settings) {
@@ -295,15 +295,14 @@ public class PlanetsMain extends AppCompatActivity
                     ft.addToBackStack(null);
                 ft.commit();
                 break;
-//            case 6:
-//                if (longitude == 0)
-//                    loadLocation();
-//                title = "What's Up Now";
-//                ft.replace(R.id.content_frame, new WhatsUpNow());
-//                if (back)
-//                    ft.addToBackStack(null);
-//                ft.commit();
-//                break;
+            case 6: // What's Up Now
+                if (longitude == 0)
+                    loadLocation();
+                ft.replace(R.id.content_frame, new WhatsUpNow());
+                if (back)
+                    ft.addToBackStack(null);
+                ft.commit();
+                break;
             case 7: // User Location
                 UserLocation userLoc = new UserLocation();
                 args.putBoolean("edit", edit);

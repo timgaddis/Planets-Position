@@ -33,6 +33,7 @@ import planets.position.database.PlanetsDatabase;
 import planets.position.location.LocationDialog;
 import planets.position.location.LocationLib;
 import planets.position.location.UserLocation;
+import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationLib.LocationCallback,
@@ -264,15 +265,14 @@ public class PlanetsMain extends AppCompatActivity
                     ft.addToBackStack(null);
                 ft.commit();
                 break;
-//            case 1:
-//                if (longitude == 0)
-//                    loadLocation();
-//                title = "Solar Eclipse";
-//                ft.replace(R.id.content_frame, new SolarEclipse());
-//                if (back)
-//                    ft.addToBackStack(null);
-//                ft.commit();
-//                break;
+            case 1: // Solar Eclipse
+                if (longitude == 0)
+                    loadLocation();
+                ft.replace(R.id.content_frame, new SolarEclipse());
+                if (back)
+                    ft.addToBackStack(null);
+                ft.commit();
+                break;
 //            case 3:
 //                title = "Lunar Eclipse";
 //                ft.replace(R.id.content_frame, new LunarEclipse());

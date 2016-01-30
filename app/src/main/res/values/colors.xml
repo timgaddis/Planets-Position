@@ -9,4 +9,6 @@
     <color name="alt_text_color">#B3FFFFFF</color>
     <color name="alert_color">#FFFF0000</color>
     <color name="divider_color">#1FFFFFFF</color>
+    <color name="map_overlay">#6000</color>
+    <color name="planet_set_color">#4DFFFFFF</color>
 </resources>

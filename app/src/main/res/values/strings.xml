@@ -51,6 +51,35 @@
     <string name="data_set">Set Time</string>
     <string name="data_rise">Rise Time</string>
     <string name="below_hor">Object below horizon</string>
+    <!-- Solar/Lunar Eclipse -->
+    <string name="ecl_date">Date</string>
+    <string name="ecl_type">Type</string>
+    <string name="ecl_local">Local</string>
+    <string name="ecl_sunrise">Sunrise</string>
+    <string name="ecl_sunset">Sunset</string>
+    <string name="ecl_moonrise">Moon Rise</string>
+    <string name="ecl_moonset">Moon Set</string>
+    <string name="ecl_times">Eclipse Times</string>
+    <string name="ecl_data">Eclipse Data</string>
+    <string name="ecl_se_start">Eclipse Start</string>
+    <string name="ecl_se_tstart">Totality Start</string>
+    <string name="ecl_se_max">Max Eclipse</string>
+    <string name="ecl_se_tend">Totality End</string>
+    <string name="ecl_se_end">Eclipse End</string>
+    <string name="ecl_se_sun">Sun Position At Max Eclipse</string>
+    <string name="ecl_local_type">Local Type:</string>
+    <string name="ecl_se_cover">Sun Coverage</string>
+    <string name="ecl_se_saros">Saros Number</string>
+    <string name="ecl_se_sarosm">Saros Member #</string>
+    <string name="ecl_no">Eclipse not visible locally</string>
+    <string name="ecl_le_pstart">Partial Start</string>
+    <string name="ecl_le_pend">Partial End</string>
+    <string name="ecl_le_moon">Moon Position At Max Eclipse</string>
+    <string name="ecl_le_pmag">Penumbral\nMagnitude</string>
+    <string name="ecl_le_umag">Umbral\nMagnitude</string>
+    <string name="local_desc">Eclipse Local</string>
+    <string name="type_desc">Eclipse Type</string>
+    <string name="eclipse_dialog">Calculating eclipses,\nplease wait…</string>
     <!-- Other strings -->
     <string name="alert_string">There is no location data saved.
         You can either download the data using GPS or manually enter the data.</string>

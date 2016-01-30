@@ -8,7 +8,7 @@ import planets.position.PlanetsMain;
 
 public class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 200;
+    private static final int DATABASE_VERSION = 201;
     private Context mContext;
 
     public PlanetsDatabaseHelper(Context context) {
@@ -20,7 +20,7 @@ public class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         LocationTable.onCreate(database);
         PlanetsTable.onCreate(database);
-//        SolarEclipseTable.onCreate(database);
+        SolarEclipseTable.onCreate(database);
 //        LunarEclipseTable.onCreate(database);
 //        LunarOccultationTable.onCreate(database);
     }
@@ -32,7 +32,7 @@ public class PlanetsDatabaseHelper extends SQLiteOpenHelper {
         mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().commit();
         LocationTable.onUpgrade(database, oldVersion, newVersion);
         PlanetsTable.onUpgrade(database, oldVersion, newVersion);
-//        SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);
+        SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);
 //        LunarEclipseTable.onUpgrade(database, oldVersion, newVersion);
 //        LunarOccultationTable.onUpgrade(database, oldVersion, newVersion);
     }

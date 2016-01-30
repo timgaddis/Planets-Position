@@ -73,8 +73,7 @@ public class WhatsUpTask extends DialogFragment {
         pb = (ProgressBar) v.findViewById(R.id.progressBar);
         pb.setMax(10);
         getDialog().setCanceledOnTouchOutside(false);
-        String eph = settings.getString("ephPath", "");
-        riseSet = new RiseSet(eph);
+        riseSet = new RiseSet(settings.getString("ephPath", ""));
         riseSet.setLocation(g);
         return v;
     }

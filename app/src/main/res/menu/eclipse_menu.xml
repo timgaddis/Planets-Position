@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:planets="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_previous"
+        android:icon="@drawable/ic_action_prev"
+        android:orderInCategory="100"
+        android:title="@string/action_previous"
+        planets:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_calendar"
+        android:icon="@drawable/ic_action_calendar"
+        android:orderInCategory="101"
+        android:title="@string/action_date"
+        planets:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_next"
+        android:icon="@drawable/ic_action_next"
+        android:orderInCategory="102"
+        android:title="@string/action_next"
+        planets:showAsAction="ifRoom|withText" />
+
+</menu>

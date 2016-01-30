@@ -33,6 +33,10 @@ public class RiseSet {
         g[2] = ele;
     }
 
+    public void setEphPath(String ephPath) {
+        this.ephPath = ephPath;
+    }
+
     public void setLocation(double[] loc) {
         g = loc;
     }

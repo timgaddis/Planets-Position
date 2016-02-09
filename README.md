@@ -17,9 +17,9 @@ This project requires a [Google Maps key](https://developers.google.com/maps/doc
 
 Create a file google_maps_api.xml in one or more of the following locations:
 
-/app/src/release/res/values/google_maps_api.xml
-/app/src/debug/res/values/google_maps_api.xml
-/app/src/beta/res/values/google_maps_api.xml
+ - /app/src/release/res/values/google_maps_api.xml
+ - /app/src/debug/res/values/google_maps_api.xml
+ - /app/src/beta/res/values/google_maps_api.xml
 
 The file should contain the following:
 ```xml

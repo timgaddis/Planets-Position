@@ -26,3 +26,7 @@ proguard/
 # Log Files
 *.log
 
+# Google Map keys
+/app/src/release/res/values/google_maps_api.xml
+/app/src/debug/res/values/google_maps_api.xml
+/app/src/beta/res/values/google_maps_api.xml

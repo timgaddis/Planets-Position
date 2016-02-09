@@ -11,6 +11,25 @@ eclipses, and lunar occultations in the sky.
 
 The Android NDK is required to build this project.  Download it [here](http://developer.android.com/tools/sdk/ndk/index.html).
 
+## Google Maps
+
+This project requires a [Google Maps key](https://developers.google.com/maps/documentation/android/start).
+
+Create a file google_maps_api.xml in one or more of the following locations:
+
+/app/src/release/res/values/google_maps_api.xml
+/app/src/debug/res/values/google_maps_api.xml
+/app/src/beta/res/values/google_maps_api.xml
+
+The file should contain the following:
+```xml
+<resources>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        [YOUR KEY HERE]
+    </string>
+</resources>
+```
+
 ## License
 
 Copyright (C) 2016 Tim Gaddis

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="planets.position">
 
-    <!-- Dangerous permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -30,6 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".solar.SolarEclipseMap"
+            android:label="@string/title_activity_solar_eclipse_map"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

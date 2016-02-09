@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +38,7 @@ public class SolarEclipseData extends Fragment {
     private long solarNum = 0, eclDate, eclStart, eclEnd;
     private double offset, latitude, longitude, centerBegin, centerEnd, cover,
             mag;
-    private static DateFormat mDateFormat, mTimeFormat;
+    private DateFormat mDateFormat, mTimeFormat;
     private PositionFormat pf;
     private PlanetsDatabase planetsDB;
     private FragmentListener mCallbacks;
@@ -170,8 +169,6 @@ public class SolarEclipseData extends Fragment {
                 startActivity(intent);
                 return true;
             case R.id.action_map:
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                SolarEclipseMap solarMap = new SolarEclipseMap();
                 Bundle args = new Bundle();
                 args.putDouble("latitude", latitude);
                 args.putDouble("longitude", longitude);
@@ -179,10 +176,9 @@ public class SolarEclipseData extends Fragment {
                 args.putDouble("end", centerEnd);
                 args.putLong("date", eclDate);
                 args.putString("type", eclType);
-                solarMap.setArguments(args);
-                ft.replace(R.id.content_frame, solarMap, "eclipseMap");
-                ft.addToBackStack(null);
-                ft.commit();
+                Intent i = new Intent(getActivity().getApplicationContext(), SolarEclipseMap.class);
+                i.putExtras(args);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

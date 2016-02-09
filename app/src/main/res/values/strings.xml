@@ -91,4 +91,5 @@
     <string name="permision_not_storage">Storage Permission has not been granted</string>
     <string name="copy_dialog">Copying files.\nPlease wait…</string>
     <string name="wup_desc">Planet Symbol</string>
+    <string name="title_activity_solar_eclipse_map">Solar Eclipse Map</string>
 </resources>

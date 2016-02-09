@@ -29,7 +29,6 @@ public class WhatsUpTask extends DialogFragment {
     private double offset;
     private double[] g;
     private JDUTC jdUTC;
-    private RiseSet riseSet;
     private SharedPreferences settings;
     private ProgressBar pb;
     private TextView tv;
@@ -73,8 +72,6 @@ public class WhatsUpTask extends DialogFragment {
         pb = (ProgressBar) v.findViewById(R.id.progressBar);
         pb.setMax(10);
         getDialog().setCanceledOnTouchOutside(false);
-        riseSet = new RiseSet(settings.getString("ephPath", ""));
-        riseSet.setLocation(g);
         return v;
     }
 
@@ -118,6 +115,7 @@ public class WhatsUpTask extends DialogFragment {
         double[] data = null, time;
         double t;
         PlanetsDatabase planetsDB;
+        private RiseSet riseSet;
         private ContentValues values;
 
         void setFragment(WhatsUpTask fragment) {
@@ -129,6 +127,8 @@ public class WhatsUpTask extends DialogFragment {
             values = new ContentValues();
             time = jdUTC.getCurrentTime(offset);
             planetsDB = new PlanetsDatabase(mFragment.getActivity().getApplicationContext());
+            riseSet = new RiseSet(settings.getString("ephPath", ""));
+            riseSet.setLocation(g);
         }
 
         protected void onProgressUpdate(Integer... values) {

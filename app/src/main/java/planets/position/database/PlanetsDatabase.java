@@ -50,6 +50,30 @@ public class PlanetsDatabase {
             SolarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
             SolarEclipseTable.COLUMN_ECLIPSE_DATE,
             SolarEclipseTable.COLUMN_ECLIPSE_TYPE};
+    private String[] lunarEclipseColumns = {LunarEclipseTable.COLUMN_ID,
+            LunarEclipseTable.COLUMN_GLOBAL_TYPE,
+            LunarEclipseTable.COLUMN_ECLIPSE_DATE,
+            LunarEclipseTable.COLUMN_ECLIPSE_TYPE,
+            LunarEclipseTable.COLUMN_LOCAL};
+    private String[] lunarDataColumns = {LunarEclipseTable.COLUMN_ID,
+            LunarEclipseTable.COLUMN_LOCAL,
+            LunarEclipseTable.COLUMN_MAX_ECLIPSE,
+            LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN,
+            LunarEclipseTable.COLUMN_PENUMBRAL_END,
+            LunarEclipseTable.COLUMN_TOTAL_BEGIN,
+            LunarEclipseTable.COLUMN_TOTAL_END,
+            LunarEclipseTable.COLUMN_PARTIAL_BEGIN,
+            LunarEclipseTable.COLUMN_PARTIAL_END,
+            LunarEclipseTable.COLUMN_MOONRISE,
+            LunarEclipseTable.COLUMN_MOONSET,
+            LunarEclipseTable.COLUMN_MOON_AZ,
+            LunarEclipseTable.COLUMN_MOON_ALT,
+            LunarEclipseTable.COLUMN_UMBRAL_MAG,
+            LunarEclipseTable.COLUMN_PENUMBRAL_MAG,
+            LunarEclipseTable.COLUMN_SAROS_NUM,
+            LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
+            LunarEclipseTable.COLUMN_ECLIPSE_DATE,
+            LunarEclipseTable.COLUMN_ECLIPSE_TYPE};
 
     public PlanetsDatabase(Context context) {
         dbHelper = new PlanetsDatabaseHelper(context);
@@ -163,5 +187,46 @@ public class PlanetsDatabase {
     public int addSolarEclipse(ContentValues values, int row) {
         return database.update(SolarEclipseTable.TABLE_SOLAR_ECLIPSE, values, SolarEclipseTable.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(row)});
+    }
+
+    public Cursor getLunarEclipseList() {
+        return database.query(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, lunarEclipseColumns, null,
+                null, null, null, LunarEclipseTable.COLUMN_MAX_ECLIPSE);
+    }
+
+    public int addLunarEclipse(ContentValues values, int row) {
+        return database.update(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, values, LunarEclipseTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
+    }
+
+    public Bundle getLunarEclipse(long lunar) {
+
+        Bundle out = new Bundle();
+        Cursor c = database.query(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, lunarDataColumns,
+                LunarEclipseTable.COLUMN_ID + " = ?", new String[]{String.valueOf(lunar)},
+                null, null, null);
+        c.moveToFirst();
+
+        out.putLong(LunarEclipseTable.COLUMN_ECLIPSE_DATE, c.getLong(c.getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_DATE)));
+        out.putString(LunarEclipseTable.COLUMN_ECLIPSE_TYPE, c.getString(c.getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_TYPE)));
+        out.putInt(LunarEclipseTable.COLUMN_LOCAL, c.getInt(c.getColumnIndex(LunarEclipseTable.COLUMN_LOCAL)));
+        out.putDouble(LunarEclipseTable.COLUMN_MAX_ECLIPSE, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_MAX_ECLIPSE)));
+        out.putDouble(LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN)));
+        out.putDouble(LunarEclipseTable.COLUMN_PENUMBRAL_END, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_PENUMBRAL_END)));
+        out.putDouble(LunarEclipseTable.COLUMN_PARTIAL_BEGIN, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_PARTIAL_BEGIN)));
+        out.putDouble(LunarEclipseTable.COLUMN_PARTIAL_END, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_PARTIAL_END)));
+        out.putDouble(LunarEclipseTable.COLUMN_TOTAL_BEGIN, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_TOTAL_BEGIN)));
+        out.putDouble(LunarEclipseTable.COLUMN_TOTAL_END, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_TOTAL_END)));
+        out.putDouble(LunarEclipseTable.COLUMN_MOONRISE, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_MOONRISE)));
+        out.putDouble(LunarEclipseTable.COLUMN_MOONSET, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_MOONSET)));
+        out.putDouble(LunarEclipseTable.COLUMN_MOON_AZ, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_MOON_AZ)));
+        out.putDouble(LunarEclipseTable.COLUMN_MOON_ALT, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_MOON_ALT)));
+        out.putDouble(LunarEclipseTable.COLUMN_PENUMBRAL_MAG, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_PENUMBRAL_MAG)));
+        out.putDouble(LunarEclipseTable.COLUMN_UMBRAL_MAG, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_UMBRAL_MAG)));
+        out.putInt(LunarEclipseTable.COLUMN_SAROS_NUM, c.getInt(c.getColumnIndex(LunarEclipseTable.COLUMN_SAROS_NUM)));
+        out.putInt(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM, c.getInt(c.getColumnIndex(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM)));
+
+        c.close();
+        return out;
     }
 }

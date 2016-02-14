@@ -454,3 +454,112 @@ jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
 
     return result;
 }
+
+/*
+ * Calculate the next lunar eclipse globally after a given date.
+ * Swiss Ephemeris functions called:
+ * 		swe_set_ephe_path
+ * 		swe_lun_eclipse_when
+ * 		swe_close
+ * Input: Julian date in ut1, search direction(0=forward|1=back).
+ * Output: Double array containing eclipse type and eclipse event times.
+ */
+jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataGlobal(
+        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint back) {
+
+    char serr[256];
+    double tret[10], rval;
+    int retval;
+    jboolean isCopy;
+    jdoubleArray result;
+
+    result = (*env)->NewDoubleArray(env, 9);
+    if (result == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarDataGlobal",
+                            "JNI ERROR NewDoubleArray: out of memory error");
+        return NULL; /* out of memory error thrown */
+    }
+
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    swe_set_ephe_path(ephString);
+
+    retval = swe_lun_eclipse_when(d_ut, SEFLG_SWIEPH, 0, tret, back, serr);
+    if (retval == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarDataGlobal",
+                            "JNI ERROR swe_lun_eclipse_when: %-256s", serr);
+        swe_close();
+        return NULL;
+    }
+
+    rval = retval * 1.0;
+    swe_close();
+
+    // move from the temp structure to the java structure
+    (*env)->SetDoubleArrayRegion(env, result, 0, 1, &rval);
+    (*env)->SetDoubleArrayRegion(env, result, 1, 8, tret);
+
+    if (isCopy) {
+        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+    }
+
+    return result;
+}
+
+/*
+ * Calculate the next lunar eclipse locally after a given date.
+ * Swiss Ephemeris functions called:
+ * 		swe_set_ephe_path
+ * 		swe_lun_eclipse_when_loc
+ * 		swe_close
+ * Input: Julian date in ut1, location array, search direction(0=forward|1=back).
+ * Output: Double array containing local eclipse type ,local eclipse event times
+ * 			and eclipse attributes
+ */
+jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
+        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jdoubleArray loc, jint back) {
+
+    char serr[256];
+    double g[3], tret[10], attr[20], rval;
+    int retval;
+    jboolean isCopy;
+    jdoubleArray result;
+
+    result = (*env)->NewDoubleArray(env, 22);
+    if (result == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarDataLocal",
+                            "JNI ERROR NewDoubleArray: out of memory error");
+        return NULL; /* out of memory error thrown */
+    }
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    swe_set_ephe_path(ephString);
+
+    retval = swe_lun_eclipse_when_loc(d_ut, SEFLG_SWIEPH, g, tret, attr, back,
+                                      serr);
+    if (retval == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarDataLocal",
+                            "JNI ERROR swe_lun_eclipse_when_loc: %-256s", serr);
+        swe_close();
+        return NULL;
+    }
+    // rotate azimuth of moon 180 degrees
+    attr[4] += 180;
+    if (attr[4] >= 360)
+        attr[4] -= 360;
+
+    rval = retval * 1.0;
+    swe_close();
+
+    // move from the temp structure to the java structure
+    (*env)->SetDoubleArrayRegion(env, result, 0, 1, &rval);
+    (*env)->SetDoubleArrayRegion(env, result, 1, 10, tret);
+    (*env)->SetDoubleArrayRegion(env, result, 11, 11, attr);
+
+    if (isCopy) {
+        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+    }
+
+    return result;
+}

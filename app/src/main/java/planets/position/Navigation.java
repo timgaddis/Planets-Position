@@ -60,7 +60,7 @@ public class Navigation extends Fragment {
         leButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ((PlanetsMain) getActivity()).navigate(3, false, true);
+                ((PlanetsMain) getActivity()).navigate(3, false, true);
             }
         });
 

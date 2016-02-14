@@ -32,6 +32,7 @@ import planets.position.database.PlanetsDatabase;
 import planets.position.location.LocationDialog;
 import planets.position.location.LocationLib;
 import planets.position.location.UserLocation;
+import planets.position.lunar.LunarEclipse;
 import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
@@ -132,7 +133,7 @@ public class PlanetsMain extends AppCompatActivity
         if (id == R.id.nav_solar_ecl) {
             selectItem(1, false, true);
         } else if (id == R.id.nav_lunar_ecl) {
-
+            selectItem(3, false, true);
         } else if (id == R.id.nav_lunar_occ) {
 
         } else if (id == R.id.nav_sky_pos) {
@@ -250,13 +251,12 @@ public class PlanetsMain extends AppCompatActivity
                     ft.addToBackStack(null);
                 ft.commit();
                 break;
-//            case 3:
-//                title = "Lunar Eclipse";
-//                ft.replace(R.id.content_frame, new LunarEclipse());
-//                if (back)
-//                    ft.addToBackStack(null);
-//                ft.commit();
-//                break;
+            case 3: // Lunar Eclipse
+                ft.replace(R.id.content_frame, new LunarEclipse());
+                if (back)
+                    ft.addToBackStack(null);
+                ft.commit();
+                break;
 //            case 4:
 //                title = "Lunar Occultation";
 //                ft.replace(R.id.content_frame, new LunarOccultation());

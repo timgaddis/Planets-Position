@@ -121,9 +121,9 @@ public class SolarEclipseTask extends DialogFragment {
     public class ComputeEclipseTask extends AsyncTask<Double, Integer, Void> {
 
         SolarEclipseTask mFragment;
+        PlanetsDatabase planetsDB;
         private ContentValues values;
         private String eclType;
-        PlanetsDatabase planetsDB;
 
         void setFragment(SolarEclipseTask fragment) {
             mFragment = fragment;

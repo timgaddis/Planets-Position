@@ -175,7 +175,7 @@ public class LunarEclipseData extends Fragment {
         planetColor = ContextCompat.getColor
                 (getActivity().getApplicationContext(), R.color.planet_set_color);
 
-        gc.setTimeInMillis(jdUTC.jdmills(b.getLong(LunarEclipseTable.COLUMN_ECLIPSE_DATE)));
+        gc.setTimeInMillis(jdUTC.jdmills(b.getDouble(LunarEclipseTable.COLUMN_ECLIPSE_DATE)));
         leDateText.setText(mDateFormat.format(gc.getTime()));
 
         String type = b.getString(SolarEclipseTable.COLUMN_ECLIPSE_TYPE, "");

@@ -80,6 +80,14 @@
     <string name="local_desc">Eclipse Local</string>
     <string name="type_desc">Eclipse Type</string>
     <string name="eclipse_dialog">Calculating eclipses,\nplease wait…</string>
+    <!-- Lunar Occultation -->
+    <string name="lo_times">Occultation Times</string>
+    <string name="lo_data">Occultation Data</string>
+    <string name="lo_start">Occultation Start</string>
+    <string name="lo_end">Occultation End</string>
+    <string name="lo_max">Max Occultation</string>
+    <string name="lo_moon">Moon Position</string>
+    <string name="lo_no">Occultation not visible locally</string>
     <!-- Other strings -->
     <string name="alert_string">There is no location data saved.
         You can either download the data using GPS or manually enter the data.</string>

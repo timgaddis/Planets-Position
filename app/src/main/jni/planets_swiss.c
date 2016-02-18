@@ -563,3 +563,144 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
 
     return result;
 }
+
+/*
+ * Calculate the next lunar occultation globally after a given date.
+ * Swiss Ephemeris functions called:
+ * 		swe_set_ephe_path
+ * 		swe_lun_occult_when_glob
+ * 		swe_close
+ * Input: Julian date in ut1, planet number, and search direction
+ * 		(0=forward|1=back).
+ * Output: Double array containing occultation type and event times.
+ */
+jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultGlobal(
+        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint p, jint back) {
+
+    char serr[256];
+    double tret[10], rval;
+    int retval, iflag = SEFLG_SWIEPH;
+    iflag |= SE_ECL_ONE_TRY;
+    jboolean isCopy;
+    jdoubleArray result;
+
+    result = (*env)->NewDoubleArray(env, 9);
+    if (result == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarOccultGlobal",
+                            "JNI ERROR NewDoubleArray: out of memory error");
+        return NULL; /* out of memory error thrown */
+    }
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    swe_set_ephe_path(ephString);
+
+    retval = swe_lun_occult_when_glob(d_ut, p, NULL, iflag, 0, tret, back,
+                                      serr);
+    if (retval == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarOccultGlobal",
+                            "JNI ERROR swe_lun_occult_when_glob: %-256s", serr);
+        swe_close();
+        return NULL;
+    }
+
+    rval = retval * 1.0;
+    swe_close();
+
+    // move from the temp structure to the java structure
+    (*env)->SetDoubleArrayRegion(env, result, 0, 1, &rval);
+    (*env)->SetDoubleArrayRegion(env, result, 1, 8, tret);
+
+    if (isCopy) {
+        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+    }
+
+    return result;
+}
+
+/*
+ * Calculate the next lunar occultation locally after a given date.
+ * Swiss Ephemeris functions called:
+ * 		swe_set_ephe_path
+ * 		swe_lun_occult_when_loc
+ * 		swe_calc_ut
+ * 		swe_azalt
+ * 		swe_close
+ * Input: Julian date in ut1, location array, planet number, search
+ * 		direction (0=forward|1=back).
+ * Output: Double array containing local occultation type ,local event times,
+ * 			and start and end positions of the moon.
+ */
+jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultLocal(
+        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jdoubleArray loc, jint p,
+        jint back) {
+
+    char serr[256];
+    double g[3], tret[10], attr[20], az1[6], az2[6], x2[6], rval;
+    int retval, i, iflag = SEFLG_SWIEPH;
+    iflag |= SE_ECL_ONE_TRY;
+    jboolean isCopy;
+    jdoubleArray result;
+
+    result = (*env)->NewDoubleArray(env, 15);
+    if (result == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarOccultLocal",
+                            "JNI ERROR NewDoubleArray: out of memory error");
+        return NULL; /* out of memory error thrown */
+    }
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    swe_set_ephe_path(ephString);
+
+    retval = swe_lun_occult_when_loc(d_ut, p, NULL, iflag, g, tret, attr, back,
+                                     serr);
+    if (retval == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "lunarOccultLocal",
+                            "JNI ERROR swe_lun_occult_when_loc: %-256s", serr);
+        swe_close();
+        return NULL;
+    } else {
+        // calculate moon position at start
+        i = swe_calc_ut(tret[1], 1, iflag, x2, serr);
+        if (i == ERR) {
+            __android_log_print(ANDROID_LOG_ERROR, "lunarOccultLocal",
+                                "JNI ERROR swe_calc_ut start: %-256s", serr);
+            swe_close();
+            return NULL;
+        }
+        swe_azalt(tret[1], SE_EQU2HOR, g, 0, 0, x2, az1);
+        // rotate azimuth of moon 180 degrees
+        az1[0] += 180;
+        if (az1[0] >= 360)
+            az1[0] -= 360;
+
+        // calculate moon position at end
+        i = swe_calc_ut(tret[4], 1, iflag, x2, serr);
+        if (i == ERR) {
+            __android_log_print(ANDROID_LOG_ERROR, "lunarOccultLocal",
+                                "JNI ERROR swe_calc_ut end: %-256s", serr);
+            swe_close();
+            return NULL;
+        }
+        swe_azalt(tret[4], SE_EQU2HOR, g, 0, 0, x2, az2);
+        // rotate azimuth of moon 180 degrees
+        az2[0] += 180;
+        if (az2[0] >= 360)
+            az2[0] -= 360;
+
+        rval = retval * 1.0;
+        swe_close();
+    }
+
+    // move from the temp structure to the java structure
+    (*env)->SetDoubleArrayRegion(env, result, 0, 1, &rval);
+    (*env)->SetDoubleArrayRegion(env, result, 1, 10, tret);
+    (*env)->SetDoubleArrayRegion(env, result, 11, 2, az1);
+    (*env)->SetDoubleArrayRegion(env, result, 13, 2, az2);
+
+    if (isCopy) {
+        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+    }
+
+    return result;
+}

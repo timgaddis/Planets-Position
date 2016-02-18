@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="72dp">
+
+    <View
+        android:id="@+id/view01"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp" />
+
+    <View
+        android:id="@+id/view02"
+        android:layout_width="16dp"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/view01" />
+
+    <TextView
+        android:id="@+id/rowOccDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/view02"
+        android:layout_toEndOf="@+id/view02"
+        android:layout_toRightOf="@+id/view02"
+        android:textColor="@color/text_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/rowOccPlanet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rowOccDate"
+        android:layout_toEndOf="@+id/view02"
+        android:layout_toRightOf="@+id/view02"
+        android:textColor="@color/alt_text_color"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/rowOccLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/view01"
+        android:layout_alignRight="@+id/view01"
+        android:layout_below="@+id/view01"
+        android:contentDescription="@string/local_desc"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:src="@drawable/ic_action_check"
+        android:visibility="invisible" />
+
+</RelativeLayout>

@@ -33,6 +33,7 @@ import planets.position.location.LocationDialog;
 import planets.position.location.LocationLib;
 import planets.position.location.UserLocation;
 import planets.position.lunar.LunarEclipse;
+import planets.position.lunar.LunarOccultation;
 import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
@@ -124,7 +125,6 @@ public class PlanetsMain extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -135,7 +135,7 @@ public class PlanetsMain extends AppCompatActivity
         } else if (id == R.id.nav_lunar_ecl) {
             selectItem(3, false, true);
         } else if (id == R.id.nav_lunar_occ) {
-
+            selectItem(4, false, true);
         } else if (id == R.id.nav_sky_pos) {
             selectItem(5, false, true);
         } else if (id == R.id.nav_whats_up) {
@@ -257,13 +257,12 @@ public class PlanetsMain extends AppCompatActivity
                     ft.addToBackStack(null);
                 ft.commit();
                 break;
-//            case 4:
-//                title = "Lunar Occultation";
-//                ft.replace(R.id.content_frame, new LunarOccultation());
-//                if (back)
-//                    ft.addToBackStack(null);
-//                ft.commit();
-//                break;
+            case 4: // Lunar Occultation
+                ft.replace(R.id.content_frame, new LunarOccultation());
+                if (back)
+                    ft.addToBackStack(null);
+                ft.commit();
+                break;
             case 5: // Sky Position
                 if (longitude == 0)
                     loadLocation();

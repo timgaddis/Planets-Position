@@ -74,6 +74,26 @@ public class PlanetsDatabase {
             LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
             LunarEclipseTable.COLUMN_ECLIPSE_DATE,
             LunarEclipseTable.COLUMN_ECLIPSE_TYPE};
+    private String[] lunarOccultColumns = {LunarOccultationTable.COLUMN_ID,
+            LunarOccultationTable.COLUMN_OCCULT_DATE,
+            LunarOccultationTable.COLUMN_OCCULT_PLANET,
+            LunarOccultationTable.COLUMN_LOCAL};
+    private String[] occultDataColumns = {LunarOccultationTable.COLUMN_ID,
+            LunarOccultationTable.COLUMN_LOCAL,
+            LunarOccultationTable.COLUMN_LOCAL_MAX,
+            LunarOccultationTable.COLUMN_LOCAL_FIRST,
+            LunarOccultationTable.COLUMN_LOCAL_FOURTH,
+            LunarOccultationTable.COLUMN_MOONRISE,
+            LunarOccultationTable.COLUMN_MOONSET,
+            LunarOccultationTable.COLUMN_MOONS_AZ,
+            LunarOccultationTable.COLUMN_MOONS_ALT,
+            LunarOccultationTable.COLUMN_MOONE_AZ,
+            LunarOccultationTable.COLUMN_MOONE_ALT,
+            LunarOccultationTable.COLUMN_GLOBAL_MAX,
+            LunarOccultationTable.COLUMN_GLOBAL_BEGIN,
+            LunarOccultationTable.COLUMN_GLOBAL_END,
+            LunarOccultationTable.COLUMN_OCCULT_DATE,
+            LunarOccultationTable.COLUMN_OCCULT_PLANET};
 
     public PlanetsDatabase(Context context) {
         dbHelper = new PlanetsDatabaseHelper(context);
@@ -225,6 +245,31 @@ public class PlanetsDatabase {
         out.putDouble(LunarEclipseTable.COLUMN_UMBRAL_MAG, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_UMBRAL_MAG)));
         out.putInt(LunarEclipseTable.COLUMN_SAROS_NUM, c.getInt(c.getColumnIndex(LunarEclipseTable.COLUMN_SAROS_NUM)));
         out.putInt(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM, c.getInt(c.getColumnIndex(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM)));
+
+        c.close();
+        return out;
+    }
+
+    public Cursor getLunarOccultList() {
+        return database.query(LunarOccultationTable.TABLE_LUNAR_OCCULT,
+                lunarOccultColumns, LunarOccultationTable.COLUMN_OCCULT_PLANET + " > ?",
+                new String[]{String.valueOf(-1)}, null, null,
+                LunarOccultationTable.COLUMN_OCCULT_PLANET + "," + LunarOccultationTable.COLUMN_GLOBAL_MAX);
+    }
+
+    public int addLunarOccult(ContentValues values, int row) {
+        return database.update(LunarOccultationTable.TABLE_LUNAR_OCCULT, values, LunarOccultationTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
+    }
+
+    public Bundle getLunarOccult(long occult) {
+
+        Bundle out = new Bundle();
+        Cursor c = database.query(LunarOccultationTable.TABLE_LUNAR_OCCULT, occultDataColumns,
+                LunarOccultationTable.COLUMN_ID + " = ?", new String[]{String.valueOf(occult)},
+                null, null, null);
+        c.moveToFirst();
+
 
         c.close();
         return out;

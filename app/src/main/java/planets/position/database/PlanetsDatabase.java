@@ -227,7 +227,7 @@ public class PlanetsDatabase {
                 null, null, null);
         c.moveToFirst();
 
-        out.putLong(LunarEclipseTable.COLUMN_ECLIPSE_DATE, c.getLong(c.getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_DATE)));
+        out.putDouble(LunarEclipseTable.COLUMN_ECLIPSE_DATE, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_DATE)));
         out.putString(LunarEclipseTable.COLUMN_ECLIPSE_TYPE, c.getString(c.getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_TYPE)));
         out.putInt(LunarEclipseTable.COLUMN_LOCAL, c.getInt(c.getColumnIndex(LunarEclipseTable.COLUMN_LOCAL)));
         out.putDouble(LunarEclipseTable.COLUMN_MAX_ECLIPSE, c.getDouble(c.getColumnIndex(LunarEclipseTable.COLUMN_MAX_ECLIPSE)));
@@ -270,6 +270,21 @@ public class PlanetsDatabase {
                 null, null, null);
         c.moveToFirst();
 
+        out.putDouble(LunarOccultationTable.COLUMN_OCCULT_DATE, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_DATE)));
+        out.putInt(LunarOccultationTable.COLUMN_OCCULT_PLANET, c.getInt(c.getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_PLANET)));
+        out.putInt(LunarOccultationTable.COLUMN_LOCAL, c.getInt(c.getColumnIndex(LunarOccultationTable.COLUMN_LOCAL)));
+        out.putDouble(LunarOccultationTable.COLUMN_MOONRISE, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_MOONRISE)));
+        out.putDouble(LunarOccultationTable.COLUMN_MOONSET, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_MOONSET)));
+        out.putDouble(LunarOccultationTable.COLUMN_LOCAL_FIRST, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_LOCAL_FIRST)));
+        out.putDouble(LunarOccultationTable.COLUMN_LOCAL_MAX, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_LOCAL_MAX)));
+        out.putDouble(LunarOccultationTable.COLUMN_LOCAL_FOURTH, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_LOCAL_FOURTH)));
+        out.putDouble(LunarOccultationTable.COLUMN_MOONS_AZ, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_MOONS_AZ)));
+        out.putDouble(LunarOccultationTable.COLUMN_MOONS_ALT, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_MOONS_ALT)));
+        out.putDouble(LunarOccultationTable.COLUMN_MOONE_AZ, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_MOONE_AZ)));
+        out.putDouble(LunarOccultationTable.COLUMN_MOONE_ALT, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_MOONE_ALT)));
+        out.putDouble(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_GLOBAL_BEGIN)));
+        out.putDouble(LunarOccultationTable.COLUMN_GLOBAL_MAX, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_GLOBAL_MAX)));
+        out.putDouble(LunarOccultationTable.COLUMN_GLOBAL_END, c.getDouble(c.getColumnIndex(LunarOccultationTable.COLUMN_GLOBAL_END)));
 
         c.close();
         return out;

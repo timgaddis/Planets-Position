@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class About extends Fragment {
 
-    TextView aboutText;
     private FragmentListener mCallbacks;
 
     @Override
@@ -47,7 +46,7 @@ public class About extends Fragment {
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("About", 7);
         }
-        aboutText = (TextView) v.findViewById(R.id.aboutText);
+        TextView aboutText = (TextView) v.findViewById(R.id.aboutText);
         aboutText.setText(R.string.main_about);
         return v;
     }

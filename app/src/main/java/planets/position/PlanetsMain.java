@@ -74,7 +74,8 @@ public class PlanetsMain extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
+        assert getDelegate().getSupportActionBar() != null;
         getDelegate().getSupportActionBar().setHomeButtonEnabled(true);
         getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -90,12 +91,12 @@ public class PlanetsMain extends AppCompatActivity
         fm = getSupportFragmentManager();
         copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
 
-        if (!(checkFiles("semo_18.se1") && checkFiles("sepl_18.se1"))) {
-            startCopyFileTask();
-        } else {
+        if ((checkFiles("semo_18.se1") && checkFiles("sepl_18.se1"))) {
             if (latitude < -90) {
                 startLocationTask();
             }
+        } else {
+            startCopyFileTask();
         }
 
         if (savedInstanceState == null) {
@@ -228,8 +229,8 @@ public class PlanetsMain extends AppCompatActivity
         return row > -1 && out;
     }
 
-    public void navigate(int position, boolean edit, boolean back) {
-        selectItem(position, edit, back);
+    public void navigate(int position) {
+        selectItem(position, false, true);
     }
 
     private void selectItem(int position, boolean edit, boolean back) {
@@ -330,6 +331,7 @@ public class PlanetsMain extends AppCompatActivity
         for (int i = 0; i <= 7; i++) {
             navigationView.getMenu().getItem(i).setChecked(false);
         }
+        assert getDelegate().getSupportActionBar() != null;
         getDelegate().getSupportActionBar().setTitle(title);
         if (index >= 0) {
             navigationView.getMenu().getItem(index).setChecked(true);
@@ -385,7 +387,6 @@ public class PlanetsMain extends AppCompatActivity
      * @return true if exists, false otherwise
      */
     private boolean checkFiles(String name) {
-
         String p = getApplicationContext().getFilesDir().getAbsolutePath() +
                 File.separator + "ephemeris" + File.separator + name;
         File f = new File(p);

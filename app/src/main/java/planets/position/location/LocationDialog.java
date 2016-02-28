@@ -13,7 +13,7 @@ import planets.position.R;
 
 public class LocationDialog extends DialogFragment {
 
-    FragmentListener mListener;
+    private FragmentListener mListener;
 
     @Override
     public void onAttach(Activity activity) {

@@ -91,7 +91,7 @@ public class FileCopyTask extends DialogFragment {
     /**
      * Start the background task.
      */
-    public void start() {
+    private void start() {
         if (!mRunning) {
             mTask.execute();
             mRunning = true;
@@ -109,14 +109,7 @@ public class FileCopyTask extends DialogFragment {
         }
     }
 
-    /**
-     * Returns the current state of the background task.
-     */
-    public boolean isRunning() {
-        return mRunning;
-    }
-
-    public void taskFinished() {
+    private void taskFinished() {
         if (isResumed())
             dismiss();
         mTask = null;

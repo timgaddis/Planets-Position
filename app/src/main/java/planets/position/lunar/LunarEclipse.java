@@ -39,8 +39,8 @@ import planets.position.util.PlanetDatePicker;
 public class LunarEclipse extends Fragment {
 
     public static final int TASK_FRAGMENT = 100;
-    public static final int DATE_FRAGMENT = 50;
-    public static final String TASK_FRAGMENT_TAG = "lunarEclipseTask";
+    private static final int DATE_FRAGMENT = 50;
+    private static final String TASK_FRAGMENT_TAG = "lunarEclipseTask";
 
     private FragmentListener mCallbacks;
     private FragmentManager mFM;
@@ -48,7 +48,8 @@ public class LunarEclipse extends Fragment {
     private LunarEclipseData eclipseData;
     private ListView lunarList;
     private double offset, firstDate, lastDate;
-    private double[] g = new double[3], time;
+    private final double[] g = new double[3];
+    private double[] time;
     private boolean firstRun, newLoc;
     private DateFormat mDateFormat;
     private PlanetsDatabase planetsDB;

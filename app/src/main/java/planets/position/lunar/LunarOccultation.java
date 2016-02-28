@@ -44,8 +44,8 @@ import planets.position.util.PlanetDatePicker;
 public class LunarOccultation extends Fragment {
 
     public static final int TASK_FRAGMENT = 100;
-    public static final int DATE_FRAGMENT = 50;
-    public static final String TASK_FRAGMENT_TAG = "lunarOccultTask";
+    private static final int DATE_FRAGMENT = 50;
+    private static final String TASK_FRAGMENT_TAG = "lunarOccultTask";
 
     private FragmentListener mCallbacks;
     private FragmentManager mFM;
@@ -55,7 +55,8 @@ public class LunarOccultation extends Fragment {
     private LunarOccultTask taskFragment;
     private LunarOccultData occultData;
     private double offset, firstDate, lastDate;
-    private double[] g = new double[3], time;
+    private final double[] g = new double[3];
+    private double[] time;
     private boolean firstRun, allPlanets, newLoc;
     private int planetNum = 1, spinnerPos = 0;
     private PlanetsDatabase planetsDB;

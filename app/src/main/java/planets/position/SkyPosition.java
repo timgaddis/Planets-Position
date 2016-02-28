@@ -9,8 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +29,6 @@ import planets.position.util.RiseSet;
 
 public class SkyPosition extends Fragment {
 
-    Spinner spinner;
     private Button timeButton, dateButton;
     private TextView pRAText, pDecText, pMagText, pRiseText, pSetText;
     private TextView pAzText, pAltText, pBelowText, pDistText;
@@ -39,7 +36,7 @@ public class SkyPosition extends Fragment {
     private DateFormat mDateFormat, mTimeFormat;
     private double latitude, longitude, elevation;
     private double offset;
-    private double[] g = new double[3];
+    private final double[] g = new double[3];
     private JDUTC jdUTC;
     private RiseSet riseSet;
     private PlanetDatePicker datePickerFragment;
@@ -67,7 +64,7 @@ public class SkyPosition extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_sky_position, container, false);
 
-        spinner = (Spinner) v.findViewById(R.id.spinner1);
+        Spinner spinner = (Spinner) v.findViewById(R.id.spinner1);
         timeButton = (Button) v.findViewById(R.id.timeButton);
         dateButton = (Button) v.findViewById(R.id.dateButton);
         pAzText = (TextView) v.findViewById(R.id.pos_az_text);
@@ -177,12 +174,6 @@ public class SkyPosition extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.live_menu, menu);
     }
 
     @Override

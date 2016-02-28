@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="88dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp" >
+    android:paddingEnd="@dimen/data_card_pad"
+    android:paddingLeft="@dimen/data_card"
+    android:paddingRight="@dimen/data_card_pad"
+    android:paddingStart="@dimen/data_card"
+    android:paddingTop="@dimen/data_card_pad">
 
     <ImageView
         android:id="@+id/rowImage"
@@ -12,12 +14,15 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/wup_desc"
         android:paddingEnd="32dp"
-        android:paddingRight="32dp" />
+        android:paddingLeft="@dimen/data_card"
+        android:paddingRight="32dp"
+        android:paddingStart="@dimen/data_card" />
 
     <TextView
         android:id="@+id/rowName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/rowImage"
         android:layout_toRightOf="@+id/rowImage"
         android:textColor="@color/text_color"
         android:textSize="16sp" />
@@ -28,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/rowName"
         android:layout_alignStart="@+id/rowName"
-        android:layout_below="@+id/rowName" >
+        android:layout_below="@+id/rowName">
 
         <TextView
             android:id="@+id/rowAZtext"
@@ -54,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/rowName"
         android:layout_alignStart="@+id/rowName"
-        android:layout_below="@+id/azRow" >
+        android:layout_below="@+id/azRow">
 
         <TextView
             android:id="@+id/rowALTtext"

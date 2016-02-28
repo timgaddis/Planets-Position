@@ -105,7 +105,7 @@ public class LocationTask extends DialogFragment implements LocationLib.Location
                 Activity.RESULT_OK, data);
     }
 
-    public void start() {
+    private void start() {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             Log.i(PlanetsMain.TAG, "Location permission not granted");

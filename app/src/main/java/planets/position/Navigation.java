@@ -29,35 +29,35 @@ public class Navigation extends Fragment {
         skyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PlanetsMain) getActivity()).navigate(5, false, true);
+                ((PlanetsMain) getActivity()).navigate(5);
             }
         });
 
         seButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PlanetsMain) getActivity()).navigate(1, false, true);
+                ((PlanetsMain) getActivity()).navigate(1);
             }
         });
 
         leButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PlanetsMain) getActivity()).navigate(3, false, true);
+                ((PlanetsMain) getActivity()).navigate(3);
             }
         });
 
         loButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PlanetsMain) getActivity()).navigate(4, false, true);
+                ((PlanetsMain) getActivity()).navigate(4);
             }
         });
 
         whatsupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PlanetsMain) getActivity()).navigate(6, false, true);
+                ((PlanetsMain) getActivity()).navigate(6);
             }
         });
 

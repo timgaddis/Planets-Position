@@ -9,7 +9,7 @@ import android.view.View;
 
 public class PermissionLib {
 
-    private AppCompatActivity activity;
+    private final AppCompatActivity activity;
 
     public PermissionLib(AppCompatActivity activity) {
         this.activity = activity;

@@ -24,7 +24,7 @@ import android.preference.PreferenceManager;
 import java.util.Locale;
 
 public class PositionFormat {
-    private SharedPreferences sharedPref;
+    private final SharedPreferences sharedPref;
 
     public PositionFormat(Context context) {
         super();

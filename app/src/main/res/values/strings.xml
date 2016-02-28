@@ -15,9 +15,7 @@
     <string name="action_gps">GPS</string>
     <string name="action_map">Map</string>
     <string name="action_refresh">Refresh</string>
-    <string name="action_live">Real Time Position</string>
     <!-- Navigation Drawer -->
-    <string name="nav_home">Home</string>
     <string name="nav_solar_eclipse">Solar Eclipses</string>
     <string name="nav_lunar_eclipse">Lunar Eclipses</string>
     <string name="nav_lunar_occultion">Lunar Occultations</string>
@@ -26,7 +24,6 @@
     <string name="nav_location">Location</string>
     <!-- User Location -->
     <string name="loc_down">GPS</string>
-    <string name="loc_enter">Update Location Data</string>
     <string name="loc_lat">Latitude</string>
     <string name="loc_lng">Longitude</string>
     <string name="loc_ele">Elevation</string>
@@ -35,7 +32,6 @@
     <string name="loc_south">South</string>
     <string name="loc_east">East</string>
     <string name="loc_west">West</string>
-    <string name="loc_map">Location Map</string>
     <string name="loc_edit">Select a field to edit.</string>
     <string name="loc_edit_lat">Enter the latitude in degrees.</string>
     <string name="loc_edit_long">Edit the longitude in degrees.</string>
@@ -47,14 +43,10 @@
     <string name="data_alt">Altitude</string>
     <string name="data_dis">Distance</string>
     <string name="data_mag">Magnitude</string>
-    <string name="data_rs">Rise/Set Time</string>
     <string name="data_set">Set Time</string>
     <string name="data_rise">Rise Time</string>
     <string name="below_hor">Object below horizon</string>
     <!-- Solar/Lunar Eclipse -->
-    <string name="ecl_date">Date</string>
-    <string name="ecl_type">Type</string>
-    <string name="ecl_local">Local</string>
     <string name="ecl_sunrise">Sunrise</string>
     <string name="ecl_sunset">Sunset</string>
     <string name="ecl_moonrise">Moon Rise</string>
@@ -95,8 +87,6 @@
     <string name="location_dialog">Downloading Location.\nPlease wait…</string>
     <string name="permision_location">Location Permission has been granted</string>
     <string name="permision_not_location">Location Permission has not been granted</string>
-    <string name="permision_storage">Storage Permission has been granted</string>
-    <string name="permision_not_storage">Storage Permission has not been granted</string>
     <string name="copy_dialog">Copying files.\nPlease wait…</string>
     <string name="wup_desc">Planet Symbol</string>
     <string name="title_activity_solar_eclipse_map">Solar Eclipse Map</string>

@@ -9,26 +9,26 @@ import android.os.Bundle;
 public class PlanetsDatabase {
 
     private SQLiteDatabase database;
-    private PlanetsDatabaseHelper dbHelper;
+    private final PlanetsDatabaseHelper dbHelper;
 
-    private String[] locationColumns = {LocationTable.COLUMN_ID,
+    private final String[] locationColumns = {LocationTable.COLUMN_ID,
             LocationTable.COLUMN_LATITUDE, LocationTable.COLUMN_LONGITUDE,
             LocationTable.COLUMN_ELEVATION, LocationTable.COLUMN_OFFSET,
             LocationTable.COLUMN_IOFFSET};
-    private String[] whatsUpColumns = {PlanetsTable.COLUMN_ID,
+    private final String[] whatsUpColumns = {PlanetsTable.COLUMN_ID,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_AZ,
             PlanetsTable.COLUMN_ALT};
-    private String[] planetDataColumns = {PlanetsTable.COLUMN_ID,
+    private final String[] planetDataColumns = {PlanetsTable.COLUMN_ID,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_RA,
             PlanetsTable.COLUMN_DEC, PlanetsTable.COLUMN_AZ,
             PlanetsTable.COLUMN_ALT, PlanetsTable.COLUMN_DISTANCE,
             PlanetsTable.COLUMN_MAGNITUDE, PlanetsTable.COLUMN_SET_TIME};
-    private String[] solarEclipseColumns = {SolarEclipseTable.COLUMN_ID,
+    private final String[] solarEclipseColumns = {SolarEclipseTable.COLUMN_ID,
             SolarEclipseTable.COLUMN_GLOBAL_TYPE,
             SolarEclipseTable.COLUMN_ECLIPSE_DATE,
             SolarEclipseTable.COLUMN_ECLIPSE_TYPE,
             SolarEclipseTable.COLUMN_LOCAL};
-    private String[] solarDataColumns = {SolarEclipseTable.COLUMN_ID,
+    private final String[] solarDataColumns = {SolarEclipseTable.COLUMN_ID,
             SolarEclipseTable.COLUMN_LOCAL, SolarEclipseTable.COLUMN_LOCAL_MAX,
             SolarEclipseTable.COLUMN_LOCAL_FIRST,
             SolarEclipseTable.COLUMN_LOCAL_SECOND,
@@ -50,12 +50,12 @@ public class PlanetsDatabase {
             SolarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
             SolarEclipseTable.COLUMN_ECLIPSE_DATE,
             SolarEclipseTable.COLUMN_ECLIPSE_TYPE};
-    private String[] lunarEclipseColumns = {LunarEclipseTable.COLUMN_ID,
+    private final String[] lunarEclipseColumns = {LunarEclipseTable.COLUMN_ID,
             LunarEclipseTable.COLUMN_GLOBAL_TYPE,
             LunarEclipseTable.COLUMN_ECLIPSE_DATE,
             LunarEclipseTable.COLUMN_ECLIPSE_TYPE,
             LunarEclipseTable.COLUMN_LOCAL};
-    private String[] lunarDataColumns = {LunarEclipseTable.COLUMN_ID,
+    private final String[] lunarDataColumns = {LunarEclipseTable.COLUMN_ID,
             LunarEclipseTable.COLUMN_LOCAL,
             LunarEclipseTable.COLUMN_MAX_ECLIPSE,
             LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN,
@@ -74,11 +74,11 @@ public class PlanetsDatabase {
             LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
             LunarEclipseTable.COLUMN_ECLIPSE_DATE,
             LunarEclipseTable.COLUMN_ECLIPSE_TYPE};
-    private String[] lunarOccultColumns = {LunarOccultationTable.COLUMN_ID,
+    private final String[] lunarOccultColumns = {LunarOccultationTable.COLUMN_ID,
             LunarOccultationTable.COLUMN_OCCULT_DATE,
             LunarOccultationTable.COLUMN_OCCULT_PLANET,
             LunarOccultationTable.COLUMN_LOCAL};
-    private String[] occultDataColumns = {LunarOccultationTable.COLUMN_ID,
+    private final String[] occultDataColumns = {LunarOccultationTable.COLUMN_ID,
             LunarOccultationTable.COLUMN_LOCAL,
             LunarOccultationTable.COLUMN_LOCAL_MAX,
             LunarOccultationTable.COLUMN_LOCAL_FIRST,

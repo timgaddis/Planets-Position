@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import planets.position.PlanetsMain;
 
-public class PlanetsDatabaseHelper extends SQLiteOpenHelper {
+class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
     private static final int DATABASE_VERSION = 203;
-    private Context mContext;
+    private final Context mContext;
 
     public PlanetsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

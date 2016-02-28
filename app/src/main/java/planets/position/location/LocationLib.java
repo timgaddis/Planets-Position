@@ -25,14 +25,14 @@ public class LocationLib implements GoogleApiClient.ConnectionCallbacks,
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int LOCATION_TASK = 500;
 
-    private GoogleApiClient googleApiClient;
-    private GoogleApiAvailability gaa;
-    private Context context;
-    private FragmentActivity activity;
+    private final GoogleApiClient googleApiClient;
+    private final GoogleApiAvailability gaa;
+    private final Context context;
+    private final FragmentActivity activity;
     private Location location;
-    private int index;
-    LocationCallback locationListener;
-    LocationTaskCallback locationTaskListener;
+    private final int index;
+    private final LocationCallback locationListener;
+    private final LocationTaskCallback locationTaskListener;
 
     public interface LocationCallback {
         void onLocationFound(Location location);

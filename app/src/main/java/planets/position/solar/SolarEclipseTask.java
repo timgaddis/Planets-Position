@@ -103,7 +103,7 @@ public class SolarEclipseTask extends DialogFragment {
             dismiss();
     }
 
-    public void taskFinished() {
+    private void taskFinished() {
         if (isResumed())
             dismiss();
         mTask = null;

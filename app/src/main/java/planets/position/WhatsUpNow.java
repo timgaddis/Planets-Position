@@ -35,8 +35,8 @@ import planets.position.util.PositionFormat;
 
 public class WhatsUpNow extends Fragment {
 
-    public static final int TASK_FRAGMENT = 0;
-    public static final String TASK_FRAGMENT_TAG = "upTask";
+    private static final int TASK_FRAGMENT = 0;
+    private static final String TASK_FRAGMENT_TAG = "upTask";
     private static final int UPDATE_WAIT = 300000;// 5 min
 
     private FragmentListener mCallbacks;
@@ -44,7 +44,7 @@ public class WhatsUpNow extends Fragment {
     private WhatsUpTask taskFragment;
     private long lastUpdate = 0, now;
     private double offset;
-    private double[] g = new double[3];
+    private final double[] g = new double[3];
     private boolean newLoc;
     private PositionFormat pf;
     private SharedPreferences settings;
@@ -52,7 +52,7 @@ public class WhatsUpNow extends Fragment {
     private ListView planetsList;
     private DateFormat mDateFormat, mTimeFormat;
     private PlanetsDatabase planetsDB;
-    private int[] images = {R.drawable.ic_planet_sun,
+    private final int[] images = {R.drawable.ic_planet_sun,
             R.drawable.ic_planet_moon, R.drawable.ic_planet_mercury,
             R.drawable.ic_planet_venus, R.drawable.ic_planet_mars,
             R.drawable.ic_planet_jupiter, R.drawable.ic_planet_saturn,

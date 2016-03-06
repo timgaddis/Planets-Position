@@ -95,7 +95,7 @@ public class LunarOccultData extends Fragment {
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Lunar Occultation", 4);
+            mCallbacks.onToolbarTitleChange("Lunar Occultation");
         }
 
         if (savedInstanceState != null) {

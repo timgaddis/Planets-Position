@@ -183,7 +183,7 @@ public class SkyPosition extends Fragment {
         computeLocation();
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Sky Position", 3);
+            mCallbacks.onToolbarTitleChange("Sky Position");
         }
 
         return v;

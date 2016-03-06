@@ -100,7 +100,7 @@ public class LunarEclipseData extends Fragment {
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Lunar Eclipse", 3);
+            mCallbacks.onToolbarTitleChange("Lunar Eclipse");
         }
 
         if (savedInstanceState != null) {

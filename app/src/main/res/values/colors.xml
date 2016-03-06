@@ -23,7 +23,6 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#666</color>
-    <color name="main_bground">#303030</color>
     <color name="button_text">#FFF</color>
     <color name="text_color">#FFFFFF</color>
     <color name="alt_text_color">#B3FFFFFF</color>

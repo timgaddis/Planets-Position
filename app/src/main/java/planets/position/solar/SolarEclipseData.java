@@ -100,7 +100,7 @@ public class SolarEclipseData extends Fragment {
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Solar Eclipse", 1);
+            mCallbacks.onToolbarTitleChange("Solar Eclipse");
         }
 
         if (savedInstanceState != null) {

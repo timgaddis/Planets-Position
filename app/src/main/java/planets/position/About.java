@@ -64,7 +64,7 @@ public class About extends Fragment {
         View v = inflater.inflate(R.layout.fragment_about, container,
                 false);
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("About", 7);
+            mCallbacks.onToolbarTitleChange("About");
         }
         TextView aboutText = (TextView) v.findViewById(R.id.aboutText);
         aboutText.setText(R.string.main_about);

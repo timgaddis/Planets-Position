@@ -120,7 +120,7 @@ public class PlanetsMain extends AppCompatActivity
         }
 
         if (savedInstanceState == null) {
-            selectItem(0, false, false);
+            selectItem(0, false);
         }
 
         SharedPreferences.Editor editor = settings.edit();
@@ -152,21 +152,21 @@ public class PlanetsMain extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_solar_ecl) {
-            selectItem(1, false, true);
+            selectItem(1, false);
         } else if (id == R.id.nav_lunar_ecl) {
-            selectItem(3, false, true);
+            selectItem(3, false);
         } else if (id == R.id.nav_lunar_occ) {
-            selectItem(4, false, true);
+            selectItem(4, false);
         } else if (id == R.id.nav_sky_pos) {
-            selectItem(5, false, true);
+            selectItem(5, false);
         } else if (id == R.id.nav_whats_up) {
-            selectItem(6, false, true);
+            selectItem(6, false);
         } else if (id == R.id.nav_location) {
-            selectItem(7, false, true);
+            selectItem(7, false);
         } else if (id == R.id.nav_settings) {
-            selectItem(8, false, true);
+            selectItem(8, false);
         } else if (id == R.id.nav_about) {
-            selectItem(9, false, true);
+            selectItem(9, false);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -250,23 +250,21 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     public void navigate(int position) {
-        selectItem(position, false, true);
+        selectItem(position, false);
     }
 
-    private void selectItem(int position, boolean edit, boolean back) {
+    private void selectItem(int position, boolean edit) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
 
         //clear previous selection
-        for (int i = 0; i <= 7; i++) {
+        for (int i = 0; i < 8; i++) {
             navigationView.getMenu().getItem(i).setChecked(false);
         }
 
         switch (position) {
             case 0: // Main navigaton
                 ft.replace(R.id.content_frame, new Navigation());
-                if (back)
-                    ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 1: // Solar Eclipse
@@ -274,53 +272,54 @@ public class PlanetsMain extends AppCompatActivity
                     loadLocation();
                 navigationView.getMenu().findItem(R.id.nav_solar_ecl).setChecked(true);
                 ft.replace(R.id.content_frame, new SolarEclipse());
-                if (back)
-                    ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 3: // Lunar Eclipse
+                navigationView.getMenu().findItem(R.id.nav_lunar_ecl).setChecked(true);
                 ft.replace(R.id.content_frame, new LunarEclipse());
-                if (back)
-                    ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 4: // Lunar Occultation
+                navigationView.getMenu().findItem(R.id.nav_lunar_occ).setChecked(true);
                 ft.replace(R.id.content_frame, new LunarOccultation());
-                if (back)
-                    ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 5: // Sky Position
+                navigationView.getMenu().findItem(R.id.nav_sky_pos).setChecked(true);
                 if (longitude == 0)
                     loadLocation();
                 ft.replace(R.id.content_frame, new SkyPosition());
-                if (back)
-                    ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 6: // What's Up Now
+                navigationView.getMenu().findItem(R.id.nav_whats_up).setChecked(true);
                 if (longitude == 0)
                     loadLocation();
                 ft.replace(R.id.content_frame, new WhatsUpNow());
-                if (back)
-                    ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 7: // User Location
+                navigationView.getMenu().findItem(R.id.nav_location).setChecked(true);
                 UserLocation userLoc = new UserLocation();
                 args.putBoolean("edit", edit);
                 userLoc.setArguments(args);
                 ft.replace(R.id.content_frame, userLoc);
-                if (back)
-                    ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 8: // Settings
+                navigationView.getMenu().findItem(R.id.nav_settings).setChecked(true);
                 ft.replace(R.id.content_frame, new SettingsFragment());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 9: // About
+                navigationView.getMenu().findItem(R.id.nav_about).setChecked(true);
                 ft.replace(R.id.content_frame, new About());
                 ft.addToBackStack(null);
                 ft.commit();
@@ -328,6 +327,12 @@ public class PlanetsMain extends AppCompatActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onToolbarTitleChange(CharSequence title) {
+        assert getDelegate().getSupportActionBar() != null;
+        getDelegate().getSupportActionBar().setTitle(title);
     }
 
     // ********************************
@@ -353,13 +358,6 @@ public class PlanetsMain extends AppCompatActivity
 
     }
 
-    @Override
-    public void onToolbarTitleChange(CharSequence title, int index) {
-        assert getDelegate().getSupportActionBar() != null;
-        getDelegate().getSupportActionBar().setTitle(title);
-//        selectItem(index, false, true);
-    }
-
     // ********************************
     // ***** Location dialog code *****
     // ********************************
@@ -382,7 +380,7 @@ public class PlanetsMain extends AppCompatActivity
     @Override
     public void onDialogNegativeClick() {
         // Manual
-        selectItem(7, true, true);
+        selectItem(7, true);
     }
     // ********************************
 

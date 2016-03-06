@@ -105,7 +105,7 @@ public class WhatsUpNow extends Fragment {
         });
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("What's Up Now", 6);
+            mCallbacks.onToolbarTitleChange("What's Up Now");
         }
 
         mFM = getFragmentManager();

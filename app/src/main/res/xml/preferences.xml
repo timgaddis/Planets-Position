@@ -56,14 +56,6 @@
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
             android:title="@string/pref_title_alt_format" />
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/pref_time_titles"
-            android:entryValues="@array/pref_time_values"
-            android:key="time_display"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
-            android:title="@string/pref_title_time" />
     </PreferenceCategory>
 
 </PreferenceScreen>

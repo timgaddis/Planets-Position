@@ -22,7 +22,7 @@ package planets.position;
 
 public interface FragmentListener {
 
-    void onToolbarTitleChange(CharSequence title, int index);
+    void onToolbarTitleChange(CharSequence title);
 
     void onDialogPositiveClick();
 

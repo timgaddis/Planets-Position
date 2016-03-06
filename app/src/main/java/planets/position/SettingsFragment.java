@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Settings", 6);
+            mCallbacks.onToolbarTitleChange("Settings");
         }
     }
 

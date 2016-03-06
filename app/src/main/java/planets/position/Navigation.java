@@ -82,7 +82,7 @@ public class Navigation extends Fragment {
         });
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Planet's Position", -1);
+            mCallbacks.onToolbarTitleChange("Planet's Position");
         }
 
         return view;

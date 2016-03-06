@@ -25,6 +25,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -100,6 +102,7 @@ public class LunarOccultTask extends DialogFragment {
             pb.setMax(8);
         else
             pb.setMax(10);
+        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
         riseSet = new RiseSet(g);

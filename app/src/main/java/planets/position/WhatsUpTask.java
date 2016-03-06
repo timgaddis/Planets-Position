@@ -24,6 +24,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -91,7 +93,9 @@ public class WhatsUpTask extends DialogFragment {
         tv = (TextView) v.findViewById(R.id.progress_text);
         pb = (ProgressBar) v.findViewById(R.id.progressBar);
         pb.setMax(10);
+        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
         getDialog().setCanceledOnTouchOutside(false);
+
         return v;
     }
 

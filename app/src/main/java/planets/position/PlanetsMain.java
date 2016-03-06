@@ -257,6 +257,11 @@ public class PlanetsMain extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
 
+        //clear previous selection
+        for (int i = 0; i <= 7; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+
         switch (position) {
             case 0: // Main navigaton
                 ft.replace(R.id.content_frame, new Navigation());
@@ -267,6 +272,7 @@ public class PlanetsMain extends AppCompatActivity
             case 1: // Solar Eclipse
                 if (longitude == 0)
                     loadLocation();
+                navigationView.getMenu().findItem(R.id.nav_solar_ecl).setChecked(true);
                 ft.replace(R.id.content_frame, new SolarEclipse());
                 if (back)
                     ft.addToBackStack(null);
@@ -319,6 +325,8 @@ public class PlanetsMain extends AppCompatActivity
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
+            default:
+                break;
         }
     }
 
@@ -347,15 +355,9 @@ public class PlanetsMain extends AppCompatActivity
 
     @Override
     public void onToolbarTitleChange(CharSequence title, int index) {
-        //clear previous selection
-        for (int i = 0; i <= 7; i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
         assert getDelegate().getSupportActionBar() != null;
         getDelegate().getSupportActionBar().setTitle(title);
-        if (index >= 0) {
-            navigationView.getMenu().getItem(index).setChecked(true);
-        }
+//        selectItem(index, false, true);
     }
 
     // ********************************

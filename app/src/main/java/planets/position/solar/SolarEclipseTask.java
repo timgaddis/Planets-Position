@@ -25,6 +25,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -91,6 +93,7 @@ public class SolarEclipseTask extends DialogFragment {
         pb = (ProgressBar) v.findViewById(R.id.progressBar);
         tv.setText(R.string.eclipse_dialog);
         pb.setMax(10);
+        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
         getDialog().setCanceledOnTouchOutside(false);
         riseSet = new RiseSet(g);
         riseSet.setEphPath(settings.getString("ephPath", ""));

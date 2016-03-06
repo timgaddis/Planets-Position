@@ -81,7 +81,7 @@ public class UserLocation extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_user_location, container, false);
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("User Location", 5);
+            mCallbacks.onToolbarTitleChange("User Location", 7);
         }
 
         latitudeText = (TextView) v.findViewById(R.id.newLatLabel);

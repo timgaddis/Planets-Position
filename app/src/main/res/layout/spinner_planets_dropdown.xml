@@ -23,7 +23,9 @@
     android:id="@+id/text1"
     android:layout_width="wrap_content"
     android:layout_height="48dp"
-    android:padding="@dimen/data_card_pad"
+    android:paddingLeft="@dimen/data_card_pad"
+    android:paddingRight="@dimen/data_card_pad"
+    android:paddingBottom="@dimen/spin_pad"
     android:singleLine="true"
     android:textColor="@color/text_color"
     android:textSize="@dimen/label_planets_text" />

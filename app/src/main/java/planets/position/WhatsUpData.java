@@ -69,7 +69,7 @@ public class WhatsUpData extends Fragment {
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("What's Up Now");
+            mCallbacks.onToolbarTitleChange("What's Up Now", 6);
         }
 
         if (savedInstanceState != null) {

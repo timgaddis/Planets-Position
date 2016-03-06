@@ -102,7 +102,7 @@ public class SolarEclipse extends Fragment {
         });
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Solar Eclipse");
+            mCallbacks.onToolbarTitleChange("Solar Eclipse", 1);
         }
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());

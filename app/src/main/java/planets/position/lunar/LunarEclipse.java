@@ -100,7 +100,7 @@ public class LunarEclipse extends Fragment {
         });
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Lunar Eclipse");
+            mCallbacks.onToolbarTitleChange("Lunar Eclipse", 3);
         }
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());

@@ -257,11 +257,6 @@ public class PlanetsMain extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Bundle args = new Bundle();
 
-        //clear previous selection
-        for (int i = 0; i < 8; i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
-
         switch (position) {
             case 0: // Main navigaton
                 ft.replace(R.id.content_frame, new Navigation());
@@ -270,25 +265,21 @@ public class PlanetsMain extends AppCompatActivity
             case 1: // Solar Eclipse
                 if (longitude == 0)
                     loadLocation();
-                navigationView.getMenu().findItem(R.id.nav_solar_ecl).setChecked(true);
                 ft.replace(R.id.content_frame, new SolarEclipse());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 3: // Lunar Eclipse
-                navigationView.getMenu().findItem(R.id.nav_lunar_ecl).setChecked(true);
                 ft.replace(R.id.content_frame, new LunarEclipse());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 4: // Lunar Occultation
-                navigationView.getMenu().findItem(R.id.nav_lunar_occ).setChecked(true);
                 ft.replace(R.id.content_frame, new LunarOccultation());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 5: // Sky Position
-                navigationView.getMenu().findItem(R.id.nav_sky_pos).setChecked(true);
                 if (longitude == 0)
                     loadLocation();
                 ft.replace(R.id.content_frame, new SkyPosition());
@@ -296,7 +287,6 @@ public class PlanetsMain extends AppCompatActivity
                 ft.commit();
                 break;
             case 6: // What's Up Now
-                navigationView.getMenu().findItem(R.id.nav_whats_up).setChecked(true);
                 if (longitude == 0)
                     loadLocation();
                 ft.replace(R.id.content_frame, new WhatsUpNow());
@@ -304,7 +294,6 @@ public class PlanetsMain extends AppCompatActivity
                 ft.commit();
                 break;
             case 7: // User Location
-                navigationView.getMenu().findItem(R.id.nav_location).setChecked(true);
                 UserLocation userLoc = new UserLocation();
                 args.putBoolean("edit", edit);
                 userLoc.setArguments(args);
@@ -313,13 +302,11 @@ public class PlanetsMain extends AppCompatActivity
                 ft.commit();
                 break;
             case 8: // Settings
-                navigationView.getMenu().findItem(R.id.nav_settings).setChecked(true);
                 ft.replace(R.id.content_frame, new SettingsFragment());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 9: // About
-                navigationView.getMenu().findItem(R.id.nav_about).setChecked(true);
                 ft.replace(R.id.content_frame, new About());
                 ft.addToBackStack(null);
                 ft.commit();
@@ -330,9 +317,43 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     @Override
-    public void onToolbarTitleChange(CharSequence title) {
+    public void onToolbarTitleChange(CharSequence title, int index) {
         assert getDelegate().getSupportActionBar() != null;
         getDelegate().getSupportActionBar().setTitle(title);
+        //clear previous selection
+        for (int i = 0; i < 8; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+        switch (index) {
+            case 0: // Main navigaton
+                break;
+            case 1: // Solar Eclipse
+                navigationView.getMenu().findItem(R.id.nav_solar_ecl).setChecked(true);
+                break;
+            case 3: // Lunar Eclipse
+                navigationView.getMenu().findItem(R.id.nav_lunar_ecl).setChecked(true);
+                break;
+            case 4: // Lunar Occultation
+                navigationView.getMenu().findItem(R.id.nav_lunar_occ).setChecked(true);
+                break;
+            case 5: // Sky Position
+                navigationView.getMenu().findItem(R.id.nav_sky_pos).setChecked(true);
+                break;
+            case 6: // What's Up Now
+                navigationView.getMenu().findItem(R.id.nav_whats_up).setChecked(true);
+                break;
+            case 7: // User Location
+                navigationView.getMenu().findItem(R.id.nav_location).setChecked(true);
+                break;
+            case 8: // Settings
+                navigationView.getMenu().findItem(R.id.nav_settings).setChecked(true);
+                break;
+            case 9: // About
+                navigationView.getMenu().findItem(R.id.nav_about).setChecked(true);
+                break;
+            default:
+                break;
+        }
     }
 
     // ********************************

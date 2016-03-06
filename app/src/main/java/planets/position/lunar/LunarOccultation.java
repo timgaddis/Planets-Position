@@ -112,7 +112,7 @@ public class LunarOccultation extends Fragment {
         });
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("Lunar Occultation");
+            mCallbacks.onToolbarTitleChange("Lunar Occultation", 4);
         }
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());

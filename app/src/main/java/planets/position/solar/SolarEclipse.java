@@ -117,7 +117,7 @@ public class SolarEclipse extends Fragment {
         if (taskFragment != null) {
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
         } else {
-            if (firstRun || newLoc) {
+            if (firstRun) {
                 solarList.setVisibility(View.INVISIBLE);
                 launchTask(time[1], 0.0);
             } else {
@@ -153,7 +153,7 @@ public class SolarEclipse extends Fragment {
     @Override
     public void onResume() {
         loadLocation();
-        if (newLoc) {
+        if (newLoc && taskFragment == null) {
             // if new location then compute eclipses
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("newLocation", false);

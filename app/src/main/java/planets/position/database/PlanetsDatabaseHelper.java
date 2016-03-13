@@ -28,7 +28,7 @@ import planets.position.PlanetsMain;
 
 class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 203;
+    private static final int DATABASE_VERSION = 212;
     private final Context mContext;
 
     public PlanetsDatabaseHelper(Context context) {

@@ -24,6 +24,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -71,8 +72,9 @@ public class PlanetsMain extends AppCompatActivity
     private LocationLib locationLib;
     private FileCopyTask copyTask;
     private PlanetsDatabase planetsDB;
-    private int ioffset = -1;
+    private int ioffset = -1, fragIndex;
     private double latitude, longitude, elevation, offset;
+    private CharSequence actionTitle;
     private FragmentManager fm;
     private View mLayout;
 
@@ -134,6 +136,28 @@ public class PlanetsMain extends AppCompatActivity
         getDelegate().onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        fragIndex = savedInstanceState.getInt("frag");
+        actionTitle = savedInstanceState.getCharSequence("title");
+        onToolbarTitleChange(actionTitle, fragIndex);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("frag", fragIndex);
+        outState.putCharSequence("title", actionTitle);
     }
 
     @Override
@@ -320,10 +344,16 @@ public class PlanetsMain extends AppCompatActivity
     public void onToolbarTitleChange(CharSequence title, int index) {
         assert getDelegate().getSupportActionBar() != null;
         getDelegate().getSupportActionBar().setTitle(title);
+        fragIndex = index;
+        actionTitle = title;
+        int[] menuID = {R.id.nav_solar_ecl, R.id.nav_lunar_ecl, R.id.nav_lunar_occ,
+                R.id.nav_sky_pos, R.id.nav_whats_up, R.id.nav_location, R.id.nav_settings,
+                R.id.nav_about};
         //clear previous selection
         for (int i = 0; i < 8; i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
+            navigationView.getMenu().findItem(menuID[i]).setChecked(false);
         }
+
         switch (index) {
             case 0: // Main navigaton
                 break;

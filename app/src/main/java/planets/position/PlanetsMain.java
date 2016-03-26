@@ -400,7 +400,9 @@ public class PlanetsMain extends AppCompatActivity
             elevation = location.getAltitude();
             offset = Calendar.getInstance().getTimeZone()
                     .getOffset(location.getTime()) / 3600000.0;
-            saveLocation();
+            if (!saveLocation()) {
+                Toast.makeText(this, "Location not saved.", Toast.LENGTH_LONG).show();
+            }
         } else {
             Log.d(TAG, "onLocationFound, No location found");
             Toast.makeText(this, "No location found.",

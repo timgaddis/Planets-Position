@@ -177,8 +177,8 @@ public class PlanetsDatabase {
         return out;
     }
 
-    public int addPlanet(ContentValues values, int row) {
-        return database.update(PlanetsTable.TABLE_PLANET, values, PlanetsTable.COLUMN_ID + " = ?",
+    public void addPlanet(ContentValues values, int row) {
+        database.update(PlanetsTable.TABLE_PLANET, values, PlanetsTable.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(row)});
     }
 
@@ -224,8 +224,8 @@ public class PlanetsDatabase {
         return out;
     }
 
-    public int addSolarEclipse(ContentValues values, int row) {
-        return database.update(SolarEclipseTable.TABLE_SOLAR_ECLIPSE, values, SolarEclipseTable.COLUMN_ID + " = ?",
+    public void addSolarEclipse(ContentValues values, int row) {
+        database.update(SolarEclipseTable.TABLE_SOLAR_ECLIPSE, values, SolarEclipseTable.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(row)});
     }
 
@@ -234,8 +234,8 @@ public class PlanetsDatabase {
                 null, null, null, LunarEclipseTable.COLUMN_MAX_ECLIPSE);
     }
 
-    public int addLunarEclipse(ContentValues values, int row) {
-        return database.update(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, values, LunarEclipseTable.COLUMN_ID + " = ?",
+    public void addLunarEclipse(ContentValues values, int row) {
+        database.update(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, values, LunarEclipseTable.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(row)});
     }
 
@@ -277,8 +277,8 @@ public class PlanetsDatabase {
                 LunarOccultationTable.COLUMN_OCCULT_PLANET + "," + LunarOccultationTable.COLUMN_GLOBAL_MAX);
     }
 
-    public int addLunarOccult(ContentValues values, int row) {
-        return database.update(LunarOccultationTable.TABLE_LUNAR_OCCULT, values, LunarOccultationTable.COLUMN_ID + " = ?",
+    public void addLunarOccult(ContentValues values, int row) {
+        database.update(LunarOccultationTable.TABLE_LUNAR_OCCULT, values, LunarOccultationTable.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(row)});
     }
 

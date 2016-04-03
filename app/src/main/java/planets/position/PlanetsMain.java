@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>..
  */
 
 package planets.position;
@@ -46,7 +46,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
@@ -74,6 +76,7 @@ public class PlanetsMain extends AppCompatActivity
     private PlanetsDatabase planetsDB;
     private int ioffset = -1, fragIndex;
     private double latitude, longitude, elevation, offset;
+    private List<String> gmtValues;
     private CharSequence actionTitle;
     private FragmentManager fm;
     private View mLayout;
@@ -93,6 +96,8 @@ public class PlanetsMain extends AppCompatActivity
         permissionLib = new PermissionLib(this);
         locationLib = new LocationLib(this, this, null, 100);
         planetsDB = new PlanetsDatabase(this);
+        gmtValues = Arrays.asList(getResources().getStringArray(
+                R.array.gmt_values));
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -400,9 +405,12 @@ public class PlanetsMain extends AppCompatActivity
             elevation = location.getAltitude();
             offset = Calendar.getInstance().getTimeZone()
                     .getOffset(location.getTime()) / 3600000.0;
-            if (!saveLocation()) {
-                Toast.makeText(this, "Location not saved.", Toast.LENGTH_LONG).show();
-            }
+            ioffset = gmtValues.indexOf(offset + "");
+            if (saveLocation())
+                Toast.makeText(this, "Location saved.", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Location not saved.", Toast.LENGTH_SHORT).show();
+
         } else {
             Log.d(TAG, "onLocationFound, No location found");
             Toast.makeText(this, "No location found.",

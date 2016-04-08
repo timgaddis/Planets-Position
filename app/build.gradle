@@ -28,7 +28,7 @@ android {
         applicationId "planets.position"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 22
+        versionCode 23
         versionName "2.0"
     }
     sourceSets {

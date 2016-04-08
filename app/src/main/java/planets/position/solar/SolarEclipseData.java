@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import planets.position.FragmentListener;
 import planets.position.R;
@@ -179,8 +180,8 @@ public class SolarEclipseData extends Fragment {
                 if (local > 0) {
                     String desc = "Local Type: " + eclLocalType;
                     desc += "\nSun Coverage: "
-                            + String.format("%3.0f%%", cover * 100);
-                    desc += "\nMagnitude: " + String.format("%.2f", mag);
+                            + String.format(Locale.getDefault(),"%3.0f%%", cover * 100);
+                    desc += "\nMagnitude: " + String.format(Locale.getDefault(),"%.2f", mag);
                     intent.putExtra(Events.DESCRIPTION, desc);
                 } else {
                     intent.putExtra(Events.DESCRIPTION,
@@ -323,7 +324,7 @@ public class SolarEclipseData extends Fragment {
             temp = b.getDouble(SolarEclipseTable.COLUMN_FRACTION_COVERED, 0);
             if (temp > 0) {
                 cover = temp;
-                seCoverText.setText(String.format("%3.0f%%", temp * 100));
+                seCoverText.setText(String.format(Locale.getDefault(),"%3.0f%%", temp * 100));
             } else {
                 cover = 0;
                 seCoverText.setText("");
@@ -331,7 +332,7 @@ public class SolarEclipseData extends Fragment {
             temp = b.getDouble(SolarEclipseTable.COLUMN_LOCAL_MAG, 0);
             if (temp > 0) {
                 mag = temp;
-                seMagText.setText(String.format("%.2f", temp));
+                seMagText.setText(String.format(Locale.getDefault(),"%.2f", temp));
             } else {
                 mag = 0;
                 seMagText.setText("");

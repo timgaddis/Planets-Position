@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import planets.position.FragmentListener;
 import planets.position.PlanetsMain;
@@ -389,16 +390,16 @@ public class UserLocation extends Fragment {
 
     private void displayLocation() {
         if (latitude >= 0) {
-            latitudeText.setText(String.format("%.6f° N", latitude));
+            latitudeText.setText(String.format(Locale.getDefault(), "%.6f° N", latitude));
         } else {
-            latitudeText.setText(String.format("%.6f° S", Math.abs(latitude)));
+            latitudeText.setText(String.format(Locale.getDefault(), "%.6f° S", Math.abs(latitude)));
         }
         if (longitude >= 0) {
-            longitudeText.setText(String.format("%.6f° E", longitude));
+            longitudeText.setText(String.format(Locale.getDefault(), "%.6f° E", longitude));
         } else {
-            longitudeText.setText(String.format("%.6f° W", Math.abs(longitude)));
+            longitudeText.setText(String.format(Locale.getDefault(), "%.6f° W", Math.abs(longitude)));
         }
-        elevationText.setText(String.format("%.1f m", elevation));
+        elevationText.setText(String.format(Locale.getDefault(), "%.1f m", elevation));
         if (ioffset >= 0) {
             gmtOffsetText.setText(gmtArray.get(ioffset));
         }

@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import planets.position.FragmentListener;
 import planets.position.R;
@@ -169,7 +170,7 @@ public class LunarEclipseData extends Fragment {
                 intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, eclEnd);
                 intent.putExtra(Events.TITLE, eclType + " Lunar Eclipse");
                 if (local) {
-                    String desc = "Magnitude: " + String.format("%.2f", mag);
+                    String desc = "Magnitude: " + String.format(Locale.getDefault(), "%.2f", mag);
                     intent.putExtra(Events.DESCRIPTION, desc);
                 } else {
                     intent.putExtra(Events.DESCRIPTION,
@@ -329,7 +330,7 @@ public class LunarEclipseData extends Fragment {
             temp = b.getDouble(LunarEclipseTable.COLUMN_PENUMBRAL_MAG, 0);
             if (temp > 0) {
                 mag = temp;
-                lePMagText.setText(String.format("%.2f", temp));
+                lePMagText.setText(String.format(Locale.getDefault(), "%.2f", temp));
             } else {
                 mag = 0;
                 lePMagText.setText("");
@@ -338,7 +339,7 @@ public class LunarEclipseData extends Fragment {
             temp = b.getDouble(LunarEclipseTable.COLUMN_UMBRAL_MAG, 0);
             if (temp > 0) {
                 mag = temp;
-                leUMagText.setText(String.format("%.2f", temp));
+                leUMagText.setText(String.format(Locale.getDefault(), "%.2f", temp));
             } else {
                 mag = 0;
                 leUMagText.setText("");

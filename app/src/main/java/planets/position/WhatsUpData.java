@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import planets.position.database.PlanetsDatabase;
 import planets.position.util.PositionFormat;
@@ -138,10 +139,10 @@ public class WhatsUpData extends Fragment {
         pAzText.setText(pf.formatAZ(b.getDouble("az")));
         pAltText.setText(pf.formatALT(b.getDouble("alt")));
         if (planetNum == 1)
-            pDistText.setText(String.format("%.4f AU", b.getDouble("distance")));
+            pDistText.setText(String.format(Locale.getDefault(), "%.4f AU", b.getDouble("distance")));
         else
-            pDistText.setText(String.format("%.2f AU", b.getDouble("distance")));
-        pMagText.setText(String.format("%.2f", b.getDouble("mag")));
+            pDistText.setText(String.format(Locale.getDefault(), "%.2f AU", b.getDouble("distance")));
+        pMagText.setText(String.format(Locale.getDefault(), "%.2f", b.getDouble("mag")));
 
         c.setTimeInMillis(b.getLong("setTime"));
         pSetText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));

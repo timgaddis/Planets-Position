@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
@@ -307,10 +308,10 @@ public class SkyPosition extends Fragment {
             pAltText.setText(pf.formatALT(data[4]));
 
             if (planetNum == 1)
-                pDistText.setText(String.format("%.4f AU", data[2]));
+                pDistText.setText(String.format(Locale.getDefault(), "%.4f AU", data[2]));
             else
-                pDistText.setText(String.format("%.2f AU", data[2]));
-            pMagText.setText(String.format("%.2f", data[5]));
+                pDistText.setText(String.format(Locale.getDefault(), "%.2f AU", data[2]));
+            pMagText.setText(String.format(Locale.getDefault(), "%.2f", data[5]));
 
             t = riseSet.getSet(d, planetNum);
             if (t < 0) {

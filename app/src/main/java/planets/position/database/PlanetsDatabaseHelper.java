@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
                           int newVersion) {
         // clear existing preferences
         mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().commit();
-        LocationTable.onUpgrade(database, oldVersion, newVersion);
+        LocationTable.onUpgrade(oldVersion, newVersion);
         PlanetsTable.onUpgrade(database, oldVersion, newVersion);
         SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);
         LunarEclipseTable.onUpgrade(database, oldVersion, newVersion);

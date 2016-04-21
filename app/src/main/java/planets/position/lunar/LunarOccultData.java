@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ package planets.position.lunar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
@@ -43,6 +44,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import planets.position.FragmentListener;
+import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
@@ -62,6 +64,7 @@ public class LunarOccultData extends Fragment {
     private List<String> planetArray;
     private PositionFormat pf;
     private PlanetsDatabase planetsDB;
+    private SharedPreferences settings;
     private FragmentListener mCallbacks;
     private JDUTC jdUTC;
 
@@ -93,6 +96,7 @@ public class LunarOccultData extends Fragment {
                 .getTimeFormat(getActivity().getApplicationContext());
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Lunar Occultation", 4);
@@ -150,7 +154,8 @@ public class LunarOccultData extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.calendar_menu, menu);
+        if (settings.getBoolean("hasCalendar", false))
+            inflater.inflate(R.menu.calendar_menu, menu);
     }
 
     @Override

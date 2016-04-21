@@ -22,6 +22,7 @@ package planets.position.lunar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
@@ -42,6 +43,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import planets.position.FragmentListener;
+import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarEclipseTable;
 import planets.position.database.PlanetsDatabase;
@@ -62,6 +64,7 @@ public class LunarEclipseData extends Fragment {
     private DateFormat mDateFormat, mTimeFormat;
     private PositionFormat pf;
     private PlanetsDatabase planetsDB;
+    private SharedPreferences settings;
     private FragmentListener mCallbacks;
     private JDUTC jdUTC;
 
@@ -99,6 +102,7 @@ public class LunarEclipseData extends Fragment {
                 .getTimeFormat(getActivity().getApplicationContext());
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Lunar Eclipse", 3);
@@ -156,7 +160,8 @@ public class LunarEclipseData extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.calendar_menu, menu);
+        if (settings.getBoolean("hasCalendar", false))
+            inflater.inflate(R.menu.calendar_menu, menu);
     }
 
     @Override

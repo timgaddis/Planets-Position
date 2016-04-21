@@ -22,6 +22,7 @@ package planets.position.solar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
@@ -42,6 +43,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import planets.position.FragmentListener;
+import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
@@ -62,6 +64,7 @@ public class SolarEclipseData extends Fragment {
     private DateFormat mDateFormat, mTimeFormat;
     private PositionFormat pf;
     private PlanetsDatabase planetsDB;
+    private SharedPreferences settings;
     private FragmentListener mCallbacks;
     private JDUTC jdUTC;
 
@@ -99,6 +102,7 @@ public class SolarEclipseData extends Fragment {
                 .getTimeFormat(getActivity().getApplicationContext());
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Solar Eclipse", 1);
@@ -162,7 +166,8 @@ public class SolarEclipseData extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.calendar_menu, menu);
+        if (settings.getBoolean("hasCalendar", false))
+            inflater.inflate(R.menu.calendar_menu, menu);
         inflater.inflate(R.menu.map_menu, menu);
     }
 
@@ -180,8 +185,8 @@ public class SolarEclipseData extends Fragment {
                 if (local > 0) {
                     String desc = "Local Type: " + eclLocalType;
                     desc += "\nSun Coverage: "
-                            + String.format(Locale.getDefault(),"%3.0f%%", cover * 100);
-                    desc += "\nMagnitude: " + String.format(Locale.getDefault(),"%.2f", mag);
+                            + String.format(Locale.getDefault(), "%3.0f%%", cover * 100);
+                    desc += "\nMagnitude: " + String.format(Locale.getDefault(), "%.2f", mag);
                     intent.putExtra(Events.DESCRIPTION, desc);
                 } else {
                     intent.putExtra(Events.DESCRIPTION,
@@ -324,7 +329,7 @@ public class SolarEclipseData extends Fragment {
             temp = b.getDouble(SolarEclipseTable.COLUMN_FRACTION_COVERED, 0);
             if (temp > 0) {
                 cover = temp;
-                seCoverText.setText(String.format(Locale.getDefault(),"%3.0f%%", temp * 100));
+                seCoverText.setText(String.format(Locale.getDefault(), "%3.0f%%", temp * 100));
             } else {
                 cover = 0;
                 seCoverText.setText("");
@@ -332,7 +337,7 @@ public class SolarEclipseData extends Fragment {
             temp = b.getDouble(SolarEclipseTable.COLUMN_LOCAL_MAG, 0);
             if (temp > 0) {
                 mag = temp;
-                seMagText.setText(String.format(Locale.getDefault(),"%.2f", temp));
+                seMagText.setText(String.format(Locale.getDefault(), "%.2f", temp));
             } else {
                 mag = 0;
                 seMagText.setText("");

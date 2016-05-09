@@ -214,6 +214,78 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
  * Swiss Ephemeris functions called:
  * 		swe_set_ephe_path
  * 		swe_set_topo
+ * 		swe_calc_ut
+ * 		swe_azalt
+ * 		swe_pheno_ut
+ * 		swe_close
+ * Input: Julian date in ephemeris time, Julian date in ut1, planet number,
+ * 		location array, atmospheric pressure and temperature.
+ * Output: Double array containing RA, Dec, distance, azimuth, altitude,
+ * 		magnitude, set time, and rise time of planet.
+ */
+jdoubleArray Java_planets_position_LivePositionService_planetLiveData(
+        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint p, jdoubleArray loc,
+        jdouble atpress, jdouble attemp) {
+
+    char serr[256];
+    double x2[6], az[3], g[3], attr[20];
+    int i, iflag = SEFLG_SWIEPH | SEFLG_EQUATORIAL | SEFLG_TOPOCTR;
+    jboolean isCopy;
+    jdoubleArray result;
+
+    result = (*env)->NewDoubleArray(env, 8);
+    if (result == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetLiveData",
+                            "JNI ERROR NewDoubleArray: out of memory error");
+        return NULL; /* out of memory error thrown */
+    }
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    swe_set_ephe_path(ephString);
+
+    swe_set_topo(g[0], g[1], g[2]);
+    i = swe_calc_ut(d_ut, p, iflag, x2, serr);
+    if (i == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetLiveData",
+                            "JNI ERROR swe_calc: %-256s", serr);
+        swe_close();
+        return NULL;
+    } else {
+        swe_azalt(d_ut, SE_EQU2HOR, g, atpress, attemp, x2, az);
+        i = swe_pheno_ut(d_ut, p, SEFLG_SWIEPH, attr, serr);
+        if (i == ERR) {
+            __android_log_print(ANDROID_LOG_ERROR, "planetLiveData",
+                                "JNI ERROR swe_pheno_ut: %-256s", serr);
+            swe_close();
+            return NULL;
+        }
+        swe_close();
+
+        /*rotates azimuth origin to north*/
+        az[0] += 180;
+        if (az[0] > 360)
+            az[0] -= 360;
+
+        // move from the temp structure to the java structure
+        (*env)->SetDoubleArrayRegion(env, result, 0, 3, x2);
+        (*env)->SetDoubleArrayRegion(env, result, 3, 2, az);
+        (*env)->SetDoubleArrayRegion(env, result, 5, 1, &attr[4]);
+
+        if (isCopy) {
+            (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        }
+
+        return result;
+    }
+}
+
+/*
+ * Calculate the position of a given planet in the sky.
+ * Swiss Ephemeris functions called:
+ * 		swe_set_ephe_path
+ * 		swe_set_topo
  * 		swe_calc
  * 		swe_azalt
  * 		swe_pheno_ut

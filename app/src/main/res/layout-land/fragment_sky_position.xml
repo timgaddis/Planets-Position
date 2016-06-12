@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -20,280 +19,272 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:baselineAligned="false">
+    android:background="@color/cardview_dark_background"
+    android:orientation="vertical"
+    android:padding="@dimen/data_card">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view1"
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nameButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textColor="@color/button_text"
+            android:textSize="@dimen/label_text" />
+
+        <Button
+            android:id="@+id/dateButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textColor="@color/button_text"
+            android:textSize="@dimen/label_text" />
+
+        <Button
+            android:id="@+id/timeButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textColor="@color/button_text"
+            android:textSize="@dimen/label_text" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view02"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="@dimen/data_card"
-        android:layout_marginLeft="@dimen/data_card"
-        android:layout_marginStart="@dimen/data_card"
-        android:layout_marginTop="@dimen/data_card"
-        android:layout_weight="0.5"
-        android:elevation="5dp"
-        card_view:cardBackgroundColor="@color/cardview_dark_background"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="5dp">
+        android:layout_height="1dp"
+        android:background="@color/divider_color" />
+
+    <LinearLayout
+        android:id="@+id/pos_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/data_card">
 
         <LinearLayout
-            android:id="@+id/card_view3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.5"
-            android:focusableInTouchMode="false"
-            android:orientation="vertical"
-            android:padding="@dimen/data_card_pad">
+            android:layout_weight="0.3"
+            android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
-
-            <View
-                android:id="@+id/view00"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/data_card" />
-
-            <Button
-                android:id="@+id/dateButton"
+            <TextView
+                android:id="@+id/pos_ra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/button_text"
+                android:gravity="center_horizontal"
+                android:text="@string/data_ra"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/pos_ra_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
             <View
-                android:id="@+id/view02"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/data_card" />
-
-            <Button
-                android:id="@+id/timeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/button_text"
-                android:textSize="@dimen/label_text" />
-
-            <View
-                android:id="@+id/view01"
+                android:id="@+id/view3"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/data_card" />
 
             <TextView
-                android:id="@+id/pos_below_text"
-                android:layout_width="wrap_content"
+                android:id="@+id/pos_az"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/below_hor"
-                android:textColor="@color/alert_color"
-                android:textSize="@dimen/label_planets_text"
-                android:visibility="invisible" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                android:gravity="center_horizontal"
+                android:text="@string/data_az"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card2"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="@dimen/data_card"
-        android:layout_weight="0.5"
-        android:elevation="5dp"
-        card_view:cardBackgroundColor="@color/cardview_dark_background"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="5dp">
+            <TextView
+                android:id="@+id/pos_az_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pos_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:padding="@dimen/data_card_pad">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/pos_dec"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/data_dec"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
 
-                <TextView
-                    android:id="@+id/pos_ra"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_ra"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_ra_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <View
-                    android:id="@+id/view1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_az"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_az"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_az_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <View
-                    android:id="@+id/view3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_dis"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_dis"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_dis_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <View
-                    android:id="@+id/view5"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_riseTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_rise"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_riseTime_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/pos_dec_text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
 
-                <TextView
-                    android:id="@+id/pos_dec"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_dec"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
+            <View
+                android:id="@+id/view5"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/data_card" />
 
-                <TextView
-                    android:id="@+id/pos_dec_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
+            <TextView
+                android:id="@+id/pos_alt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/data_alt"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
 
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/data_card" />
+            <TextView
+                android:id="@+id/pos_alt_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
 
-                <TextView
-                    android:id="@+id/pos_alt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_alt"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_alt_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_mag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_mag"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_mag_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <View
-                    android:id="@+id/view6"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_setTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_set"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/pos_setTime_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-            </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pos_dis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/data_dis"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/pos_dis_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/data_card" />
+
+            <TextView
+                android:id="@+id/pos_mag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/data_mag"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/pos_mag_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view7"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/data_card" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/pos_setTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:text="@string/data_set"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text" />
+
+        <TextView
+            android:id="@+id/pos_riseTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:text="@string/data_rise"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/pos_setTime_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text" />
+
+        <TextView
+            android:id="@+id/pos_riseTime_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view8"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/data_card" />
+
+    <TextView
+        android:id="@+id/pos_below_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/below_hor"
+        android:textColor="@color/alert_color"
+        android:textSize="@dimen/label_text"
+        android:visibility="invisible" />
 </LinearLayout>

@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,15 +34,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import planets.position.util.JDUTC;
@@ -54,7 +52,11 @@ import planets.position.util.RiseSet;
 
 public class SkyPosition extends Fragment {
 
-    private Button timeButton, dateButton;
+    public static final int PLANETS_DIALOG = 100;
+    public static final int TIME_DIALOG = 200;
+    public static final int DATE_DIALOG = 300;
+
+    private Button nameButton, timeButton, dateButton;
     private TextView pRAText, pDecText, pMagText, pRiseText, pSetText;
     private TextView pAzText, pAltText, pBelowText, pDistText;
     private int mHour, mMinute, mDay, mMonth, mYear, planetNum = 0;
@@ -62,8 +64,10 @@ public class SkyPosition extends Fragment {
     private double latitude, longitude, elevation;
     private double offset;
     private final double[] g = new double[3];
+    private List<String> planetsArray;
     private JDUTC jdUTC;
     private RiseSet riseSet;
+    private PlanetDialog planetDialog;
     private PlanetDatePicker datePickerFragment;
     private PlanetTimePicker timePickerFragment;
     private SharedPreferences settings;
@@ -89,7 +93,7 @@ public class SkyPosition extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_sky_position, container, false);
 
-        Spinner spinner = (Spinner) v.findViewById(R.id.spinner1);
+        nameButton = (Button) v.findViewById(R.id.nameButton);
         timeButton = (Button) v.findViewById(R.id.timeButton);
         dateButton = (Button) v.findViewById(R.id.dateButton);
         pAzText = (TextView) v.findViewById(R.id.pos_az_text);
@@ -103,6 +107,7 @@ public class SkyPosition extends Fragment {
         pSetText = (TextView) v.findViewById(R.id.pos_setTime_text);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity().getApplicationContext());
+        planetsArray = Arrays.asList(getResources().getStringArray(R.array.planets_array));
 
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
@@ -114,23 +119,12 @@ public class SkyPosition extends Fragment {
 
         riseSet = new RiseSet(settings.getString("ephPath", ""));
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                ((AppCompatActivity) getActivity()).getSupportActionBar()
-                        .getThemedContext(), R.array.planets_array,
-                R.layout.spinner_planets);
-        adapter.setDropDownViewResource(R.layout.spinner_planets_dropdown);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        nameButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                planetNum = position;
-                computeLocation();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                planetDialog = PlanetDialog.newInstance(R.array.planets_array, R.string.planet_select);
+                planetDialog.setTargetFragment(SkyPosition.this, PLANETS_DIALOG);
+                planetDialog.show(getActivity().getSupportFragmentManager(), "planetDialog");
             }
         });
 
@@ -139,10 +133,9 @@ public class SkyPosition extends Fragment {
             public void onClick(View view) {
                 timePickerFragment = new PlanetTimePicker();
                 timePickerFragment.setData(mHour, mMinute);
-                timePickerFragment.setTargetFragment(SkyPosition.this, 50);
+                timePickerFragment.setTargetFragment(SkyPosition.this, TIME_DIALOG);
                 timePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                timePickerFragment.show(getFragmentManager(),
-                        "timePickerDialog");
+                timePickerFragment.show(getFragmentManager(), "timePickerDialog");
 
             }
         });
@@ -152,10 +145,9 @@ public class SkyPosition extends Fragment {
             public void onClick(View view) {
                 datePickerFragment = new PlanetDatePicker();
                 datePickerFragment.setData(mYear, mMonth, mDay);
-                datePickerFragment.setTargetFragment(SkyPosition.this, 50);
+                datePickerFragment.setTargetFragment(SkyPosition.this, DATE_DIALOG);
                 datePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                datePickerFragment.show(getFragmentManager(),
-                        "datePickerDialog");
+                datePickerFragment.show(getFragmentManager(), "datePickerDialog");
 
             }
         });
@@ -186,6 +178,7 @@ public class SkyPosition extends Fragment {
 
         updateDisplay();
         computeLocation();
+        nameButton.setText(planetsArray.get(planetNum));
 
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Sky Position", 5);
@@ -239,27 +232,30 @@ public class SkyPosition extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 50) {
-            switch (resultCode) {
-                case 60:
-                    // Date picker set button
-                    mYear = data.getIntExtra("year", 0);
-                    mMonth = data.getIntExtra("month", 0);
-                    mDay = data.getIntExtra("day", 0);
-                    updateDisplay();
-                    computeLocation();
-                    break;
-                case 65:
-                    // Time picker set button
-                    mHour = data.getIntExtra("hour", 0);
-                    mMinute = data.getIntExtra("minute", 0);
-                    updateDisplay();
-                    computeLocation();
-                    break;
-                case 70:
-                    // Cancel button
-                    break;
-            }
+        switch (requestCode) {
+            case DATE_DIALOG:
+                // Date picker set button
+                mYear = data.getIntExtra("year", 0);
+                mMonth = data.getIntExtra("month", 0);
+                mDay = data.getIntExtra("day", 0);
+                updateDisplay();
+                computeLocation();
+                break;
+            case TIME_DIALOG:
+                // Time picker set button
+                mHour = data.getIntExtra("hour", 0);
+                mMinute = data.getIntExtra("minute", 0);
+                updateDisplay();
+                computeLocation();
+                break;
+            case PLANETS_DIALOG:
+                nameButton.setText(planetsArray.get(resultCode));
+                planetNum = resultCode;
+                computeLocation();
+                break;
+            default:
+                // Cancel button
+                break;
         }
     }
 
@@ -348,7 +344,7 @@ public class SkyPosition extends Fragment {
                 return;
             }
             utc.setTimeInMillis(jdUTC.jdmills(t, offset));
-            pSetText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
+            pSetText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
             t = riseSet.getRise(d, planetNum);
@@ -357,7 +353,7 @@ public class SkyPosition extends Fragment {
                 return;
             }
             utc.setTimeInMillis(jdUTC.jdmills(t, offset));
-            pRiseText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
+            pRiseText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
             if (data[4] <= 0.0) {

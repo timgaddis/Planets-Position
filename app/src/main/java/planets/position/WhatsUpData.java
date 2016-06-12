@@ -58,8 +58,8 @@ public class WhatsUpData extends Fragment {
         pDistText = (TextView) v.findViewById(R.id.data_dis_text);
         pMagText = (TextView) v.findViewById(R.id.data_mag_text);
         pSetText = (TextView) v.findViewById(R.id.data_setTime_text);
-        pDate = (TextView) v.findViewById(R.id.live_date_text);
-        pTime = (TextView) v.findViewById(R.id.live_time_text);
+        pDate = (TextView) v.findViewById(R.id.data_date_text);
+        pTime = (TextView) v.findViewById(R.id.data_time_text);
         pf = new PositionFormat(getActivity().getApplicationContext());
 
         mDateFormat = android.text.format.DateFormat

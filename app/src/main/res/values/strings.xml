@@ -19,6 +19,7 @@
   -->
 
 <resources>
+
     <string name="app_name">Planet\'s Position</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -67,6 +68,7 @@
     <string name="data_set">Set Time</string>
     <string name="data_rise">Rise Time</string>
     <string name="below_hor">Object below horizon</string>
+    <string name="planet_select">Select a planet.</string>
     <!-- Solar/Lunar Eclipse -->
     <string name="ecl_sunrise">Sunrise</string>
     <string name="ecl_sunset">Sunset</string>
@@ -113,4 +115,5 @@
     <string name="copy_dialog">Copying files.\nPlease wait…</string>
     <string name="wup_desc">Planet Symbol</string>
     <string name="title_activity_solar_eclipse_map">Solar Eclipse Map</string>
+
 </resources>

@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ public class PlanetTimePicker extends DialogFragment implements TimePickerDialog
         b.putInt("hour", hourOfDay);
         b.putInt("minute", minute);
         data.putExtras(b);
-        getTargetFragment().onActivityResult(50, 65, data);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), 0, data);
     }
 
 }

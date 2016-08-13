@@ -3,7 +3,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/rowName"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/rowImage"
         android:layout_toRightOf="@+id/rowImage"
@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/rowAZtext"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
             android:text="@string/data_az"
@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/rowAZ"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:textColor="@color/alt_text_color"
@@ -83,7 +83,7 @@
 
         <TextView
             android:id="@+id/rowALTtext"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
             android:text="@string/data_alt"
@@ -92,7 +92,7 @@
 
         <TextView
             android:id="@+id/rowALT"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:textColor="@color/alt_text_color"

@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -20,120 +19,341 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/data_card">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/data_card"
-        android:elevation="5dp"
-        card_view:cardBackgroundColor="@color/cardview_dark_background"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/linear01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:orientation="vertical"
+            android:padding="@dimen/data_card_pad">
 
             <LinearLayout
-                android:id="@+id/linear01"
+                android:id="@+id/linear0101"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@android:color/transparent"
-                android:orientation="vertical"
-                android:padding="@dimen/data_card_pad">
-
-                <LinearLayout
-                    android:id="@+id/linear0101"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/se_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/se_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear0102"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/data_card">
-
-                    <TextView
-                        android:id="@+id/ecl_local"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="end"
-                        android:paddingEnd="4dp"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:text="@string/ecl_local_type"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_up_text" />
-
-                    <TextView
-                        android:id="@+id/ecl_local_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="start"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingStart="4dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_up_text" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view02"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/linear01"
-                android:background="@color/divider_color" />
-
-            <LinearLayout
-                android:id="@+id/linear02"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/view02"
-                android:orientation="vertical"
-                android:padding="@dimen/data_card_pad">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/eclTimes"
+                    android:id="@+id/se_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:gravity="center_horizontal"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:text="@string/ecl_times"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/label_text" />
 
+                <TextView
+                    android:id="@+id/se_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/label_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear0102"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/data_card">
+
+                <TextView
+                    android:id="@+id/ecl_local"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="end"
+                    android:paddingEnd="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:text="@string/ecl_local_type"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/label_up_text" />
+
+                <TextView
+                    android:id="@+id/ecl_local_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="start"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingStart="4dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/label_up_text" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view02"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linear01"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:id="@+id/linear02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view02"
+            android:orientation="vertical"
+            android:padding="@dimen/data_card_pad">
+
+            <TextView
+                android:id="@+id/eclTimes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card_pad"
+                android:text="@string/ecl_times"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <LinearLayout
+                android:id="@+id/data_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
                 <LinearLayout
-                    android:id="@+id/data_layout1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/se_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_se_start"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <TextView
+                        android:id="@+id/se_start_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/data_card" />
+
+                    <TextView
+                        android:id="@+id/se_tstart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_se_tstart"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <TextView
+                        android:id="@+id/se_tstart_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_planets_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/se_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_se_end"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <TextView
+                        android:id="@+id/se_end_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <View
+                        android:id="@+id/view01"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/data_card" />
+
+                    <TextView
+                        android:id="@+id/se_tend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_se_tend"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <TextView
+                        android:id="@+id/se_tend_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_planets_text" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view05"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/data_card" />
+
+            <TextView
+                android:id="@+id/se_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/ecl_se_max"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_planets_text" />
+
+            <TextView
+                android:id="@+id/se_max_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_planets_text" />
+
+            <LinearLayout
+                android:id="@+id/sunrise_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/view8a"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/data_card" />
+
+                    <TextView
+                        android:id="@+id/se_sunrise"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_sunrise"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <TextView
+                        android:id="@+id/se_sunrise_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_planets_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/view8b"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/data_card" />
+
+                    <TextView
+                        android:id="@+id/se_sunset"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_sunset"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_planets_text" />
+
+                    <TextView
+                        android:id="@+id/se_sunset_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_planets_text" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view03"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linear02"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:id="@+id/linear03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view03"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/eclData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/data_card_pad"
+                android:text="@string/ecl_data"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <LinearLayout
+                android:id="@+id/se_local_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/data_card_pad"
+                android:paddingLeft="@dimen/data_card_pad"
+                android:paddingRight="@dimen/data_card_pad">
+
+                <TextView
+                    android:id="@+id/ecl_sun"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/ecl_se_sun"
+                    android:textColor="@color/alt_text_color"
+                    android:textSize="@dimen/label_up_text" />
+
+                <LinearLayout
+                    android:id="@+id/data_layout3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
@@ -145,43 +365,22 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/se_start"
+                            android:id="@+id/se_sun_az"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_start"
+                            android:text="@string/data_az"
                             android:textColor="@color/alt_text_color"
                             android:textSize="@dimen/label_planets_text" />
 
                         <TextView
-                            android:id="@+id/se_start_text"
+                            android:id="@+id/se_sun_az_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/label_planets_text" />
 
-                        <View
-                            android:id="@+id/view3"
-                            android:layout_width="fill_parent"
-                            android:layout_height="@dimen/data_card" />
-
-                        <TextView
-                            android:id="@+id/se_tstart"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_tstart"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_planets_text" />
-
-                        <TextView
-                            android:id="@+id/se_tstart_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_planets_text" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -191,72 +390,33 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/se_end"
+                            android:id="@+id/se_sun_alt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_end"
+                            android:text="@string/data_alt"
                             android:textColor="@color/alt_text_color"
                             android:textSize="@dimen/label_planets_text" />
 
                         <TextView
-                            android:id="@+id/se_end_text"
+                            android:id="@+id/se_sun_alt_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/label_planets_text" />
 
-                        <View
-                            android:id="@+id/view01"
-                            android:layout_width="fill_parent"
-                            android:layout_height="@dimen/data_card" />
-
-                        <TextView
-                            android:id="@+id/se_tend"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_tend"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_planets_text" />
-
-                        <TextView
-                            android:id="@+id/se_tend_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_planets_text" />
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/view05"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/view4"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/data_card" />
 
-                <TextView
-                    android:id="@+id/se_max"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/ecl_se_max"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
-                <TextView
-                    android:id="@+id/se_max_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_planets_text" />
-
                 <LinearLayout
-                    android:id="@+id/sunrise_layout"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/data_layout4"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
@@ -267,22 +427,39 @@
                         android:layout_weight="0.5"
                         android:orientation="vertical">
 
-                        <View
-                            android:id="@+id/view8a"
-                            android:layout_width="fill_parent"
-                            android:layout_height="@dimen/data_card" />
-
                         <TextView
-                            android:id="@+id/se_sunrise"
+                            android:id="@+id/se_cover"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="@string/ecl_sunrise"
+                            android:text="@string/ecl_se_cover"
                             android:textColor="@color/alt_text_color"
                             android:textSize="@dimen/label_planets_text" />
 
                         <TextView
-                            android:id="@+id/se_sunrise_text"
+                            android:id="@+id/se_cover_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/label_planets_text" />
+
+                        <View
+                            android:id="@+id/view5"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/data_card" />
+
+                        <TextView
+                            android:id="@+id/se_saros"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/ecl_se_saros"
+                            android:textColor="@color/alt_text_color"
+                            android:textSize="@dimen/label_planets_text" />
+
+                        <TextView
+                            android:id="@+id/se_saros_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -296,22 +473,39 @@
                         android:layout_weight="0.5"
                         android:orientation="vertical">
 
-                        <View
-                            android:id="@+id/view8b"
-                            android:layout_width="fill_parent"
-                            android:layout_height="@dimen/data_card" />
-
                         <TextView
-                            android:id="@+id/se_sunset"
+                            android:id="@+id/se_mag"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="@string/ecl_sunset"
+                            android:text="@string/data_mag"
                             android:textColor="@color/alt_text_color"
                             android:textSize="@dimen/label_planets_text" />
 
                         <TextView
-                            android:id="@+id/se_sunset_text"
+                            android:id="@+id/se_mag_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/label_planets_text" />
+
+                        <View
+                            android:id="@+id/view6"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/data_card" />
+
+                        <TextView
+                            android:id="@+id/se_sarosm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/ecl_se_sarosm"
+                            android:textColor="@color/alt_text_color"
+                            android:textSize="@dimen/label_planets_text" />
+
+                        <TextView
+                            android:id="@+id/se_sarosm_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -321,232 +515,25 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:id="@+id/view03"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/linear02"
-                android:background="@color/divider_color" />
-
             <LinearLayout
-                android:id="@+id/linear03"
+                android:id="@+id/se_local_visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/view03"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/data_card_pad"
+                android:paddingLeft="@dimen/data_card_pad"
+                android:paddingRight="@dimen/data_card_pad"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/eclData"
-                    android:layout_width="match_parent"
+                    android:id="@+id/se_no_visible"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/data_card_pad"
-                    android:text="@string/ecl_data"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <LinearLayout
-                    android:id="@+id/se_local_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:paddingLeft="@dimen/data_card_pad"
-                    android:paddingRight="@dimen/data_card_pad">
-
-                    <TextView
-                        android:id="@+id/ecl_sun"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_se_sun"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_up_text" />
-
-                    <LinearLayout
-                        android:id="@+id/data_layout3"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/se_sun_az"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/data_az"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/se_sun_az_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/se_sun_alt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/data_alt"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/se_sun_alt_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/view4"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/data_card" />
-
-                    <LinearLayout
-                        android:id="@+id/data_layout4"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/se_cover"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/ecl_se_cover"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/se_cover_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <View
-                                android:id="@+id/view5"
-                                android:layout_width="fill_parent"
-                                android:layout_height="@dimen/data_card" />
-
-                            <TextView
-                                android:id="@+id/se_saros"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/ecl_se_saros"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/se_saros_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/se_mag"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/data_mag"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/se_mag_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <View
-                                android:id="@+id/view6"
-                                android:layout_width="fill_parent"
-                                android:layout_height="@dimen/data_card" />
-
-                            <TextView
-                                android:id="@+id/se_sarosm"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/ecl_se_sarosm"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/se_sarosm_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/se_local_visible"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:paddingLeft="@dimen/data_card_pad"
-                    android:paddingRight="@dimen/data_card_pad"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/se_no_visible"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/ecl_no"
-                        android:textColor="@color/alert_color"
-                        android:textSize="@dimen/label_up_text" />
-                </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/ecl_no"
+                    android:textColor="@color/alert_color"
+                    android:textSize="@dimen/label_up_text" />
             </LinearLayout>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

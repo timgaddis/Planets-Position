@@ -3,7 +3,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/card1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/data_card"
         android:layout_marginLeft="@dimen/data_card"
         android:layout_marginStart="@dimen/data_card"
@@ -58,7 +58,7 @@
 
             <View
                 android:id="@+id/view01"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/data_card_pad" />
 
             <TextView
@@ -73,14 +73,14 @@
     </android.support.v7.widget.CardView>
 
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="0.5"
         android:paddingBottom="@dimen/data_card">
 
         <android.support.v7.widget.CardView
             android:id="@+id/card2"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/data_card"
             android:elevation="5dp"
@@ -111,7 +111,7 @@
 
                     <LinearLayout
                         android:id="@+id/data_layout1"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
@@ -170,7 +170,7 @@
 
                     <View
                         android:id="@+id/view05"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/data_card" />
 
                     <TextView
@@ -192,7 +192,7 @@
 
                     <LinearLayout
                         android:id="@+id/lo_moon_layout"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
@@ -205,7 +205,7 @@
 
                             <View
                                 android:id="@+id/view8a"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/data_card" />
 
                             <TextView
@@ -234,7 +234,7 @@
 
                             <View
                                 android:id="@+id/view8b"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/data_card" />
 
                             <TextView
@@ -259,7 +259,7 @@
 
                 <View
                     android:id="@+id/view02"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/linear02"
                     android:background="@color/divider_color" />
@@ -301,7 +301,7 @@
 
                         <View
                             android:id="@+id/view5"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -315,12 +315,12 @@
 
                         <View
                             android:id="@+id/view6"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <LinearLayout
                             android:id="@+id/data_layout3"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
                             android:orientation="horizontal">
@@ -378,7 +378,7 @@
 
                         <View
                             android:id="@+id/view4"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -392,12 +392,12 @@
 
                         <View
                             android:id="@+id/view7"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <LinearLayout
                             android:id="@+id/data_layout4"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
                             android:orientation="horizontal">

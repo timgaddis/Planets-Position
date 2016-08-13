@@ -19,8 +19,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/cardview_dark_background"
     android:orientation="vertical"
     android:padding="@dimen/data_card">
@@ -61,13 +61,13 @@
 
     <View
         android:id="@+id/view02"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider_color" />
 
     <LinearLayout
         android:id="@+id/data_layout"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal"
@@ -98,7 +98,7 @@
 
             <View
                 android:id="@+id/view3"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/data_card_pad" />
 
             <TextView
@@ -145,7 +145,7 @@
 
             <View
                 android:id="@+id/view5"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/data_card_pad" />
 
             <TextView
@@ -192,7 +192,7 @@
 
             <View
                 android:id="@+id/view6"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/data_card_pad" />
 
             <TextView
@@ -216,7 +216,7 @@
 
     <View
         android:id="@+id/view7"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/data_card_pad" />
 
     <TextView

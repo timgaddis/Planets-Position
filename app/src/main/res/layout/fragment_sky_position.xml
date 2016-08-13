@@ -19,15 +19,15 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/cardview_dark_background"
     android:orientation="vertical"
     android:padding="@dimen/data_card">
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -41,14 +41,14 @@
 
         <LinearLayout
             android:id="@+id/linearLayout1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/dateButton"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:textColor="@color/button_text"
@@ -57,7 +57,7 @@
             <Button
                 android:id="@+id/timeButton"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:textColor="@color/button_text"
@@ -68,7 +68,7 @@
 
     <View
         android:id="@+id/view02"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider_color" />
 
@@ -80,7 +80,7 @@
 
         <LinearLayout
             android:id="@+id/pos_layout"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:orientation="horizontal">
@@ -110,7 +110,7 @@
 
                 <View
                     android:id="@+id/view1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/data_card_pad" />
 
                 <TextView
@@ -132,7 +132,7 @@
 
                 <View
                     android:id="@+id/view3"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/data_card_pad" />
 
                 <TextView
@@ -179,7 +179,7 @@
 
                 <View
                     android:id="@+id/view2"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/data_card_pad" />
 
                 <TextView
@@ -201,7 +201,7 @@
 
                 <View
                     android:id="@+id/view4"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/data_card_pad" />
 
                 <TextView
@@ -226,7 +226,7 @@
 
         <View
             android:id="@+id/view5"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/data_card_pad" />
 
         <TextView
@@ -248,7 +248,7 @@
 
         <View
             android:id="@+id/view6"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/data_card_pad" />
 
         <TextView
@@ -270,7 +270,7 @@
 
         <View
             android:id="@+id/view7"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/data_card_pad" />
 
         <TextView

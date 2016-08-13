@@ -3,7 +3,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/buttonSEMain"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_solar_eclipse"
         android:textColor="@color/button_text"
@@ -44,7 +44,7 @@
 
     <Button
         android:id="@+id/buttonLEMain"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_lunar_eclipse"
         android:textColor="@color/button_text"
@@ -57,7 +57,7 @@
 
     <Button
         android:id="@+id/buttonLOMain"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_lunar_occultion"
         android:textColor="@color/button_text"
@@ -70,7 +70,7 @@
 
     <Button
         android:id="@+id/buttonSky"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_sky_position"
         android:textColor="@color/button_text"
@@ -83,7 +83,7 @@
 
     <Button
         android:id="@+id/buttonWhatsUp"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_whats_up"
         android:textColor="@color/button_text"

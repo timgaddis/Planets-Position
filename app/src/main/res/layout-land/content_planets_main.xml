@@ -3,7 +3,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -29,13 +29,13 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/buttonSEMain"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/nav_solar_eclipse"
@@ -44,7 +44,7 @@
 
         <Button
             android:id="@+id/buttonLEMain"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/nav_lunar_eclipse"
@@ -59,7 +59,7 @@
 
     <Button
         android:id="@+id/buttonLOMain"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nav_lunar_occultion"
         android:textColor="@color/button_text"
@@ -71,13 +71,13 @@
         android:layout_height="@dimen/activity_horizontal_margin" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/buttonSky"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/nav_sky_position"
@@ -86,7 +86,7 @@
 
         <Button
             android:id="@+id/buttonWhatsUp"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/nav_whats_up"

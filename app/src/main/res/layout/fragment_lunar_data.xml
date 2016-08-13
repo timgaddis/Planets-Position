@@ -3,7 +3,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/card1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/data_card"
         android:layout_marginLeft="@dimen/data_card"
@@ -39,12 +39,12 @@
         card_view:cardElevation="5dp">
 
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/linear01"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="@dimen/data_card_pad">
@@ -70,7 +70,7 @@
 
             <View
                 android:id="@+id/view02"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/linear01"
                 android:background="@color/divider_color" />
@@ -95,7 +95,7 @@
 
                 <LinearLayout
                     android:id="@+id/data_layout1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
@@ -125,7 +125,7 @@
 
                         <View
                             android:id="@+id/view1a"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -147,7 +147,7 @@
 
                         <View
                             android:id="@+id/view3"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -193,7 +193,7 @@
 
                         <View
                             android:id="@+id/view1b"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -215,7 +215,7 @@
 
                         <View
                             android:id="@+id/view01"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -240,7 +240,7 @@
 
                 <View
                     android:id="@+id/view05"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/data_card" />
 
                 <TextView
@@ -262,7 +262,7 @@
 
                 <LinearLayout
                     android:id="@+id/le_moonrise_layout"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
@@ -275,7 +275,7 @@
 
                         <View
                             android:id="@+id/view8a"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -304,7 +304,7 @@
 
                         <View
                             android:id="@+id/view8b"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/data_card" />
 
                         <TextView
@@ -329,7 +329,7 @@
 
             <View
                 android:id="@+id/view03"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/linear02"
                 android:background="@color/divider_color" />
@@ -371,7 +371,7 @@
 
                     <LinearLayout
                         android:id="@+id/data_layout3"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
@@ -429,12 +429,12 @@
 
                     <View
                         android:id="@+id/view4"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/data_card" />
 
                     <LinearLayout
                         android:id="@+id/data_layout4"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
                         android:orientation="horizontal">
@@ -464,7 +464,7 @@
 
                             <View
                                 android:id="@+id/view5"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/data_card" />
 
                             <TextView
@@ -510,7 +510,7 @@
 
                             <View
                                 android:id="@+id/view6"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/data_card" />
 
                             <TextView

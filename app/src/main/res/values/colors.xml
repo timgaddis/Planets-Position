@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -20,11 +19,13 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#666</color>
+    <color name="colorPrimary">#1d2636</color>
+    <color name="colorPrimaryDark">#171e2b</color>
+    <color name="colorAccent">#2D3C54</color>
+    <color name="main_back">#222222</color>
     <color name="button_text">#FFF</color>
-    <color name="text_color">#FFFFFF</color>
+    <color name="button_back">#1d2636</color>
+    <color name="text_color">#ffffff</color>
     <color name="alt_text_color">#B3FFFFFF</color>
     <color name="alert_color">#FFFF0000</color>
     <color name="divider_color">#1FFFFFFF</color>

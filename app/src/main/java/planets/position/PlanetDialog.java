@@ -68,7 +68,7 @@ public class PlanetDialog extends DialogFragment {
             array = getArguments().getInt("array");
             title = getArguments().getInt("title");
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.LocDialogTheme);
         builder.setTitle(title);
         builder.setItems(array, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

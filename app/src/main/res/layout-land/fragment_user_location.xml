@@ -21,156 +21,139 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/user_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false">
+    android:background="@color/main_back"
+    android:baselineAligned="false"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/data_card"
-        android:layout_weight="0.5"
-        android:elevation="5dp"
-        card_view:cardBackgroundColor="@color/cardview_dark_background"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="5dp">
+    <LinearLayout
+        android:id="@+id/card_view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:padding="@dimen/data_card_pad">
 
         <LinearLayout
+            android:id="@+id/card_view3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:focusableInTouchMode="false"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/card_view1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:padding="@dimen/data_card_pad">
-
-                <LinearLayout
-                    android:id="@+id/card_view3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:focusableInTouchMode="false"
-                    android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/view00"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card_pad" />
-
-                    <TextView
-                        android:id="@+id/text01"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/loc_lat"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/newLatLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <View
-                        android:id="@+id/view01"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card_pad" />
-
-                    <TextView
-                        android:id="@+id/text02"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/loc_lng"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/newLongText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/card_view6"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:focusableInTouchMode="false"
-                    android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/view02"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card_pad" />
-
-                    <TextView
-                        android:id="@+id/text03"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/loc_ele"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/newElevationText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <View
-                        android:id="@+id/view03"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card_pad" />
-
-                    <TextView
-                        android:id="@+id/text04"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/loc_gmt"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/newGMTOffsetText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
-            </LinearLayout>
-
             <View
-                android:id="@+id/view04"
+                android:id="@+id/view00"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/data_card_pad" />
 
             <TextView
-                android:id="@+id/locEditText"
+                android:id="@+id/text01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/loc_edit"
-                android:visibility="invisible" />
+                android:text="@string/loc_lat"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/newLatLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <View
+                android:id="@+id/view01"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/data_card_pad" />
+
+            <TextView
+                android:id="@+id/text02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/loc_lng"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/newLongText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/card_view6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:focusableInTouchMode="false"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/view02"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/data_card_pad" />
+
+            <TextView
+                android:id="@+id/text03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/loc_ele"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/newElevationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <View
+                android:id="@+id/view03"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/data_card_pad" />
+
+            <TextView
+                android:id="@+id/text04"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/loc_gmt"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/newGMTOffsetText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view04"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/data_card_pad" />
+
+    <TextView
+        android:id="@+id/locEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/loc_edit"
+        android:visibility="invisible" />
 </LinearLayout>

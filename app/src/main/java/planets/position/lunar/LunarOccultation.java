@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,10 +40,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -54,6 +52,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import planets.position.FragmentListener;
+import planets.position.PlanetDialog;
 import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
@@ -65,20 +64,23 @@ public class LunarOccultation extends Fragment {
 
     public static final int TASK_FRAGMENT = 100;
     private static final int DATE_FRAGMENT = 50;
+    public static final int PLANETS_DIALOG = 200;
     private static final String TASK_FRAGMENT_TAG = "lunarOccultTask";
 
     private FragmentListener mCallbacks;
     private FragmentManager mFM;
     private MenuItem next, previous;
+    private Button nameButton;
     private ListView occultList;
     private List<String> planetArray;
     private LunarOccultTask taskFragment;
     private LunarOccultData occultData;
+    private PlanetDialog planetDialog;
     private double offset, firstDate, lastDate;
     private final double[] g = new double[3];
     private double[] time;
     private boolean firstRun, allPlanets, newLoc;
-    private int planetNum = 1, spinnerPos = 0;
+    private int planetNum = 1;
     private PlanetsDatabase planetsDB;
     private SharedPreferences settings;
     private DateFormat mDateFormat;
@@ -89,10 +91,13 @@ public class LunarOccultation extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lunar_occult, container,
                 false);
+
+        nameButton = (Button) v.findViewById(R.id.nameButton);
         occultList = (ListView) v.findViewById(R.id.occultList);
-        Spinner spinner = (Spinner) v.findViewById(R.id.occultSpinner);
         planetArray = Arrays.asList(getResources().getStringArray(
-                R.array.planets_array));
+                R.array.occult_array));
+
+        nameButton.setText(planetArray.get(planetNum - 1));
 
         occultList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -117,34 +122,12 @@ public class LunarOccultation extends Fragment {
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                ((AppCompatActivity) getActivity()).getSupportActionBar()
-                        .getThemedContext(), R.array.occult_array,
-                R.layout.spinner_planets);
-        adapter.setDropDownViewResource(R.layout.spinner_planets_dropdown);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(spinnerPos, false);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        nameButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                planetNum = position + 1;
-                if (position == 0) {
-                    next.setVisible(false);
-                    previous.setVisible(false);
-                } else {
-                    next.setVisible(true);
-                    previous.setVisible(true);
-                }
-                if (spinnerPos != position) {
-                    time = jdUTC.getCurrentTime(offset);
-                    occultList.setVisibility(View.INVISIBLE);
-                    launchTask(time[1], 0.0, planetNum);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                planetDialog = PlanetDialog.newInstance(R.array.occult_array, R.string.planet_select);
+                planetDialog.setTargetFragment(LunarOccultation.this, PLANETS_DIALOG);
+                planetDialog.show(getActivity().getSupportFragmentManager(), "loPlanetDialog");
             }
         });
 
@@ -186,7 +169,6 @@ public class LunarOccultation extends Fragment {
         firstDate = settings.getFloat("loFirstDate", 0);
         lastDate = settings.getFloat("loLastDate", 0);
         allPlanets = settings.getBoolean("loAllPlanets", true);
-        spinnerPos = settings.getInt("loSpinner", 0);
         planetNum = settings.getInt("loPlanetNum", 1);
 
         setHasOptionsMenu(true);
@@ -222,97 +204,115 @@ public class LunarOccultation extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == DATE_FRAGMENT) {
-            switch (resultCode) {
-                case 60:
-                    // Set button
-                    Calendar c = Calendar.getInstance();
-                    c.clear();
-                    c.set(data.getIntExtra("year", 0),
-                            data.getIntExtra("month", 0),
-                            data.getIntExtra("day", 0));
-                    // convert local time to utc
-                    c.add(Calendar.MINUTE, (int) (offset * -60));
-                    time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
-                            c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
-                            c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-                            c.get(Calendar.SECOND));
-                    occultList.setVisibility(View.INVISIBLE);
-                    launchTask(time[1], 0.0, planetNum);
-                    break;
-                case 70:
-                    // Cancel button
-                    break;
-            }
-        } else if (requestCode == TASK_FRAGMENT) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    SharedPreferences.Editor editor;
-                    taskFragment = null;
-                    firstDate = data.getDoubleExtra("first", 0);
-                    lastDate = data.getDoubleExtra("last", 0);
-                    allPlanets = data.getBooleanExtra("allPlanets", true);
-                    editor = settings.edit();
-                    editor.putBoolean("loFirstRun", false);
-                    editor.putFloat("loFirstDate", (float) firstDate);
-                    editor.putFloat("loLastDate", (float) lastDate);
-                    editor.putBoolean("loAllPlanets", allPlanets);
-                    editor.putInt("loSpinner", planetNum - 1);
-                    editor.putInt("loPlanetNum", planetNum);
-                    editor.apply();
-                    spinnerPos = planetNum - 1;
-                    firstRun = false;
-                    loadOccults();
-                    break;
-                case Activity.RESULT_CANCELED:
-                    Log.e(TASK_FRAGMENT_TAG, "Lunar occultation task canceled.");
-                    break;
-                case 100:// Local Occultation calc error
-                    Log.e(TASK_FRAGMENT_TAG,
-                            "Local Lunar Occultation calc error 100.");
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 200:// Global Occultation calc error
-                    Log.e(TASK_FRAGMENT_TAG,
-                            "Global Lunar Occultation calc error 200.");
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 300:// Local Occultation calc error
-                    Log.e(TASK_FRAGMENT_TAG,
-                            "Local Lunar Occultation calc error 300.");
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 400:// Local Occultation calc error
-                    Log.e(TASK_FRAGMENT_TAG,
-                            "Local Lunar Occultation calc error 400.");
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 500:// Global Occultation calc error
-                    Log.e(TASK_FRAGMENT_TAG,
-                            "Global Lunar Occultation calc error 500.");
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-            }
+        switch (requestCode) {
+            case PLANETS_DIALOG:
+                nameButton.setText(planetArray.get(resultCode));
+                planetNum = resultCode + 1;
+                if (resultCode == 0) {
+                    next.setVisible(false);
+                    previous.setVisible(false);
+                } else {
+                    next.setVisible(true);
+                    previous.setVisible(true);
+                }
+                time = jdUTC.getCurrentTime(offset);
+                occultList.setVisibility(View.INVISIBLE);
+                launchTask(time[1], 0.0, planetNum);
+                break;
+            case DATE_FRAGMENT:
+                switch (resultCode) {
+                    case 60:
+                        // Set button
+                        Calendar c = Calendar.getInstance();
+                        c.clear();
+                        c.set(data.getIntExtra("year", 0),
+                                data.getIntExtra("month", 0),
+                                data.getIntExtra("day", 0));
+                        // convert local time to utc
+                        c.add(Calendar.MINUTE, (int) (offset * -60));
+                        time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
+                                c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
+                                c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                                c.get(Calendar.SECOND));
+                        occultList.setVisibility(View.INVISIBLE);
+                        launchTask(time[1], 0.0, planetNum);
+                        break;
+                    case 70:
+                        // Cancel button
+                        break;
+                }
+                break;
+            case TASK_FRAGMENT:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        SharedPreferences.Editor editor;
+                        taskFragment = null;
+                        firstDate = data.getDoubleExtra("first", 0);
+                        lastDate = data.getDoubleExtra("last", 0);
+                        allPlanets = data.getBooleanExtra("allPlanets", true);
+                        editor = settings.edit();
+                        editor.putBoolean("loFirstRun", false);
+                        editor.putFloat("loFirstDate", (float) firstDate);
+                        editor.putFloat("loLastDate", (float) lastDate);
+                        editor.putBoolean("loAllPlanets", allPlanets);
+                        editor.putInt("loPlanetNum", planetNum);
+                        editor.apply();
+                        firstRun = false;
+                        loadOccults();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Log.e(TASK_FRAGMENT_TAG, "Lunar occultation task canceled.");
+                        break;
+                    case 100:// Local Occultation calc error
+                        Log.e(TASK_FRAGMENT_TAG,
+                                "Local Lunar Occultation calc error 100.");
+                        try {
+                            throw new Exception();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 200:// Global Occultation calc error
+                        Log.e(TASK_FRAGMENT_TAG,
+                                "Global Lunar Occultation calc error 200.");
+                        try {
+                            throw new Exception();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 300:// Local Occultation calc error
+                        Log.e(TASK_FRAGMENT_TAG,
+                                "Local Lunar Occultation calc error 300.");
+                        try {
+                            throw new Exception();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 400:// Local Occultation calc error
+                        Log.e(TASK_FRAGMENT_TAG,
+                                "Local Lunar Occultation calc error 400.");
+                        try {
+                            throw new Exception();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 500:// Global Occultation calc error
+                        Log.e(TASK_FRAGMENT_TAG,
+                                "Global Lunar Occultation calc error 500.");
+                        try {
+                            throw new Exception();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
+            default:
+                // Cancel button
+                break;
         }
     }
 
@@ -410,7 +410,7 @@ public class LunarOccultation extends Fragment {
                     TextView tv = (TextView) view;
                     int i = cursor.getInt(cursor
                             .getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_PLANET));
-                    tv.setText(planetArray.get(i));
+                    tv.setText(planetArray.get(i - 1));
                     return true;
                 } else if (column == 3) {// local
                     ImageView iv = (ImageView) view;

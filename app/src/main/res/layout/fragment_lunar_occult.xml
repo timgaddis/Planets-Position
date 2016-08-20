@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -23,25 +22,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Spinner
-        android:id="@+id/occultSpinner"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/nameButton"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp" />
+        android:background="@color/main_back"
+        android:textColor="@color/button_text"
+        android:textSize="@dimen/label_text" />
 
     <View
         android:id="@+id/view01"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/occultSpinner"
+        android:layout_below="@+id/nameButton"
         android:background="@color/colorPrimaryDark" />
 
     <ListView
         android:id="@+id/occultList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view01" />
+        android:layout_below="@+id/view01"
+        android:background="@color/main_back" />
 
 </RelativeLayout>

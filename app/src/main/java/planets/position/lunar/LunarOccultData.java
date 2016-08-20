@@ -85,7 +85,7 @@ public class LunarOccultData extends Fragment {
         loMoonEAltText = (TextView) v.findViewById(R.id.lo_moone_alt_text);
         loMoonLayout = (LinearLayout) v.findViewById(R.id.lo_moon_layout);
         loLocalVisible = (LinearLayout) v.findViewById(R.id.lo_local_visible);
-        loLocalLayout = (LinearLayout) v.findViewById(R.id.lo_local_layout);
+        loLocalLayout = (LinearLayout) v.findViewById(R.id.lo_data_layout1);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity().getApplicationContext());
         planetArray = Arrays.asList(getResources().getStringArray(

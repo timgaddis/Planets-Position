@@ -92,7 +92,7 @@ public class LunarEclipseData extends Fragment {
         leSarosMText = (TextView) v.findViewById(R.id.le_sarosm_text);
         leMoonRiseLayout = (LinearLayout) v.findViewById(R.id.le_moonrise_layout);
         leLocalVisible = (LinearLayout) v.findViewById(R.id.le_local_visible);
-        leLocalLayout = (LinearLayout) v.findViewById(R.id.le_local_layout);
+        leLocalLayout = (LinearLayout) v.findViewById(R.id.le_data_layout1);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity().getApplicationContext());
 
@@ -241,7 +241,7 @@ public class LunarEclipseData extends Fragment {
                     leStartText.setTextColor(planetColor);
                 }
         } else {
-            leStartText.setText("");
+            leStartText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_PARTIAL_BEGIN, 0);
         if (temp > 0 && partial) {
@@ -253,7 +253,7 @@ public class LunarEclipseData extends Fragment {
                     lePStartText.setTextColor(planetColor);
                 }
         } else {
-            lePStartText.setText("");
+            lePStartText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_TOTAL_BEGIN, 0);
         if (temp > 0 && total) {
@@ -265,7 +265,7 @@ public class LunarEclipseData extends Fragment {
                     leTStartText.setTextColor(planetColor);
                 }
         } else {
-            leTStartText.setText("");
+            leTStartText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_MAX_ECLIPSE, 0);
         if (temp > 0) {
@@ -277,7 +277,7 @@ public class LunarEclipseData extends Fragment {
                     leMaxText.setTextColor(planetColor);
                 }
         } else {
-            leMaxText.setText("");
+            leMaxText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_TOTAL_END, 0);
         if (temp > 0 && total) {
@@ -289,7 +289,7 @@ public class LunarEclipseData extends Fragment {
                     leTEndText.setTextColor(planetColor);
                 }
         } else {
-            leTEndText.setText("");
+            leTEndText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_PARTIAL_END, 0);
         if (temp > 0 && partial) {
@@ -301,7 +301,7 @@ public class LunarEclipseData extends Fragment {
                     lePEndText.setTextColor(planetColor);
                 }
         } else {
-            lePEndText.setText("");
+            lePEndText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_PENUMBRAL_END, 0);
         if (temp > 0) {
@@ -314,7 +314,7 @@ public class LunarEclipseData extends Fragment {
                     leEndText.setTextColor(planetColor);
                 }
         } else {
-            leEndText.setText("");
+            leEndText.setText(" \n ");
         }
 
         if (local) {

@@ -30,6 +30,8 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
+import planets.position.R;
+
 public class PlanetDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private int mYear = -1, mMonth = -1, mDay = -1;
@@ -56,7 +58,7 @@ public class PlanetDatePicker extends DialogFragment implements DatePickerDialog
             mDay = c.get(Calendar.DAY_OF_MONTH);
         }
         // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+        return new DatePickerDialog(getActivity(), R.style.datepicker, this, mYear, mMonth, mDay);
     }
 
     @Override

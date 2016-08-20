@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ public class UserLocationDialog extends DialogFragment {
             value = getArguments().getDouble("value");
         }
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.LocDialogTheme);
 
         switch (index) {
             case 0:

@@ -210,10 +210,10 @@ public class UserLocation extends Fragment {
                 saveLoc.setVisible(false);
                 if (saveLocation()) {
                     Toast.makeText(getActivity().getApplicationContext(),
-                            "Location saved.", Toast.LENGTH_LONG).show();
+                            "Location saved.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(),
-                            "Location not saved.", Toast.LENGTH_LONG).show();
+                            "Location not saved.", Toast.LENGTH_SHORT).show();
                 }
                 displayLocation();
                 return true;
@@ -356,10 +356,10 @@ public class UserLocation extends Fragment {
         }
         if (saveLocation()) {
             Toast.makeText(getActivity().getApplicationContext(),
-                    "Location saved.", Toast.LENGTH_LONG).show();
+                    "Location saved.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity().getApplicationContext(),
-                    "Location not saved.", Toast.LENGTH_LONG).show();
+                    "Location not saved.", Toast.LENGTH_SHORT).show();
         }
         displayLocation();
     }

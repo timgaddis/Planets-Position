@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/button_back</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
@@ -51,5 +52,31 @@
         <item name="android:background">@color/map_overlay</item>
         <item name="android:padding">@dimen/data_card</item>
     </style>
+
+    <style name="LocDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/text_color</item>
+        <item name="android:background">@color/main_back</item>
+    </style>
+
+    <style name="datepicker" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorControlActivated">@color/planet_set_color</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:windowBackground">@color/main_back</item>
+    </style>
+
+    <!--<style name="planetPref" parent="PreferenceThemeOverlay.v14.Material">-->
+        <!---->
+    <!--</style>-->
+    <!--<style name="PreferenceListHeader" parent="@android:style/Widget.TextView.ListSeparator">-->
+
+        <!--<item name="android:textColor">#000000</item>-->
+        <!--<item name="android:textStyle">bold</item>-->
+        <!--<item name="android:textSize">12sp</item>-->
+        <!--<item name="android:background">#cccccc</item>-->
+    <!--</style>-->
+
+    <!--<style name="Theme.Custom" parent="@android:style/Theme">-->
+        <!--<item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>-->
+    <!--</style>-->
 
 </resources>

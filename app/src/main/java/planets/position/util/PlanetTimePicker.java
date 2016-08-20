@@ -31,6 +31,8 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import planets.position.R;
+
 public class PlanetTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private int mHour = -1, mMinute = -1;
@@ -55,7 +57,8 @@ public class PlanetTimePicker extends DialogFragment implements TimePickerDialog
             mMinute = c.get(Calendar.MINUTE);
         }
         // Create a new instance of TimePickerDialog and return it
-        return new TimePickerDialog(getTargetFragment().getActivity(), this, mHour, mMinute,
+        return new TimePickerDialog(getTargetFragment().getActivity(), R.style.datepicker,
+                this, mHour, mMinute,
                 DateFormat.is24HourFormat(getTargetFragment().getActivity()));
     }
 

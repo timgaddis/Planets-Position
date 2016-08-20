@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
@@ -19,159 +18,108 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:background="@color/main_back">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card1"
+    <RelativeLayout
+        android:id="@+id/layout_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/data_card"
-        android:layout_marginLeft="@dimen/data_card"
-        android:layout_marginStart="@dimen/data_card"
-        android:layout_marginTop="@dimen/data_card"
-        android:layout_weight="0.5"
-        android:elevation="5dp"
-        card_view:cardBackgroundColor="@color/cardview_dark_background"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="5dp"
-        card_view:contentPadding="16dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/card_view3"
+            android:id="@+id/layout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.5"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/data_card_pad">
 
             <TextView
                 android:id="@+id/lo_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.5"
                 android:gravity="center_horizontal"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
-
-            <View
-                android:id="@+id/view01"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
 
             <TextView
                 android:id="@+id/lo_planet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.5"
                 android:gravity="center_horizontal"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
-
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:paddingBottom="@dimen/data_card">
+        <View
+            android:id="@+id/view02"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/layout1"
+            android:background="@color/divider_color" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/card2"
+        <LinearLayout
+            android:id="@+id/lo_times_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/data_card"
-            android:elevation="5dp"
-            card_view:cardBackgroundColor="@color/cardview_dark_background"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="5dp">
+            android:layout_below="@id/view02"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/data_card"
+            android:paddingLeft="@dimen/data_card"
+            android:paddingRight="@dimen/data_card">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/loTimes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/data_card_pad"
+                android:text="@string/lo_times"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <LinearLayout
+                android:id="@+id/lo_times_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/linear02"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/data_card_pad">
+                    android:id="@+id/lo_times_layout1a"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/loTimes"
+                        android:id="@+id/lo_start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
-                        android:text="@string/lo_times"
+                        android:text="@string/lo_start"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/lo_start_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
-                    <LinearLayout
-                        android:id="@+id/data_layout1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
+                </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/lo_start"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/lo_start"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/lo_start_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/lo_end"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/lo_end"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/lo_end_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/view05"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card" />
+                <LinearLayout
+                    android:id="@+id/lo_times_layout1b"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/lo_max"
@@ -180,7 +128,7 @@
                         android:gravity="center_horizontal"
                         android:text="@string/lo_max"
                         android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_planets_text" />
+                        android:textSize="@dimen/label_text" />
 
                     <TextView
                         android:id="@+id/lo_max_text"
@@ -188,293 +136,299 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_planets_text" />
-
-                    <LinearLayout
-                        android:id="@+id/lo_moon_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <View
-                                android:id="@+id/view8a"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/data_card" />
-
-                            <TextView
-                                android:id="@+id/lo_moonrise"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/ecl_moonrise"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/lo_moonrise_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="vertical">
-
-                            <View
-                                android:id="@+id/view8b"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/data_card" />
-
-                            <TextView
-                                android:id="@+id/lo_moonset"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="@string/ecl_moonset"
-                                android:textColor="@color/alt_text_color"
-                                android:textSize="@dimen/label_planets_text" />
-
-                            <TextView
-                                android:id="@+id/lo_moonset_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:textColor="@color/text_color"
-                                android:textSize="@dimen/label_planets_text" />
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:textSize="@dimen/label_text" />
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/view02"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/linear02"
-                    android:background="@color/divider_color" />
-
                 <LinearLayout
-                    android:id="@+id/linear03"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/view02"
+                    android:id="@+id/lo_times_layout1c"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/loData"
+                        android:id="@+id/lo_end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:padding="@dimen/data_card_pad"
-                        android:text="@string/lo_data"
-                        android:textColor="@color/text_color"
+                        android:text="@string/lo_end"
+                        android:textColor="@color/alt_text_color"
                         android:textSize="@dimen/label_text" />
 
-                    <LinearLayout
-                        android:id="@+id/lo_local_layout"
+                    <TextView
+                        android:id="@+id/lo_end_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/data_card_pad"
-                        android:paddingLeft="@dimen/data_card_pad"
-                        android:paddingRight="@dimen/data_card_pad">
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lo_moon_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/data_card">
+
+                <LinearLayout
+                    android:id="@+id/lo_moon_layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lo_moonrise"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_moonrise"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/lo_moonrise_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lo_moon_layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lo_moonset"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_moonset"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/lo_moonset_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_text" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view03"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/lo_times_layout"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:id="@+id/lo_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view03"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/loData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/data_card_pad"
+                android:text="@string/lo_data"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <LinearLayout
+                android:id="@+id/lo_data_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/data_card_pad"
+                android:paddingLeft="@dimen/data_card_pad"
+                android:paddingRight="@dimen/data_card_pad">
+
+                <TextView
+                    android:id="@+id/loMoon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/data_card"
+                    android:text="@string/lo_moon"
+                    android:textColor="@color/alt_text_color"
+                    android:textSize="@dimen/label_text" />
+
+                <LinearLayout
+                    android:id="@+id/lo_data_layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/data_card">
+
+                    <TextView
+                        android:id="@+id/loStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/lo_start"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/loEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/lo_end"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lo_data_layout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/lo_data_layout3a"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/loMoon"
+                            android:id="@+id/lo_moons_az"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="@string/lo_moon"
+                            android:text="@string/data_az"
                             android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_up_text" />
-
-                        <View
-                            android:id="@+id/view5"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/data_card" />
+                            android:textSize="@dimen/label_text" />
 
                         <TextView
-                            android:id="@+id/loStart"
+                            android:id="@+id/lo_moons_az_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="@string/lo_start"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_up_text" />
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/label_text" />
 
-                        <View
-                            android:id="@+id/view6"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/data_card" />
-
-                        <LinearLayout
-                            android:id="@+id/data_layout3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:baselineAligned="false"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/lo_moons_az"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/data_az"
-                                    android:textColor="@color/alt_text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                                <TextView
-                                    android:id="@+id/lo_moons_az_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:textColor="@color/text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/lo_moons_alt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/data_alt"
-                                    android:textColor="@color/alt_text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                                <TextView
-                                    android:id="@+id/lo_moons_alt_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:textColor="@color/text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/view4"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/data_card" />
-
-                        <TextView
-                            android:id="@+id/loEnd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/lo_end"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_up_text" />
-
-                        <View
-                            android:id="@+id/view7"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/data_card" />
-
-                        <LinearLayout
-                            android:id="@+id/data_layout4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:baselineAligned="false"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/lo_moone_az"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/data_az"
-                                    android:textColor="@color/alt_text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                                <TextView
-                                    android:id="@+id/lo_moone_az_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:textColor="@color/text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/lo_moone_alt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/data_alt"
-                                    android:textColor="@color/alt_text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                                <TextView
-                                    android:id="@+id/lo_moone_alt_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:textColor="@color/text_color"
-                                    android:textSize="@dimen/label_planets_text" />
-
-                            </LinearLayout>
-                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/lo_local_visible"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/data_card_pad"
-                        android:paddingLeft="@dimen/data_card_pad"
-                        android:paddingRight="@dimen/data_card_pad"
-                        android:visibility="gone">
+                        android:id="@+id/lo_data_layout3b"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/lo_no_visible"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/lo_moons_alt"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="@string/lo_no"
-                            android:textColor="@color/alert_color"
-                            android:textSize="@dimen/label_up_text" />
+                            android:gravity="center_horizontal"
+                            android:text="@string/data_alt"
+                            android:textColor="@color/alt_text_color"
+                            android:textSize="@dimen/label_text" />
+
+                        <TextView
+                            android:id="@+id/lo_moons_alt_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/label_text" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lo_data_layout3c"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lo_moone_az"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/data_az"
+                            android:textColor="@color/alt_text_color"
+                            android:textSize="@dimen/label_text" />
+
+                        <TextView
+                            android:id="@+id/lo_moone_az_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/label_text" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lo_data_layout3d"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lo_moone_alt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/data_alt"
+                            android:textColor="@color/alt_text_color"
+                            android:textSize="@dimen/label_text" />
+
+                        <TextView
+                            android:id="@+id/lo_moone_alt_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/label_text" />
+
                     </LinearLayout>
                 </LinearLayout>
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-    </ScrollView>
-</LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lo_local_visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/data_card_pad"
+                android:paddingLeft="@dimen/data_card_pad"
+                android:paddingRight="@dimen/data_card_pad"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/lo_no_visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/lo_no"
+                    android:textColor="@color/alert_color"
+                    android:textSize="@dimen/label_up_text" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

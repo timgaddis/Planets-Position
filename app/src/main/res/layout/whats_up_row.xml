@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
@@ -22,6 +21,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="88dp"
+    android:background="@color/main_back"
     android:paddingEnd="@dimen/data_card_pad"
     android:paddingLeft="@dimen/data_card"
     android:paddingRight="@dimen/data_card_pad"

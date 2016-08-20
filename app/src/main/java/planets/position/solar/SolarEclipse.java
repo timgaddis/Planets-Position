@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,27 +181,20 @@ public class SolarEclipse extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == DATE_FRAGMENT) {
-            switch (resultCode) {
-                case 60:
-                    // Set button
-                    Calendar c = Calendar.getInstance();
-                    c.clear();
-                    c.set(data.getIntExtra("year", 0),
-                            data.getIntExtra("month", 0),
-                            data.getIntExtra("day", 0));
-                    // convert local time to utc
-                    c.add(Calendar.MINUTE, (int) (offset * -60));
-                    time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
-                            c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
-                            c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-                            c.get(Calendar.SECOND));
-                    solarList.setVisibility(View.INVISIBLE);
-                    launchTask(time[1], 0.0);
-                    break;
-                case 70:
-                    // Cancel button
-                    break;
-            }
+            // Set date
+            Calendar c = Calendar.getInstance();
+            c.clear();
+            c.set(data.getIntExtra("year", 0),
+                    data.getIntExtra("month", 0),
+                    data.getIntExtra("day", 0));
+            // convert local time to utc
+            c.add(Calendar.MINUTE, (int) (offset * -60));
+            time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
+                    c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
+                    c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                    c.get(Calendar.SECOND));
+            solarList.setVisibility(View.INVISIBLE);
+            launchTask(time[1], 0.0);
         } else if (requestCode == TASK_FRAGMENT) {
             switch (resultCode) {
                 case Activity.RESULT_OK:

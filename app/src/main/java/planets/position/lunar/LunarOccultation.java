@@ -220,27 +220,20 @@ public class LunarOccultation extends Fragment {
                 launchTask(time[1], 0.0, planetNum);
                 break;
             case DATE_FRAGMENT:
-                switch (resultCode) {
-                    case 60:
-                        // Set button
-                        Calendar c = Calendar.getInstance();
-                        c.clear();
-                        c.set(data.getIntExtra("year", 0),
-                                data.getIntExtra("month", 0),
-                                data.getIntExtra("day", 0));
-                        // convert local time to utc
-                        c.add(Calendar.MINUTE, (int) (offset * -60));
-                        time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
-                                c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
-                                c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-                                c.get(Calendar.SECOND));
-                        occultList.setVisibility(View.INVISIBLE);
-                        launchTask(time[1], 0.0, planetNum);
-                        break;
-                    case 70:
-                        // Cancel button
-                        break;
-                }
+                // Set Date
+                Calendar c = Calendar.getInstance();
+                c.clear();
+                c.set(data.getIntExtra("year", 0),
+                        data.getIntExtra("month", 0),
+                        data.getIntExtra("day", 0));
+                // convert local time to utc
+                c.add(Calendar.MINUTE, (int) (offset * -60));
+                time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
+                        c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
+                        c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                        c.get(Calendar.SECOND));
+                occultList.setVisibility(View.INVISIBLE);
+                launchTask(time[1], 0.0, planetNum);
                 break;
             case TASK_FRAGMENT:
                 switch (resultCode) {

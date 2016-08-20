@@ -28,6 +28,7 @@
         android:id="@+id/aboutText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorLink="@color/text_color"
         android:layout_margin="@dimen/activity_horizontal_margin" />
 
 </ScrollView>

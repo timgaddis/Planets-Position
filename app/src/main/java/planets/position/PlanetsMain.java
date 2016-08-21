@@ -29,7 +29,6 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -60,6 +59,7 @@ import planets.position.location.LocationLib;
 import planets.position.location.UserLocation;
 import planets.position.lunar.LunarEclipse;
 import planets.position.lunar.LunarOccultation;
+import planets.position.settings.Settings;
 import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
@@ -113,8 +113,6 @@ public class PlanetsMain extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         settings = getSharedPreferences(MAIN_PREFS, 0);
 
@@ -339,7 +337,7 @@ public class PlanetsMain extends AppCompatActivity
                 ft.commit();
                 break;
             case 8: // Settings
-                ft.replace(R.id.content_frame, new SettingsFragment());
+                ft.replace(R.id.content_frame, new Settings());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

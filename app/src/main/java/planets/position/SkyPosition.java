@@ -106,7 +106,7 @@ public class SkyPosition extends Fragment {
         pRiseText = (TextView) v.findViewById(R.id.pos_riseTime_text);
         pSetText = (TextView) v.findViewById(R.id.pos_setTime_text);
         jdUTC = new JDUTC();
-        pf = new PositionFormat(getActivity().getApplicationContext());
+        pf = new PositionFormat(getActivity());
         planetsArray = Arrays.asList(getResources().getStringArray(R.array.planets_array));
 
         mDateFormat = android.text.format.DateFormat

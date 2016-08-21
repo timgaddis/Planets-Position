@@ -87,7 +87,7 @@ public class LunarOccultData extends Fragment {
         loLocalVisible = (LinearLayout) v.findViewById(R.id.lo_local_visible);
         loLocalLayout = (LinearLayout) v.findViewById(R.id.lo_data_layout1);
         jdUTC = new JDUTC();
-        pf = new PositionFormat(getActivity().getApplicationContext());
+        pf = new PositionFormat(getActivity());
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
         mDateFormat = android.text.format.DateFormat

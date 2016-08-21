@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,19 @@
 
 package planets.position.util;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.util.Locale;
+
+import planets.position.PlanetsMain;
 
 public class PositionFormat {
     private final SharedPreferences sharedPref;
 
-    public PositionFormat(Context context) {
+    public PositionFormat(Activity activity) {
         super();
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPref = activity.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
     }
 
     // Input value examples
@@ -52,7 +53,7 @@ public class PositionFormat {
         Locale locale = Locale.getDefault();
         double ra, ras;
         int rah, ram;
-        index = Integer.parseInt(sharedPref.getString("ra_format", "0"));
+        index = sharedPref.getInt("raFormat", 0);
         switch (index) {
             case 0: // HH MM SS
                 ra = value;
@@ -91,7 +92,7 @@ public class PositionFormat {
         double dec, decs;
         int decd, decm;
         char decSign;
-        index = Integer.parseInt(sharedPref.getString("dec_format", "0"));
+        index = sharedPref.getInt("decFormat", 0);
         switch (index) {
             case 0: // DD MM SS
                 dec = value;
@@ -153,7 +154,7 @@ public class PositionFormat {
         double az, azs;
         int azd, azm;
         Locale locale = Locale.getDefault();
-        index = Integer.parseInt(sharedPref.getString("az_format", "0"));
+        index = sharedPref.getInt("azFormat", 0);
         switch (index) {
             case 0: // DDD MM SS
                 az = value;
@@ -220,7 +221,7 @@ public class PositionFormat {
         Locale locale = Locale.getDefault();
         double alt, alts;
         int altd, altm;
-        index = Integer.parseInt(sharedPref.getString("alt_format", "0"));
+        index = sharedPref.getInt("altFormat", 0);
         switch (index) {
             case 0: // DD MM SS
                 alt = value;

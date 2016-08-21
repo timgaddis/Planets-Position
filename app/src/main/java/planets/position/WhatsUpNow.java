@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ public class WhatsUpNow extends Fragment {
         View v = inflater.inflate(R.layout.fragment_whats_up, container, false);
         updateText = (TextView) v.findViewById(R.id.lastUpdateText);
         planetsList = (ListView) v.findViewById(R.id.planetList);
-        pf = new PositionFormat(getActivity().getApplicationContext());
+        pf = new PositionFormat(getActivity());
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         planetsList.setOnItemClickListener(new OnItemClickListener() {

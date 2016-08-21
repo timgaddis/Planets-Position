@@ -94,7 +94,7 @@ public class SolarEclipseData extends Fragment {
         seLocalLayout = (LinearLayout) v.findViewById(R.id.se_data_layout1);
         seSunriseLayout = (LinearLayout) v.findViewById(R.id.se_times_layout1d);
         jdUTC = new JDUTC();
-        pf = new PositionFormat(getActivity().getApplicationContext());
+        pf = new PositionFormat(getActivity());
 
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());

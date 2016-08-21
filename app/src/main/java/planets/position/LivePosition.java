@@ -106,7 +106,7 @@ public class LivePosition extends Fragment {
         pRiseText = (TextView) v.findViewById(R.id.live_riseTime_text);
         pRise = (TextView) v.findViewById(R.id.live_riseTime);
         pBelowText = (TextView) v.findViewById(R.id.live_below_text);
-        pf = new PositionFormat(getActivity().getApplicationContext());
+        pf = new PositionFormat(getActivity());
         jdUTC = new JDUTC();
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());

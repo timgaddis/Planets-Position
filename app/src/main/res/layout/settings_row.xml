@@ -18,14 +18,26 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/text1"
-    android:layout_width="wrap_content"
-    android:layout_height="48dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/main_back"
-    android:paddingBottom="@dimen/spin_pad"
-    android:paddingLeft="@dimen/data_card_pad"
-    android:paddingRight="@dimen/data_card_pad"
-    android:singleLine="true"
-    android:textColor="@color/text_color"
-    android:textSize="@dimen/label_planets_text" />
+    android:orientation="vertical"
+    android:padding="@dimen/data_card_pad">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/setting_pad"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_planets_text" />
+
+    <TextView
+        android:id="@+id/txtFormat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

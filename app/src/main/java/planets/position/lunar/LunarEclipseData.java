@@ -94,7 +94,7 @@ public class LunarEclipseData extends Fragment {
         leLocalVisible = (LinearLayout) v.findViewById(R.id.le_local_visible);
         leLocalLayout = (LinearLayout) v.findViewById(R.id.le_data_layout1);
         jdUTC = new JDUTC();
-        pf = new PositionFormat(getActivity().getApplicationContext());
+        pf = new PositionFormat(getActivity());
 
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());

@@ -20,16 +20,19 @@
 
 package planets.position.location;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,8 +66,8 @@ public class UserLocation extends Fragment {
     private View mLayout;
     private MenuItem editLoc, saveLoc;
     private UserLocationDialog offsetDialog;
-    private LocationLib locationLib;
     private LocationTask locationTask;
+    private LocationHelper locHelper;
     private PlanetsDatabase planetsDB;
     private FragmentManager fm;
     private int ioffset = -1;
@@ -100,12 +103,22 @@ public class UserLocation extends Fragment {
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
-        locationLib = new LocationLib(getActivity().getApplicationContext(),
-                getActivity(), null, -1);
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         fm = getFragmentManager();
-        locationTask = (LocationTask) fm.findFragmentByTag("locationTask");
+        locationTask = (LocationTask) fm.findFragmentByTag(LocationTask.TAG);
+
+        locHelper = (LocationHelper) getActivity().getSupportFragmentManager().
+                findFragmentByTag(LocationHelper.TAG);
+        if (locHelper == null) {
+            locHelper = LocationHelper.newInstance();
+            locHelper.setTargetFragment(this, 0);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(locHelper, LocationHelper.TAG)
+                    .commit();
+        } else {
+            locHelper.setTargetFragment(this, 0);
+        }
 
         if (savedInstanceState == null) {
             // load bundle from previous activity
@@ -224,13 +237,7 @@ public class UserLocation extends Fragment {
                 saveLoc.setVisible(true);
                 return true;
             case R.id.action_gps:
-                if (locationTask == null) {
-                    locationTask = new LocationTask();
-                    locationTask.setData(getActivity(), getActivity().getApplicationContext(), mLayout);
-                    locationTask.setTargetFragment(this, LocationLib.LOCATION_TASK);
-                    locationTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                    locationTask.show(fm, "locationTask");
-                }
+                locHelper.checkLocationPermissions(false);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -276,14 +283,6 @@ public class UserLocation extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         // Decide what to do based on the original request code
         switch (requestCode) {
-            case LocationLib.CONNECTION_FAILURE_RESOLUTION_REQUEST:
-                // If the result code is Activity.RESULT_OK, try to connect again
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        // Try the request again
-                        locationLib.connect();
-                        break;
-                }
             case LATITUDE_REQUEST:
                 // Enter an latitude value
                 if (resultCode == DialogInterface.BUTTON_POSITIVE) {
@@ -339,7 +338,7 @@ public class UserLocation extends Fragment {
                     offset = -1.0;
                 }
                 break;
-            case LocationLib.LOCATION_TASK:
+            case LocationTask.LOCATION_TASK:
                 Bundle b = data.getExtras();
                 if (b.getBoolean("locationNull")) {
                     Toast.makeText(getActivity().getApplicationContext(),
@@ -353,6 +352,25 @@ public class UserLocation extends Fragment {
                 }
                 locationTask = null;
                 break;
+            case LocationHelper.LOCATION_HELPER:
+                if (resultCode > 0) {
+                    // Location Permission Granted
+                    locHelper.setLocationPermissionDenied(false);
+                    startLocationTask();
+                } else {
+                    // Location Permission Denied
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        Log.i(PlanetsMain.TAG,
+                                "Displaying Location permission rationale to provide additional context.");
+                        // Show an expanation and try again
+                        Snackbar.make(mLayout, R.string.permission_reason, Snackbar.LENGTH_LONG).show();
+                        locHelper.checkLocationPermissions(false);
+                    } else {
+                        locHelper.setLocationPermissionDenied(true);
+                    }
+                }
+                break;
         }
         if (saveLocation()) {
             Toast.makeText(getActivity().getApplicationContext(),
@@ -362,6 +380,13 @@ public class UserLocation extends Fragment {
                     "Location not saved.", Toast.LENGTH_SHORT).show();
         }
         displayLocation();
+    }
+
+    private void startLocationTask() {
+        locationTask = new LocationTask();
+        locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
+        locationTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        locationTask.show(fm, LocationTask.TAG);
     }
 
     private void loadLocation() {

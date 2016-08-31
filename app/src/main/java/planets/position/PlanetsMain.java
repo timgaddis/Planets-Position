@@ -27,10 +27,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.location.Location;
 import android.os.Bundle;
 import android.provider.CalendarContract;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -55,7 +53,8 @@ import java.util.List;
 import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
 import planets.position.location.LocationDialog;
-import planets.position.location.LocationLib;
+import planets.position.location.LocationHelper;
+import planets.position.location.LocationTask;
 import planets.position.location.UserLocation;
 import planets.position.lunar.LunarEclipse;
 import planets.position.lunar.LunarOccultation;
@@ -63,18 +62,17 @@ import planets.position.settings.Settings;
 import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationLib.LocationCallback,
-        FileCopyTask.FileCopyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationTask.LocationCallback,
+        FileCopyTask.FileCopyCallback, LocationHelper.LocationPermissionCallback {
 
     public static final String TAG = "PlanetsMain";
     public static final String MAIN_PREFS = "MainPrefsFile";
-    public static final int REQUEST_LOCATION = 100;
 
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     private SharedPreferences settings;
-    private PermissionLib permissionLib;
-    private LocationLib locationLib;
+    private LocationTask locationTask;
+    private LocationHelper locationHelper;
     private FileCopyTask copyTask;
     private PlanetsDatabase planetsDB;
     private int ioffset = -1, fragIndex;
@@ -96,8 +94,6 @@ public class PlanetsMain extends AppCompatActivity
         }
 
         mLayout = findViewById(R.id.content_frame);
-        permissionLib = new PermissionLib(this);
-        locationLib = new LocationLib(this, this, null, 100);
         planetsDB = new PlanetsDatabase(this);
         gmtValues = Arrays.asList(getResources().getStringArray(
                 R.array.gmt_values));
@@ -121,9 +117,18 @@ public class PlanetsMain extends AppCompatActivity
         fm = getSupportFragmentManager();
         copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
 
+        locationHelper = (LocationHelper) getSupportFragmentManager().
+                findFragmentByTag(LocationHelper.TAG);
+        if (locationHelper == null) {
+            locationHelper = LocationHelper.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(locationHelper, LocationHelper.TAG)
+                    .commit();
+        }
+
         if ((checkFiles("semo_18.se1") && checkFiles("sepl_18.se1"))) {
             if (latitude < -90) {
-                startLocationTask();
+                startLocationDialog();
             }
         } else {
             startCopyFileTask();
@@ -207,25 +212,6 @@ public class PlanetsMain extends AppCompatActivity
         assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION) {
-            // Check if the only required permission has been granted
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.i(TAG, "Location permission has now been granted.");
-                Snackbar.make(mLayout, R.string.permision_location,
-                        Snackbar.LENGTH_SHORT).show();
-                locationLib.connect();
-            } else {
-                Log.i(TAG, "Location permission was NOT granted.");
-                Snackbar.make(mLayout, R.string.permision_not_location,
-                        Snackbar.LENGTH_SHORT).show();
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     private void loadLocation() {
@@ -397,32 +383,65 @@ public class PlanetsMain extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LocationTask.REQUEST_RESOLVE_ERROR) {
+//            mResolvingError = false;
+            if (resultCode == RESULT_OK) {
+                startLocationTask();
+            }
+        }
+    }
+
+    @Override
+    public void onLocationPermissionGranted() {
+        Snackbar.make(mLayout, R.string.permision_location,
+                Snackbar.LENGTH_SHORT).show();
+        locationHelper.setLocationPermissionDenied(false);
+        startLocationTask();
+    }
+
+    @Override
+    public void onLocationPermissionDenied() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Log.i(PlanetsMain.TAG,
+                    "Displaying Location permission rationale to provide additional context.");
+            // Show an expanation and try again
+            Snackbar.make(mLayout, R.string.permission_reason, Snackbar.LENGTH_LONG).show();
+            locationHelper.checkLocationPermissions(true);
+        } else {
+            locationHelper.setLocationPermissionDenied(true);
+        }
+    }
+
     // ********************************
-    // ***** LocationLib callback *****
+    // ******* Location callback ******
     // ********************************
     @Override
-    public void onLocationFound(Location location) {
+    public void onLocationFound(Bundle data) {
 
-        locationLib.disconnect();
-        if (location != null) {
-            Log.d(TAG, "onLocationFound, Location found");
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-            elevation = location.getAltitude();
-            offset = Calendar.getInstance().getTimeZone()
-                    .getOffset(location.getTime()) / 3600000.0;
-            ioffset = gmtValues.indexOf(offset + "");
-            if (saveLocation())
-                Toast.makeText(this, "Location saved.", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "Location not saved.", Toast.LENGTH_SHORT).show();
-
+        if (data != null) {
+            if (data.getBoolean("locationNull")) {
+                Toast.makeText(this, "Location not found.", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d(TAG, "onLocationFound, Location found");
+                latitude = data.getDouble("latitude");
+                longitude = data.getDouble("longitude");
+                elevation = data.getDouble("elevation");
+                offset = data.getDouble("offset");
+                ioffset = gmtValues.indexOf(offset + "");
+                if (saveLocation())
+                    Toast.makeText(this, "Location saved.", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "Location not saved.", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Log.d(TAG, "onLocationFound, No location found");
-            Toast.makeText(this, "No location found.",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No location found.", Toast.LENGTH_SHORT).show();
         }
-
+        locationTask = null;
     }
 
     // ********************************
@@ -431,17 +450,8 @@ public class PlanetsMain extends AppCompatActivity
     @Override
     public void onDialogPositiveClick() {
         // GPS
-        // Check for location permission
-        Log.i(TAG, "GPS button pressed. Checking permission.");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Location permission not granted");
-            permissionLib.requestLocationPermission(mLayout);
-        } else {
-            Log.i(TAG,
-                    "Location permission has already been granted.");
-            locationLib.connect();
-        }
+//        startLocationTask();
+        locationHelper.checkLocationPermissions(true);
     }
 
     @Override
@@ -451,11 +461,18 @@ public class PlanetsMain extends AppCompatActivity
     }
     // ********************************
 
-    private void startLocationTask() {
+    private void startLocationDialog() {
         // No location
         DialogFragment newFragment = new LocationDialog();
         newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        newFragment.setCancelable(false);
         newFragment.show(getSupportFragmentManager(), "locationDialog");
+    }
+
+    private void startLocationTask() {
+        locationTask = new LocationTask();
+        locationTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        locationTask.show(fm, LocationTask.TAG);
     }
 
     private void startCopyFileTask() {
@@ -484,7 +501,7 @@ public class PlanetsMain extends AppCompatActivity
     @Override
     public void onCopyFinished() {
         copyTask = null;
-        startLocationTask();
+        startLocationDialog();
     }
 
     private boolean checkForCalendar() {

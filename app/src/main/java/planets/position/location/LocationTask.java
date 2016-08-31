@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,88 +22,88 @@ package planets.position.location;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 
-import planets.position.PermissionLib;
-import planets.position.PlanetsMain;
 import planets.position.R;
 
-public class LocationTask extends DialogFragment implements LocationLib.LocationTaskCallback {
+public class LocationTask extends DialogFragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private PermissionLib permissionLib;
-    private LocationLib locationLib;
-    private Context context;
-    private FragmentActivity activity;
-    private View mLayout;
+    private static final String DIALOG_ERROR = "dialog_error";
+    public static final String TAG = "LocationTask";
+    public static final int REQUEST_RESOLVE_ERROR = 1001;
+    public final static int LOCATION_TASK = 500;
 
-    public LocationTask() {
-    }
+    private boolean resolvingError = false;
+    private GoogleApiClient googleApiClient;
+    private static GoogleApiAvailability gaa;
+    private LocationCallback mCallbacks;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_location_task, container, false);
-        View tv = v.findViewById(R.id.progress_text);
-        ((TextView) tv).setText(R.string.location_dialog);
-        getDialog().setCanceledOnTouchOutside(false);
-
-        locationLib = new LocationLib(activity.getApplicationContext(), activity, this, 200);
-        permissionLib = new PermissionLib((AppCompatActivity) activity);
-
-        start();
-
-        return v;
+    public interface LocationCallback {
+        void onLocationFound(Bundle data);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        setCancelable(false);
+
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).build();
+        LocationRequest mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setNumUpdates(1);
+        mLocationRequest.setExpirationDuration(5000);
+        gaa = GoogleApiAvailability.getInstance();
     }
 
-    public void setData(FragmentActivity activity, Context context, View mLayout) {
-        this.activity = activity;
-        this.context = context;
-        this.mLayout = mLayout;
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        ProgressDialog dialog = new ProgressDialog(getActivity(), getTheme());
+        dialog.setMessage(getString(R.string.location_dialog));
+        dialog.setIndeterminate(true);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        start();
+
+        return dialog;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PlanetsMain.REQUEST_LOCATION) {
-            // Check if the only required permission has been granted
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.i(PlanetsMain.TAG, "Location permission has now been granted.");
-                Snackbar.make(mLayout, R.string.permision_location,
-                        Snackbar.LENGTH_SHORT).show();
-                locationLib.connect();
-            } else {
-                Log.i(PlanetsMain.TAG, "Location permission was NOT granted.");
-                Snackbar.make(mLayout, R.string.permision_not_location,
-                        Snackbar.LENGTH_SHORT).show();
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // attach to PlanetsMain
+        if (!(activity instanceof LocationCallback)) {
+            throw new IllegalStateException(
+                    "Activity must implement the FragmentListener interface.");
         }
+        mCallbacks = (LocationCallback) activity;
     }
 
-    @Override
     public void onLocationTaskFound(Location location) {
         if (isResumed())
             dismiss();
@@ -112,7 +112,7 @@ public class LocationTask extends DialogFragment implements LocationLib.Location
         if (location == null) {
             b.putBoolean("locationNull", true);
         } else {
-            Log.d(PlanetsMain.TAG, "Task onLocationFound, Location found");
+            Log.d(TAG, "Task onLocationFound, Location found");
             b.putBoolean("locationNull", false);
             b.putDouble("latitude", location.getLatitude());
             b.putDouble("longitude", location.getLongitude());
@@ -120,20 +120,96 @@ public class LocationTask extends DialogFragment implements LocationLib.Location
             b.putDouble("offset", Calendar.getInstance().getTimeZone()
                     .getOffset(location.getTime()) / 3600000.0);
         }
-        data.putExtras(b);
-        getTargetFragment().onActivityResult(LocationLib.LOCATION_TASK,
-                Activity.RESULT_OK, data);
+        if (getTargetFragment() != null) {
+            // UserLocation
+            Log.d(TAG, "onLocationTaskFound UserLocation");
+            data.putExtras(b);
+            getTargetFragment().onActivityResult(LOCATION_TASK,
+                    Activity.RESULT_OK, data);
+        } else {
+            Log.d(TAG, "onLocationTaskFound PlanetsMain");
+            // PlanetsMain
+            mCallbacks.onLocationFound(b);
+        }
     }
 
     private void start() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.i(PlanetsMain.TAG, "Location permission not granted");
-            permissionLib.requestLocationPermission(mLayout);
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Location location;
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+            location = LocationServices.FusedLocationApi
+                    .getLastLocation(googleApiClient);
         } else {
-            Log.i(PlanetsMain.TAG,
-                    "Location permission has already been granted.");
-            locationLib.connect();
+            location = null;
+        }
+        onLocationTaskFound(location);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        if (!resolvingError && result.hasResolution()) {
+            try {
+                resolvingError = true;
+                result.startResolutionForResult(getActivity(), REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                // There was an error with the resolution intent. Try again.
+                start();
+            }
+        } else {
+            // Show dialog using GoogleApiAvailability.getErrorDialog()
+            showErrorDialog(result.getErrorCode());
+            resolvingError = true;
         }
     }
+
+    /* Creates a dialog for an error message */
+    private void showErrorDialog(int errorCode) {
+        // Create a fragment for the error dialog
+        ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
+        // Pass the error that should be displayed
+        Bundle args = new Bundle();
+        args.putInt(DIALOG_ERROR, errorCode);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getActivity().getSupportFragmentManager(), "errordialog");
+    }
+
+    /* Called from ErrorDialogFragment when the dialog is dismissed. */
+    public void onDialogDismissed() {
+        resolvingError = false;
+    }
+
+    /* A fragment to display an error dialog */
+    public static class ErrorDialogFragment extends DialogFragment {
+        public ErrorDialogFragment() {
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Get the error code and retrieve the appropriate dialog
+            int errorCode = this.getArguments().getInt(DIALOG_ERROR);
+            return gaa.getErrorDialog(this.getActivity(), errorCode, REQUEST_RESOLVE_ERROR);
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            ((LocationTask) this.getParentFragment()).onDialogDismissed();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+    }
+
 }

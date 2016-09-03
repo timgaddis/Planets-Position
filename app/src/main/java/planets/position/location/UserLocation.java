@@ -237,6 +237,7 @@ public class UserLocation extends Fragment {
                 saveLoc.setVisible(true);
                 return true;
             case R.id.action_gps:
+                locHelper.setCheckingPermission(true);
                 locHelper.checkLocationPermissions(false);
                 return true;
             default:
@@ -355,6 +356,7 @@ public class UserLocation extends Fragment {
             case LocationHelper.LOCATION_HELPER:
                 if (resultCode > 0) {
                     // Location Permission Granted
+                    locHelper.setCheckingPermission(false);
                     locHelper.setLocationPermissionDenied(false);
                     startLocationTask();
                 } else {
@@ -367,6 +369,7 @@ public class UserLocation extends Fragment {
                         Snackbar.make(mLayout, R.string.permission_reason, Snackbar.LENGTH_LONG).show();
                         locHelper.checkLocationPermissions(false);
                     } else {
+                        locHelper.setCheckingPermission(false);
                         locHelper.setLocationPermissionDenied(true);
                     }
                 }

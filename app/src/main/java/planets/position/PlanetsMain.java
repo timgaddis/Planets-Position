@@ -63,7 +63,7 @@ import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationTask.LocationCallback,
-        FileCopyTask.FileCopyCallback, LocationHelper.LocationPermissionCallback {
+        FileCopyTask.FileCopyCallback, LocationHelper.LocationMainCallback {
 
     public static final String TAG = "PlanetsMain";
     public static final String MAIN_PREFS = "MainPrefsFile";
@@ -387,7 +387,6 @@ public class PlanetsMain extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LocationTask.REQUEST_RESOLVE_ERROR) {
-//            mResolvingError = false;
             if (resultCode == RESULT_OK) {
                 startLocationTask();
             }
@@ -412,6 +411,7 @@ public class PlanetsMain extends AppCompatActivity
             Snackbar.make(mLayout, R.string.permission_reason, Snackbar.LENGTH_LONG).show();
             locationHelper.checkLocationPermissions(true);
         } else {
+            locationHelper.setCheckingPermission(false);
             locationHelper.setLocationPermissionDenied(true);
         }
     }
@@ -450,7 +450,7 @@ public class PlanetsMain extends AppCompatActivity
     @Override
     public void onDialogPositiveClick() {
         // GPS
-//        startLocationTask();
+        locationHelper.setCheckingPermission(true);
         locationHelper.checkLocationPermissions(true);
     }
 
@@ -463,10 +463,12 @@ public class PlanetsMain extends AppCompatActivity
 
     private void startLocationDialog() {
         // No location
-        DialogFragment newFragment = new LocationDialog();
-        newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        newFragment.setCancelable(false);
-        newFragment.show(getSupportFragmentManager(), "locationDialog");
+        if (!locationHelper.isCheckingPermission()) {
+            DialogFragment newFragment = new LocationDialog();
+            newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            newFragment.setCancelable(false);
+            newFragment.show(getSupportFragmentManager(), "locationDialog");
+        }
     }
 
     private void startLocationTask() {

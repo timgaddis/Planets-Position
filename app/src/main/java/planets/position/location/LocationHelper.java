@@ -33,13 +33,14 @@ public class LocationHelper extends Fragment {
 
     private static final int REQUEST_LOCATION_PERMISSIONS = 10;
     public static final int LOCATION_HELPER = 600;
-    public static final String TAG = "LocationPermission";
+    public static final String TAG = "LocationHelper";
 
-    private LocationPermissionCallback mCallback;
+    private LocationMainCallback mCallback;
     private boolean sLocationPermissionDenied;
     private boolean fromActivity;
+    private boolean checkingPermission;
 
-    public interface LocationPermissionCallback {
+    public interface LocationMainCallback {
         void onLocationPermissionGranted();
 
         void onLocationPermissionDenied();
@@ -56,23 +57,37 @@ public class LocationHelper extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkingPermission = false;
         setRetainInstance(true);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof LocationPermissionCallback) {
-            mCallback = (LocationPermissionCallback) context;
+        if (context instanceof LocationMainCallback) {
+            mCallback = (LocationMainCallback) context;
         } else {
-            throw new IllegalArgumentException("activity must extend BaseActivity and implement LocationHelper.LocationCallback");
+            throw new IllegalArgumentException("activity must implement LocationHelper.LocationCallback");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        setTargetFragment(null, -1);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+    }
+
+    public boolean isCheckingPermission() {
+        return checkingPermission;
+    }
+
+    public void setCheckingPermission(boolean checkingPermission) {
+        this.checkingPermission = checkingPermission;
     }
 
     public void checkLocationPermissions(boolean a) {
@@ -96,10 +111,6 @@ public class LocationHelper extends Fragment {
         this.sLocationPermissionDenied = LocationPermissionDenied;
     }
 
-//    public static boolean isLocationPermissionDenied() {
-//        return sLocationPermissionDenied;
-//    }
-
     /**
      * Callback received when a permissions request has been completed.
      */
@@ -109,6 +120,7 @@ public class LocationHelper extends Fragment {
 
         if (requestCode == REQUEST_LOCATION_PERMISSIONS) {
             if (PermissionUtil.verifyPermissions(grantResults)) {
+                checkingPermission = false;
                 if (fromActivity)
                     mCallback.onLocationPermissionGranted();
                 else

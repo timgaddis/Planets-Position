@@ -104,7 +104,7 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
         mCallbacks = (LocationCallback) activity;
     }
 
-    public void onLocationTaskFound(Location location) {
+    private void onLocationTaskFound(Location location) {
         if (isResumed())
             dismiss();
         Bundle b = new Bundle();
@@ -181,7 +181,7 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
     }
 
     /* Called from ErrorDialogFragment when the dialog is dismissed. */
-    public void onDialogDismissed() {
+    private void onDialogDismissed() {
         resolvingError = false;
     }
 

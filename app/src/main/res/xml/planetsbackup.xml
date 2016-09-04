@@ -18,17 +18,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/main_back"
-    android:paddingBottom="@dimen/data_card">
-
-    <TextView
-        android:id="@+id/aboutText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:textColorLink="@color/text_color" />
-
-</ScrollView>
+<full-backup-content>
+    <exclude
+        domain="file"
+        path="semo_18.se1" />
+    <exclude
+        domain="file"
+        path="sepl_18.se1" />
+</full-backup-content>

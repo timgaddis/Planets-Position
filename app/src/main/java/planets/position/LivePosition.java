@@ -49,14 +49,14 @@ public class LivePosition extends Fragment {
     private int planetNum = 0;
     private DateFormat mDateFormat, mTimeFormat;
     private double offset;
-    private double[] g = new double[3];
+    private final double[] g = new double[3];
     private Calendar utc;
     private JDUTC jdUTC;
     private PositionFormat pf;
     private SharedPreferences settings;
     private FragmentListener mCallbacks;
     private Intent intent;
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUI(intent);
@@ -200,7 +200,7 @@ public class LivePosition extends Fragment {
             utc.setTimeInMillis(jdUTC.jdmills(riseT, offset));
         } else {
             pRise.setText(R.string.data_set);
-            pBelowText.setVisibility(View.INVISIBLE);
+            pBelowText.setVisibility(View.GONE);
             utc.setTimeInMillis(jdUTC.jdmills(setT, offset));
         }
         pRiseText.setText(String.format("%s  %s", mDateFormat.format(utc.getTime()),

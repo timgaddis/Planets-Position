@@ -64,7 +64,7 @@ public class LunarOccultation extends Fragment {
 
     public static final int TASK_FRAGMENT = 100;
     private static final int DATE_FRAGMENT = 50;
-    public static final int PLANETS_DIALOG = 200;
+    private static final int PLANETS_DIALOG = 200;
     private static final String TASK_FRAGMENT_TAG = "lunarOccultTask";
 
     private FragmentListener mCallbacks;

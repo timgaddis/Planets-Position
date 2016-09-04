@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
@@ -29,15 +27,16 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/card_view1"
+        android:id="@+id/user_main1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:padding="@dimen/data_card_pad">
+        android:padding="@dimen/data_card_pad"
+        android:paddingBottom="@dimen/data_card_pad">
 
         <LinearLayout
-            android:id="@+id/card_view3"
+            android:id="@+id/user_main1a"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -45,13 +44,8 @@
             android:focusableInTouchMode="false"
             android:orientation="vertical">
 
-            <View
-                android:id="@+id/view00"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
-
             <TextView
-                android:id="@+id/text01"
+                android:id="@+id/newLat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -60,20 +54,16 @@
                 android:textSize="@dimen/label_text" />
 
             <TextView
-                android:id="@+id/newLatLabel"
+                android:id="@+id/newLatText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card_pad"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
-            <View
-                android:id="@+id/view01"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
-
             <TextView
-                android:id="@+id/text02"
+                android:id="@+id/newLong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -91,20 +81,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/card_view6"
+            android:id="@+id/user_main1b"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:focusableInTouchMode="false"
             android:orientation="vertical">
 
-            <View
-                android:id="@+id/view02"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
-
             <TextView
-                android:id="@+id/text03"
+                android:id="@+id/newElevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -117,16 +102,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card_pad"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
-            <View
-                android:id="@+id/view03"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
-
             <TextView
-                android:id="@+id/text04"
+                android:id="@+id/newGMTOffset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -143,11 +124,6 @@
                 android:textSize="@dimen/label_text" />
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:id="@+id/view04"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/data_card_pad" />
 
     <TextView
         android:id="@+id/locEditText"

@@ -92,7 +92,7 @@ public class SolarEclipseData extends Fragment {
         seSarosMText = (TextView) v.findViewById(R.id.se_sarosm_text);
         seLocalVisible = (LinearLayout) v.findViewById(R.id.se_local_visible);
         seLocalLayout = (LinearLayout) v.findViewById(R.id.se_data_layout1);
-        seSunriseLayout = (LinearLayout) v.findViewById(R.id.se_times_layout1d);
+        seSunriseLayout = (LinearLayout) v.findViewById(R.id.se_times_layout2);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
 

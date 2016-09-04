@@ -37,7 +37,7 @@ public class LivePositionService extends Service {
     //    private static final String TAG = "LivePositionService";
     public static final String BROADCAST_ACTION = "planets.position.displayplanet";
     private double offset;
-    private double[] g = new double[3];
+    private final double[] g = new double[3];
     private int planetNum;
     private final Handler handler = new Handler();
     private Intent intent;
@@ -77,7 +77,7 @@ public class LivePositionService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private Runnable sendUpdatesToUI = new Runnable() {
+    private final Runnable sendUpdatesToUI = new Runnable() {
         public void run() {
             computeLocation();
             handler.postDelayed(this, 1000); // 1 second

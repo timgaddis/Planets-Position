@@ -19,17 +19,19 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/se_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_back"
     android:paddingBottom="@dimen/data_card">
 
     <RelativeLayout
+        android:id="@+id/se_layout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/linear01"
+            android:id="@+id/se_date_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@android:color/transparent"
@@ -37,7 +39,7 @@
             android:padding="@dimen/data_card_pad">
 
             <LinearLayout
-                android:id="@+id/linear0101"
+                android:id="@+id/se_date_type1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -62,7 +64,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linear0102"
+                android:id="@+id/se_date_type2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -99,7 +101,7 @@
             android:id="@+id/view02"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/linear01"
+            android:layout_below="@id/se_date_type"
             android:background="@color/divider_color" />
 
         <LinearLayout
@@ -116,24 +118,25 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:paddingBottom="@dimen/data_card_pad"
+                android:paddingTop="@dimen/data_card"
                 android:text="@string/ecl_times"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text"
-                android:paddingTop="@dimen/data_card" />
+                android:textSize="@dimen/label_text" />
 
             <LinearLayout
                 android:id="@+id/se_times_layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/data_card">
 
                 <LinearLayout
+                    android:id="@+id/se_times_layout1a"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:orientation="vertical"
-                    android:id="@+id/se_times_layout1a">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/se_start"
@@ -149,13 +152,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:paddingBottom="@dimen/data_card"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
-
-                    <View
-                        android:id="@+id/view3"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card" />
 
                     <TextView
                         android:id="@+id/se_tstart"
@@ -176,11 +175,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/se_times_layout1b"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:orientation="vertical"
-                    android:id="@+id/se_times_layout1b">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/se_end"
@@ -196,13 +195,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:paddingBottom="@dimen/data_card"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
-
-                    <View
-                        android:id="@+id/view01"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card" />
 
                     <TextView
                         android:id="@+id/se_tend"
@@ -224,11 +219,6 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/view05"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card" />
-
             <TextView
                 android:id="@+id/se_max"
                 android:layout_width="match_parent"
@@ -243,26 +233,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
             <LinearLayout
-                android:id="@+id/se_times_layout1d"
+                android:id="@+id/se_times_layout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/se_times_layout2a"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/view8a"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card" />
 
                     <TextView
                         android:id="@+id/se_sunrise"
@@ -283,15 +270,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/se_times_layout2b"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/view8b"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/data_card" />
 
                     <TextView
                         android:id="@+id/se_sunset"
@@ -360,14 +343,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/data_card">
 
                     <LinearLayout
+                        android:id="@+id/se_data_layout1a1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
-                        android:orientation="vertical"
-                        android:id="@+id/se_data_layout1a1">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/se_sun_az"
@@ -389,11 +373,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/se_data_layout1a2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
-                        android:orientation="vertical"
-                        android:id="@+id/se_data_layout1a2">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/se_sun_alt"
@@ -415,11 +399,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/data_card" />
-
                 <LinearLayout
                     android:id="@+id/se_data_layout1b"
                     android:layout_width="match_parent"
@@ -428,11 +407,11 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/se_data_layout1b1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
-                        android:orientation="vertical"
-                        android:id="@+id/se_data_layout1b1">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/se_cover"
@@ -448,13 +427,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
+                            android:paddingBottom="@dimen/data_card"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/label_text" />
-
-                        <View
-                            android:id="@+id/view5"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/data_card" />
 
                         <TextView
                             android:id="@+id/se_saros"
@@ -475,11 +450,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/se_data_layout1b2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
-                        android:orientation="vertical"
-                        android:id="@+id/se_data_layout1b2">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/se_mag"
@@ -495,13 +470,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
+                            android:paddingBottom="@dimen/data_card"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/label_text" />
-
-                        <View
-                            android:id="@+id/view6"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/data_card" />
 
                         <TextView
                             android:id="@+id/se_sarosm"

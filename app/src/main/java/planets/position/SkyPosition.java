@@ -52,9 +52,9 @@ import planets.position.util.RiseSet;
 
 public class SkyPosition extends Fragment {
 
-    public static final int PLANETS_DIALOG = 100;
-    public static final int TIME_DIALOG = 200;
-    public static final int DATE_DIALOG = 300;
+    private static final int PLANETS_DIALOG = 100;
+    private static final int TIME_DIALOG = 200;
+    private static final int DATE_DIALOG = 300;
 
     private Button nameButton, timeButton, dateButton;
     private TextView pRAText, pDecText, pMagText, pRiseText, pSetText;
@@ -361,7 +361,7 @@ public class SkyPosition extends Fragment {
                 pBelowText.setVisibility(View.VISIBLE);
             } else {
                 // above horizon
-                pBelowText.setVisibility(View.INVISIBLE);
+                pBelowText.setVisibility(View.GONE);
             }
         }
     }

@@ -19,6 +19,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/planet_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_back"
@@ -26,6 +27,7 @@
     android:padding="@dimen/data_card">
 
     <LinearLayout
+        android:id="@+id/data_name_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -71,9 +73,11 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal"
+        android:paddingBottom="@dimen/data_card_pad"
         android:paddingTop="@dimen/data_card">
 
         <LinearLayout
+            android:id="@+id/data_layout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
@@ -93,13 +97,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card_pad"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
 
             <TextView
                 android:id="@+id/data_az"
@@ -121,6 +121,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/data_layout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
@@ -140,13 +141,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card_pad"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
-
-            <View
-                android:id="@+id/view5"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
 
             <TextView
                 android:id="@+id/data_alt"
@@ -168,6 +165,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/data_layout3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
@@ -187,13 +185,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card_pad"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
-
-            <View
-                android:id="@+id/view6"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/data_card_pad" />
 
             <TextView
                 android:id="@+id/data_mag"
@@ -213,11 +207,6 @@
                 android:textSize="@dimen/label_text" />
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:id="@+id/view7"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/data_card_pad" />
 
     <TextView
         android:id="@+id/data_setTime"

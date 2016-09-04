@@ -21,7 +21,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_back">
+    android:background="@color/main_back"
+    android:id="@+id/lo_scroll">
 
     <RelativeLayout
         android:id="@+id/layout_main"
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/layout1"
+            android:id="@+id/le_date_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -58,7 +59,7 @@
             android:id="@+id/view02"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/layout1"
+            android:layout_below="@+id/le_date_type"
             android:background="@color/divider_color" />
 
         <LinearLayout

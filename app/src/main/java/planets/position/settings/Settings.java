@@ -40,7 +40,7 @@ import planets.position.R;
 
 public class Settings extends Fragment {
 
-    public static final int SETTINGS_DIALOG = 100;
+    private static final int SETTINGS_DIALOG = 100;
 
     private SharedPreferences settings;
     private ListView settingsList;

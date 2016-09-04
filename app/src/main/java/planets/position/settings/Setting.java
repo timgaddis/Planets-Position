@@ -20,7 +20,7 @@
 
 package planets.position.settings;
 
-public class Setting {
+class Setting {
     private int title;
     private int array;
     private String format;

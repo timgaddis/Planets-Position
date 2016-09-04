@@ -41,10 +41,8 @@ android {
 
     buildTypes {
         release {
-            def formattedDate = new Date().format('yyyyMMdd')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix("-beta-" + formattedDate)
         }
         beta {
             def formattedDate = new Date().format('yyyyMMddHHmmss')

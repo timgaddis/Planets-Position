@@ -68,6 +68,7 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCancelable(false);
+        setRetainInstance(true);
 
         googleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(LocationServices.API)

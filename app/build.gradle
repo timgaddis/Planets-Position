@@ -28,8 +28,8 @@ android {
         applicationId "planets.position"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 25
-        versionName "2.0"
+        versionCode 26
+        versionName "2.0.1"
     }
     sourceSets {
         main {
@@ -52,7 +52,8 @@ android {
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     def newName = output.outputFile.name
-                    //newName = newName.replace("app-", "$rootProject.ext.appName-") //"MyAppName" -> I set my app variables in the root project
+                    //newName = newName.replace("app-", "$rootProject.ext.appName-")
+                    // "MyAppName" -> I set my app variables in the root project
                     newName = newName.replace("-beta", "-beta_" + formattedDate)
                     output.outputFile = new File(output.outputFile.parent, newName)
                 }

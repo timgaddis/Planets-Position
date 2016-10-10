@@ -26,12 +26,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,13 +62,13 @@ public class UserLocation extends Fragment {
     private FragmentListener mCallbacks;
     private TextView latitudeText, longitudeText, elevationText, gmtOffsetText,
             editLocText;
+    private Snackbar mySnackbar;
     private View mLayout;
     private MenuItem editLoc, saveLoc;
     private UserLocationDialog offsetDialog;
     private LocationTask locationTask;
     private LocationHelper locHelper;
     private PlanetsDatabase planetsDB;
-    private FragmentManager fm;
     private int ioffset = -1;
     private double latitude, longitude, elevation, offset;
     private boolean edit = false;
@@ -82,7 +81,6 @@ public class UserLocation extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_user_location, container, false);
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("User Location", 7);
@@ -105,8 +103,15 @@ public class UserLocation extends Fragment {
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
-        fm = getFragmentManager();
-        locationTask = (LocationTask) fm.findFragmentByTag(LocationTask.TAG);
+        locationTask = (LocationTask) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(LocationTask.TAG);
+        if (locationTask == null) {
+            locationTask = LocationTask.newInstance();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(locationTask, LocationTask.TAG)
+                    .commit();
+        }
+        locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
 
         locHelper = (LocationHelper) getActivity().getSupportFragmentManager().
                 findFragmentByTag(LocationHelper.TAG);
@@ -257,6 +262,7 @@ public class UserLocation extends Fragment {
         outState.putBoolean("edit", edit);
         if (edit)
             saveLocation();
+        locationTask.setTargetFragment(null, -1);
         super.onSaveInstanceState(outState);
     }
 
@@ -340,6 +346,7 @@ public class UserLocation extends Fragment {
                 }
                 break;
             case LocationTask.LOCATION_TASK:
+                mySnackbar.dismiss();
                 Bundle b = data.getExtras();
                 if (b.getBoolean("locationNull")) {
                     Toast.makeText(getActivity().getApplicationContext(),
@@ -351,7 +358,7 @@ public class UserLocation extends Fragment {
                     offset = b.getDouble("offset");
                     ioffset = gmtValues.indexOf(offset + "");
                 }
-                locationTask = null;
+                locationTask.stop();
                 break;
             case LocationHelper.LOCATION_HELPER:
                 if (resultCode > 0) {
@@ -386,10 +393,21 @@ public class UserLocation extends Fragment {
     }
 
     private void startLocationTask() {
-        locationTask = new LocationTask();
-        locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
-        locationTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        locationTask.show(fm, LocationTask.TAG);
+        mySnackbar = Snackbar.make(mLayout, R.string.location_dialog, Snackbar.LENGTH_INDEFINITE);
+        mySnackbar.setActionTextColor(Color.WHITE);
+        mySnackbar.setAction(R.string.action_cancel, new MyCancelListener());
+        mySnackbar.show();
+        locationTask.start(false);
+    }
+
+    private class MyCancelListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (mySnackbar.isShown()) {
+                locationTask.stop();
+                mySnackbar.dismiss();
+            }
+        }
     }
 
     private void loadLocation() {

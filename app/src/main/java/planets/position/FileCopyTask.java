@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 package planets.position;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,14 +53,14 @@ public class FileCopyTask extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // attach to PlanetsMain
-        if (!(activity instanceof FragmentListener)) {
+        if (!(context instanceof FragmentListener)) {
             throw new IllegalStateException(
                     "Activity must implement the FragmentListener interface.");
         }
-        mCallbacks = (FileCopyCallback) activity;
+        mCallbacks = (FileCopyCallback) context;
     }
 
     @Override

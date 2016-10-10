@@ -49,7 +49,7 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, int oldVersion,
                           int newVersion) {
         // clear existing preferences
-        mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().commit();
+        mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().apply();
         LocationTable.onUpgrade(oldVersion, newVersion);
         PlanetsTable.onUpgrade(database, oldVersion, newVersion);
         SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);

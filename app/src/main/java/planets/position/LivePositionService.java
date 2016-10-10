@@ -34,7 +34,6 @@ import planets.position.util.RiseSet;
 
 public class LivePositionService extends Service {
 
-    //    private static final String TAG = "LivePositionService";
     public static final String BROADCAST_ACTION = "planets.position.displayplanet";
     private double offset;
     private final double[] g = new double[3];
@@ -52,7 +51,7 @@ public class LivePositionService extends Service {
 
     // c function prototype
     @SuppressWarnings("JniMissingFunction")
-    public native static double[] planetLiveData(byte[] eph, double d2, int p,
+    public native static double[] planetLiveData(String eph, double d2, int p,
                                                  double[] loc, double press, double temp);
 
     @Override
@@ -104,7 +103,7 @@ public class LivePositionService extends Service {
         // jdTT = d[0];
         // jdUT = d[1];
 
-        data = planetLiveData(settings.getString("ephPath", "").getBytes(), d[1], planetNum, g, 0.0, 0.0);
+        data = planetLiveData(settings.getString("ephPath", ""), d[1], planetNum, g, 0.0, 0.0);
         if (data == null) {
             Log.e("UpdatePosition error", "planetLiveData error");
             return;

@@ -19,6 +19,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/locLongLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,20 +41,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RadioButton
+        <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/radioLongEast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:checked="true"
-            android:text="@string/loc_east" />
+            android:text="@string/loc_east"
+            app:buttonTint="@color/text_color" />
 
-        <RadioButton
+        <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/radioLongWest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="@string/loc_west" />
+            android:text="@string/loc_west"
+            app:buttonTint="@color/text_color" />
     </RadioGroup>
 
 </LinearLayout>

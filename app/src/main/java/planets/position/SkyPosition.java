@@ -81,7 +81,7 @@ public class SkyPosition extends Fragment {
 
     // c function prototype
     @SuppressWarnings("JniMissingFunction")
-    public native double[] planetPosData(byte[] eph, double d1, double d2, int p,
+    public native double[] planetPosData(String eph, double d1, double d2, int p,
                                          double[] loc, double press, double temp);
 
     public SkyPosition() {
@@ -315,7 +315,7 @@ public class SkyPosition extends Fragment {
             // jdUT = data[1];
             d = data[1];
 
-            data = planetPosData(settings.getString("ephPath", "").getBytes(), data[0], data[1],
+            data = planetPosData(settings.getString("ephPath", ""), data[0], data[1],
                     planetNum, g, 0.0, 0.0);
             if (data == null) {
                 Log.e("Position error", "planetPosData error");

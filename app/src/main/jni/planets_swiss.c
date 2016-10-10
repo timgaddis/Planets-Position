@@ -4,6 +4,8 @@
 #include <android/log.h>
 #include "swiss/swephexp.h"
 
+/*__android_log_print(ANDROID_LOG_INFO, "solarDataGlobal", "date: %f", d_ut);*/
+
 /*
  * Convert a calendar date ( year, month, day, hour, min, sec) to a Julian date.
  * Swiss Ephemeris function called:
@@ -68,7 +70,7 @@ jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jobject this,
  * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
  * Output: Julian date as a double
  */
-jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jbyteArray eph,
+jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jstring eph,
                                                       jdouble d_ut, jint p, jdoubleArray loc,
                                                       jdouble atpress, jdouble attemp) {
 
@@ -76,11 +78,11 @@ jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this,
     double g[3], riseT;
     int i;
     jboolean isCopy;
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    swe_set_ephe_path(ephString);
+    swe_set_ephe_path((char *)ephString);
 
     i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_RISE, g, atpress, attemp, &riseT, serr);
     if (i == ERR) {
@@ -91,7 +93,7 @@ jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this,
     }
     swe_close();
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return riseT;
@@ -106,7 +108,7 @@ jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this,
  * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
  * Output: Julian date as a double
  */
-jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jbyteArray eph,
+jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jstring eph,
                                                      jdouble d_ut, jint p, jdoubleArray loc,
                                                      jdouble atpress, jdouble attemp) {
 
@@ -114,11 +116,11 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
     double g[3], setT;
     int i;
     jboolean isCopy;
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    swe_set_ephe_path(ephString);
+    swe_set_ephe_path((char *)ephString);
 
     i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_SET, g, atpress, attemp, &setT, serr);
     if (i == ERR) {
@@ -129,7 +131,7 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
     }
     swe_close();
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return setT;
@@ -149,11 +151,10 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
  * Output: Double array containing RA, Dec, distance, azimuth, altitude,
  * 		magnitude, set time, and rise time of planet.
  */
-jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this,
-                                                             jbyteArray eph,
-                                                             jdouble d_et, jdouble d_ut, jint p,
-                                                             jdoubleArray loc, jdouble atpress,
-                                                             jdouble attemp) {
+jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this, jstring eph,
+                                                            jdouble d_et, jdouble d_ut, jint p,
+                                                            jdoubleArray loc, jdouble atpress,
+                                                            jdouble attemp) {
 
     char serr[256];
     double x2[3], az[3], g[3], attr[20], setT, riseT;
@@ -170,8 +171,8 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
     i = swe_calc(d_et, p, iflag, x2, serr);
@@ -202,7 +203,7 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
         (*env)->SetDoubleArrayRegion(env, result, 5, 1, &attr[4]);
 
         if (isCopy) {
-            (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+            (*env)->ReleaseStringUTFChars(env, eph, ephString);
         }
 
         return result;
@@ -224,7 +225,7 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
  * 		magnitude, set time, and rise time of planet.
  */
 jdoubleArray Java_planets_position_LivePositionService_planetLiveData(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint p, jdoubleArray loc,
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut, jint p, jdoubleArray loc,
         jdouble atpress, jdouble attemp) {
 
     char serr[256];
@@ -242,8 +243,8 @@ jdoubleArray Java_planets_position_LivePositionService_planetLiveData(
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
     i = swe_calc_ut(d_ut, p, iflag, x2, serr);
@@ -274,7 +275,7 @@ jdoubleArray Java_planets_position_LivePositionService_planetLiveData(
         (*env)->SetDoubleArrayRegion(env, result, 5, 1, &attr[4]);
 
         if (isCopy) {
-            (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+            (*env)->ReleaseStringUTFChars(env, eph, ephString);
         }
 
         return result;
@@ -296,7 +297,7 @@ jdoubleArray Java_planets_position_LivePositionService_planetLiveData(
  * 		magnitude, and set time of planet.
  */
 jdoubleArray Java_planets_position_WhatsUpTask_planetUpData(JNIEnv *env, jobject this,
-                                                            jbyteArray eph, jdouble d_et,
+                                                            jstring eph, jdouble d_et,
                                                             jdouble d_ut, jint p, jdoubleArray loc,
                                                             jdouble atpress, jdouble attemp) {
 
@@ -315,8 +316,8 @@ jdoubleArray Java_planets_position_WhatsUpTask_planetUpData(JNIEnv *env, jobject
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
     i = swe_calc(d_et, p, iflag, x2, serr);
@@ -347,7 +348,7 @@ jdoubleArray Java_planets_position_WhatsUpTask_planetUpData(JNIEnv *env, jobject
         (*env)->SetDoubleArrayRegion(env, result, 5, 1, &attr[4]);
 
         if (isCopy) {
-            (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+            (*env)->ReleaseStringUTFChars(env, eph, ephString);
         }
 
         return result;
@@ -363,16 +364,14 @@ jdoubleArray Java_planets_position_WhatsUpTask_planetUpData(JNIEnv *env, jobject
  * Input: Julian date in ut1, search direction(0=forward|1=back).
  * Output: Double array containing eclipse type and eclipse event times.
  */
-jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint back) {
+jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(JNIEnv *env, jobject this,
+                                                            jstring eph, jdouble d_ut, jint back) {
 
     char serr[256];
     double tret[10], rval;
     int retval;
     jboolean isCopy;
     jdoubleArray result;
-
-    /*__android_log_print(ANDROID_LOG_INFO, "solarDataGlobal", "date: %f", d_ut);*/
 
     result = (*env)->NewDoubleArray(env, 9);
     if (result == NULL) {
@@ -381,8 +380,8 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(
         return NULL; /* out of memory error thrown */
     }
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     retval = swe_sol_eclipse_when_glob(d_ut, SEFLG_SWIEPH, 0, tret, back, serr);
     if (retval == ERR) {
@@ -400,7 +399,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(
     (*env)->SetDoubleArrayRegion(env, result, 1, 8, tret);
 
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return result;
@@ -420,7 +419,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(
  * 			eclipse attributes, and moon position
  */
 jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataLocal(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jdoubleArray loc, jint back) {
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut, jdoubleArray loc, jint back) {
 
     char serr[256];
     double g[3], attr[20], tret[10], az[6], x2[6], rval;
@@ -436,8 +435,8 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataLocal(
         return NULL; /* out of memory error thrown */
     }
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
     swe_set_topo(g[0], g[1], g[2]);
@@ -478,7 +477,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataLocal(
         (*env)->SetDoubleArrayRegion(env, result, 17, 2, az);
 
         if (isCopy) {
-            (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+            (*env)->ReleaseStringUTFChars(env, eph, ephString);
         }
 
         return result;
@@ -496,7 +495,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataLocal(
  * Output: Double array containing longitude and latitude, [lng,lat].
  */
 jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut) {
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut) {
 
     char serr[256];
     double attr[20], g[2];
@@ -511,8 +510,8 @@ jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
         return NULL; /* out of memory error thrown */
     }
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     swe_sol_eclipse_where(d_ut, SEFLG_SWIEPH, g, attr, serr);
     swe_close();
@@ -521,7 +520,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
     (*env)->SetDoubleArrayRegion(env, result, 0, 2, g);
 
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return result;
@@ -537,7 +536,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
  * Output: Double array containing eclipse type and eclipse event times.
  */
 jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataGlobal(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint back) {
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut, jint back) {
 
     char serr[256];
     double tret[10], rval;
@@ -552,8 +551,8 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataGlobal(
         return NULL; /* out of memory error thrown */
     }
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     retval = swe_lun_eclipse_when(d_ut, SEFLG_SWIEPH, 0, tret, back, serr);
     if (retval == ERR) {
@@ -571,7 +570,7 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataGlobal(
     (*env)->SetDoubleArrayRegion(env, result, 1, 8, tret);
 
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return result;
@@ -588,7 +587,7 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataGlobal(
  * 			and eclipse attributes
  */
 jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jdoubleArray loc, jint back) {
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut, jdoubleArray loc, jint back) {
 
     char serr[256];
     double g[3], tret[10], attr[20], rval;
@@ -605,8 +604,8 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     retval = swe_lun_eclipse_when_loc(d_ut, SEFLG_SWIEPH, g, tret, attr, back,
                                       serr);
@@ -630,7 +629,7 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
     (*env)->SetDoubleArrayRegion(env, result, 11, 11, attr);
 
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return result;
@@ -647,7 +646,7 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
  * Output: Double array containing occultation type and event times.
  */
 jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultGlobal(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jint p, jint back) {
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut, jint p, jint back) {
 
     char serr[256];
     double tret[10], rval;
@@ -662,8 +661,8 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultGlobal(
                             "JNI ERROR NewDoubleArray: out of memory error");
         return NULL; /* out of memory error thrown */
     }
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     retval = swe_lun_occult_when_glob(d_ut, p, NULL, iflag, 0, tret, back,
                                       serr);
@@ -682,7 +681,7 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultGlobal(
     (*env)->SetDoubleArrayRegion(env, result, 1, 8, tret);
 
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return result;
@@ -702,7 +701,7 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultGlobal(
  * 			and start and end positions of the moon.
  */
 jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultLocal(
-        JNIEnv *env, jobject this, jbyteArray eph, jdouble d_ut, jdoubleArray loc, jint p,
+        JNIEnv *env, jobject this, jstring eph, jdouble d_ut, jdoubleArray loc, jint p,
         jint back) {
 
     char serr[256];
@@ -721,8 +720,8 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultLocal(
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    char *ephString = (char *) (*env)->GetByteArrayElements(env, eph, &isCopy);
-    swe_set_ephe_path(ephString);
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+    swe_set_ephe_path((char *)ephString);
 
     retval = swe_lun_occult_when_loc(d_ut, p, NULL, iflag, g, tret, attr, back,
                                      serr);
@@ -771,7 +770,7 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultLocal(
     (*env)->SetDoubleArrayRegion(env, result, 13, 2, az2);
 
     if (isCopy) {
-        (*env)->ReleaseByteArrayElements(env, eph, ephString, JNI_ABORT);
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
     }
 
     return result;

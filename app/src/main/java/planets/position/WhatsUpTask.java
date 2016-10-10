@@ -62,7 +62,7 @@ public class WhatsUpTask extends DialogFragment {
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native double[] planetUpData(byte[] eph, double d1, double d2, int p,
+    public native double[] planetUpData(String eph, double d1, double d2, int p,
                                         double[] loc, double press, double temp);
 
     public void setData(ComputePlanetsTask task, double[] loc, double off) {
@@ -171,8 +171,7 @@ public class WhatsUpTask extends DialogFragment {
                 }
                 values.clear();
                 publishProgress(i + 1, i);
-                data = planetUpData(settings.getString("ephPath", "").getBytes(),
-                        time[0], time[1], i, g, 0.0, 0.0);
+                data = planetUpData(settings.getString("ephPath", ""), time[0], time[1], i, g, 0.0, 0.0);
                 if (data == null) {
                     Log.e("Position error",
                             "WhatsUpTask - ComputePlanetsTask error");

@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,11 +66,11 @@ public class LunarOccultTask extends DialogFragment {
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native double[] lunarOccultLocal(byte[] eph, double d2, double[] loc,
+    public native double[] lunarOccultLocal(String eph, double d2, double[] loc,
                                             int planet, int back);
 
     @SuppressWarnings("JniMissingFunction")
-    public native double[] lunarOccultGlobal(byte[] eph, double d2, int planet, int back);
+    public native double[] lunarOccultGlobal(String eph, double d2, int planet, int back);
 
     public void setData(ComputeOccultTask task, double[] loc, double time,
                         double back, int planet) {
@@ -198,7 +198,7 @@ public class LunarOccultTask extends DialogFragment {
                 publishProgress(0, planetNum, 1);
                 allPlanets = false;
                 // compute first local eclipse
-                data2 = lunarOccultLocal(settings.getString("ephPath", "").getBytes(), start, g, planetNum, back);
+                data2 = lunarOccultLocal(settings.getString("ephPath", ""), start, g, planetNum, back);
                 if (data2 == null) {
                     Log.e("Lunar Occultation error",
                             "lunarOccultLocal data2 error");
@@ -217,7 +217,7 @@ public class LunarOccultTask extends DialogFragment {
                     values.clear();
 
                     // Global Occultation Calculation
-                    data1 = lunarOccultGlobal(settings.getString("ephPath", "").getBytes(), start, planetNum, back);
+                    data1 = lunarOccultGlobal(settings.getString("ephPath", ""), start, planetNum, back);
                     if (data1 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultGlobal data1 error");
@@ -297,7 +297,7 @@ public class LunarOccultTask extends DialogFragment {
                         else
                             start = data1[1] - 2.0;
 
-                        data2 = lunarOccultLocal(settings.getString("ephPath", "").getBytes(), start, g, planetNum, back);
+                        data2 = lunarOccultLocal(settings.getString("ephPath", ""), start, g, planetNum, back);
                         if (data2 == null) {
                             Log.e("Lunar Occultation error",
                                     "computeOccultations data2a error");
@@ -371,7 +371,7 @@ public class LunarOccultTask extends DialogFragment {
                     values.clear();
 
                     // Local Occultation Calculation
-                    data2 = lunarOccultLocal(settings.getString("ephPath", "").getBytes(), start, g, i + 2, back);
+                    data2 = lunarOccultLocal(settings.getString("ephPath", ""), start, g, i + 2, back);
                     if (data2 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultLocal data2 error");
@@ -381,7 +381,7 @@ public class LunarOccultTask extends DialogFragment {
                     }
 
                     // Global Occultation Calculation
-                    data1 = lunarOccultGlobal(settings.getString("ephPath", "").getBytes(), start, i + 2, back);
+                    data1 = lunarOccultGlobal(settings.getString("ephPath", ""), start, i + 2, back);
                     if (data1 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultGlobal data1 error");

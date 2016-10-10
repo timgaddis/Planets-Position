@@ -20,9 +20,9 @@
 
 package planets.position.location;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,14 +36,12 @@ public class LocationDialog extends DialogFragment {
     private FragmentListener mListener;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (FragmentListener) activity;
+            mListener = (FragmentListener) context;
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString() + " must implement FragmentListener");
+            throw new ClassCastException(context.toString() + " must implement FragmentListener");
         }
     }
 

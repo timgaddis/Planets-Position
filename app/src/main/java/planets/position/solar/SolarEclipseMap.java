@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native double[] solarMapPos(byte[] eph, double d2);
+    public native double[] solarMapPos(String eph, double d2);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,12 +125,12 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
         googleMap.addMarker(options);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
 
-        data = solarMapPos(settings.getString("ephPath", "").getBytes(), start);
+        data = solarMapPos(settings.getString("ephPath", ""), start);
         pathStart = new LatLng(data[1], data[0]);
 
         path.add(pathStart);
         for (int x = 0; x < NUM; x++) {
-            data = solarMapPos(settings.getString("ephPath", "").getBytes(), date);
+            data = solarMapPos(settings.getString("ephPath", ""), date);
             path.add(new LatLng(data[1], data[0]));
             date += interval;
         }

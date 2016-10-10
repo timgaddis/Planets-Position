@@ -62,7 +62,7 @@ import planets.position.settings.Settings;
 import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationTask.LocationCallback,
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationTask.LocationCallbackMain,
         FileCopyTask.FileCopyCallback, LocationHelper.LocationMainCallback {
 
     public static final String TAG = "PlanetsMain";
@@ -73,6 +73,7 @@ public class PlanetsMain extends AppCompatActivity
     private SharedPreferences settings;
     private LocationTask locationTask;
     private LocationHelper locationHelper;
+    private Snackbar mySnackbar;
     private FileCopyTask copyTask;
     private PlanetsDatabase planetsDB;
     private int ioffset = -1, fragIndex;
@@ -116,6 +117,15 @@ public class PlanetsMain extends AppCompatActivity
 
         fm = getSupportFragmentManager();
         copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
+
+        locationTask = (LocationTask) getSupportFragmentManager()
+                .findFragmentByTag(LocationTask.TAG);
+        if (locationTask == null) {
+            locationTask = LocationTask.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(locationTask, LocationTask.TAG)
+                    .commit();
+        }
 
         locationHelper = (LocationHelper) getSupportFragmentManager().
                 findFragmentByTag(LocationHelper.TAG);
@@ -420,13 +430,14 @@ public class PlanetsMain extends AppCompatActivity
     // ******* Location callback ******
     // ********************************
     @Override
-    public void onLocationFound(Bundle data) {
-
+    public void onLocationFoundMain(Bundle data) {
+        mySnackbar.dismiss();
+        locationTask.stop();
         if (data != null) {
             if (data.getBoolean("locationNull")) {
                 Toast.makeText(this, "Location not found.", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d(TAG, "onLocationFound, Location found");
+                Log.d(TAG, "onLocationFoundMain, Location found");
                 latitude = data.getDouble("latitude");
                 longitude = data.getDouble("longitude");
                 elevation = data.getDouble("elevation");
@@ -438,10 +449,9 @@ public class PlanetsMain extends AppCompatActivity
                     Toast.makeText(this, "Location not saved.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Log.d(TAG, "onLocationFound, No location found");
+            Log.d(TAG, "onLocationFoundMain, No location found");
             Toast.makeText(this, "No location found.", Toast.LENGTH_SHORT).show();
         }
-        locationTask = null;
     }
 
     // ********************************
@@ -472,9 +482,20 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     private void startLocationTask() {
-        locationTask = new LocationTask();
-        locationTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        locationTask.show(fm, LocationTask.TAG);
+        mySnackbar = Snackbar.make(mLayout, R.string.location_dialog, Snackbar.LENGTH_INDEFINITE);
+        mySnackbar.setAction(R.string.action_cancel, new MyCancelListener());
+        mySnackbar.show();
+        locationTask.start(true);
+    }
+
+    private class MyCancelListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (mySnackbar.isShown()) {
+                locationTask.stop();
+                mySnackbar.dismiss();
+            }
+        }
     }
 
     private void startCopyFileTask() {

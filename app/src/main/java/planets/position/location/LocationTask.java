@@ -23,7 +23,7 @@ package planets.position.location;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -34,6 +34,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -45,9 +46,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 
-import planets.position.R;
-
-public class LocationTask extends DialogFragment implements GoogleApiClient.ConnectionCallbacks,
+public class LocationTask extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final String DIALOG_ERROR = "dialog_error";
@@ -56,18 +55,22 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
     public final static int LOCATION_TASK = 500;
 
     private boolean resolvingError = false;
+    private boolean fromMain = false;
     private GoogleApiClient googleApiClient;
     private static GoogleApiAvailability gaa;
-    private LocationCallback mCallbacks;
+    private LocationCallbackMain callbacksMain;
 
-    public interface LocationCallback {
-        void onLocationFound(Bundle data);
+    public interface LocationCallbackMain {
+        void onLocationFoundMain(Bundle data);
+    }
+
+    public static LocationTask newInstance() {
+        return new LocationTask();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCancelable(false);
         setRetainInstance(true);
 
         googleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -81,39 +84,24 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
         gaa = GoogleApiAvailability.getInstance();
     }
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        ProgressDialog dialog = new ProgressDialog(getActivity(), getTheme());
-        dialog.setMessage(getString(R.string.location_dialog));
-        dialog.setIndeterminate(true);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-        start();
-
-        return dialog;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // attach to PlanetsMain
-        if (!(activity instanceof LocationCallback)) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof LocationCallbackMain) {
+            callbacksMain = (LocationCallbackMain) context;
+        } else {
             throw new IllegalStateException(
-                    "Activity must implement the FragmentListener interface.");
+                    "Activity must implement the LocationCallbackMain interface.");
         }
-        mCallbacks = (LocationCallback) activity;
     }
 
     private void onLocationTaskFound(Location location) {
-        if (isResumed())
-            dismiss();
         Bundle b = new Bundle();
         Intent data = new Intent();
         if (location == null) {
             b.putBoolean("locationNull", true);
         } else {
-            Log.d(TAG, "Task onLocationFound, Location found");
+            Log.d(TAG, "Task onLocationFoundMain, Location found");
             b.putBoolean("locationNull", false);
             b.putDouble("latitude", location.getLatitude());
             b.putDouble("longitude", location.getLongitude());
@@ -121,21 +109,24 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
             b.putDouble("offset", Calendar.getInstance().getTimeZone()
                     .getOffset(location.getTime()) / 3600000.0);
         }
-        if (getTargetFragment() != null) {
+        if (fromMain) {
+            // PlanetsMain
+            callbacksMain.onLocationFoundMain(b);
+        } else {
             // UserLocation
-            Log.d(TAG, "onLocationTaskFound UserLocation");
             data.putExtras(b);
             getTargetFragment().onActivityResult(LOCATION_TASK,
                     Activity.RESULT_OK, data);
-        } else {
-            Log.d(TAG, "onLocationTaskFound PlanetsMain");
-            // PlanetsMain
-            mCallbacks.onLocationFound(b);
         }
     }
 
-    private void start() {
+    public void start(boolean main) {
+        fromMain = main;
         googleApiClient.connect();
+    }
+
+    public void stop() {
+        googleApiClient.disconnect();
     }
 
     @Override
@@ -161,7 +152,7 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
                 result.startResolutionForResult(getActivity(), REQUEST_RESOLVE_ERROR);
             } catch (IntentSender.SendIntentException e) {
                 // There was an error with the resolution intent. Try again.
-                start();
+                start(fromMain);
             }
         } else {
             // Show dialog using GoogleApiAvailability.getErrorDialog()
@@ -178,6 +169,7 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
         Bundle args = new Bundle();
         args.putInt(DIALOG_ERROR, errorCode);
         dialogFragment.setArguments(args);
+        dialogFragment.setTargetFragment(this, LOCATION_TASK);
         dialogFragment.show(getActivity().getSupportFragmentManager(), "errordialog");
     }
 
@@ -201,7 +193,7 @@ public class LocationTask extends DialogFragment implements GoogleApiClient.Conn
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-            ((LocationTask) this.getParentFragment()).onDialogDismissed();
+            ((LocationTask) getTargetFragment()).onDialogDismissed();
         }
     }
 

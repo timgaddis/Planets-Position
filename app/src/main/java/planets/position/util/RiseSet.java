@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,11 @@ public class RiseSet {
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native static double planetRise(byte[] eph, double dUT, int p, double[] loc, double press,
+    public native static double planetRise(String eph, double dUT, int p, double[] loc, double press,
                                            double temp);
 
     @SuppressWarnings("JniMissingFunction")
-    public native static double planetSet(byte[] eph, double dUT, int p, double[] loc, double press,
+    public native static double planetSet(String eph, double dUT, int p, double[] loc, double press,
                                           double temp);
 
     public RiseSet(double[] loc) {
@@ -62,11 +62,11 @@ public class RiseSet {
     }
 
     public double getRise(double jdate, int planet) {
-        return planetRise(ephPath.getBytes(), jdate, planet, g, 0.0, 0.0);
+        return planetRise(ephPath, jdate, planet, g, 0.0, 0.0);
     }
 
     public double getSet(double jdate, int planet) {
-        return planetSet(ephPath.getBytes(), jdate, planet, g, 0.0, 0.0);
+        return planetSet(ephPath, jdate, planet, g, 0.0, 0.0);
     }
 
 }

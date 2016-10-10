@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,10 +59,10 @@ public class SolarEclipseTask extends DialogFragment {
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native double[] solarDataLocal(byte[] eph, double d2, double[] loc, int back);
+    public native double[] solarDataLocal(String eph, double d2, double[] loc, int back);
 
     @SuppressWarnings("JniMissingFunction")
-    public native double[] solarDataGlobal(byte[] eph, double d2, int back);
+    public native double[] solarDataGlobal(String eph, double d2, int back);
 
     public void setData(ComputeEclipseTask task, double[] loc, double time,
                         double back) {
@@ -173,7 +173,7 @@ public class SolarEclipseTask extends DialogFragment {
             start = params[0];
 
             // compute first local eclipse
-            data2 = solarDataLocal(settings.getString("ephPath", "").getBytes(), start, g, back);
+            data2 = solarDataLocal(settings.getString("ephPath", ""), start, g, back);
             if (data2 == null) {
                 Log.e("Solar Eclipse error", "solarDataLocal data2 error");
                 getTargetFragment().onActivityResult(
@@ -191,7 +191,7 @@ public class SolarEclipseTask extends DialogFragment {
                 values.clear();
 
                 // Global Eclipse Calculation
-                data1 = solarDataGlobal(settings.getString("ephPath", "").getBytes(), start, back);
+                data1 = solarDataGlobal(settings.getString("ephPath", ""), start, back);
                 if (data1 == null) {
                     Log.e("Solar Eclipse error", "solarDataGlobal data1 error");
                     getTargetFragment().onActivityResult(
@@ -287,7 +287,7 @@ public class SolarEclipseTask extends DialogFragment {
                     else
                         start = data1[3];
 
-                    data2 = solarDataLocal(settings.getString("ephPath", "").getBytes(), start, g, back);
+                    data2 = solarDataLocal(settings.getString("ephPath", ""), start, g, back);
                     if (data2 == null) {
                         Log.e("Solar Eclipse error",
                                 "computeEclipses data2a error");

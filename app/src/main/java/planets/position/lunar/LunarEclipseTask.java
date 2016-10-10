@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2016 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,10 +59,10 @@ public class LunarEclipseTask extends DialogFragment {
 
     // c function prototypes
     @SuppressWarnings("JniMissingFunction")
-    public native double[] lunarDataLocal(byte[] eph, double d2, double[] loc, int back);
+    public native double[] lunarDataLocal(String eph, double d2, double[] loc, int back);
 
     @SuppressWarnings("JniMissingFunction")
-    public native double[] lunarDataGlobal(byte[] eph, double d2, int back);
+    public native double[] lunarDataGlobal(String eph, double d2, int back);
 
     public void setData(ComputeEclipseTask task, double[] loc, double time,
                         double back) {
@@ -173,7 +173,7 @@ public class LunarEclipseTask extends DialogFragment {
             start = params[0];
 
             // compute first local eclipse
-            data2 = lunarDataLocal(settings.getString("ephPath", "").getBytes(), start, g, back);
+            data2 = lunarDataLocal(settings.getString("ephPath", ""), start, g, back);
             if (data2 == null) {
                 Log.e("Lunar Eclipse error", "lunarDataLocal data2 error");
                 getTargetFragment().onActivityResult(
@@ -191,7 +191,7 @@ public class LunarEclipseTask extends DialogFragment {
                 values.clear();
 
                 // Global Eclipse Calculation
-                data1 = lunarDataGlobal(settings.getString("ephPath", "").getBytes(), start, back);
+                data1 = lunarDataGlobal(settings.getString("ephPath", ""), start, back);
                 if (data1 == null) {
                     Log.e("Lunar Eclipse error", "lunarDataGlobal data1 error");
                     getTargetFragment().onActivityResult(
@@ -261,7 +261,7 @@ public class LunarEclipseTask extends DialogFragment {
                     else
                         start = data1[7];
 
-                    data2 = lunarDataLocal(settings.getString("ephPath", "").getBytes(), start, g, back);
+                    data2 = lunarDataLocal(settings.getString("ephPath", ""), start, g, back);
                     if (data2 == null) {
                         Log.e("Lunar Eclipse error",
                                 "computeEclipses data2a error");

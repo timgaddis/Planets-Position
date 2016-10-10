@@ -51,7 +51,6 @@ public class LocationHelper extends Fragment {
     }
 
     public LocationHelper() {
-        // Required empty public constructor
     }
 
     @Override
@@ -67,7 +66,7 @@ public class LocationHelper extends Fragment {
         if (context instanceof LocationMainCallback) {
             mCallback = (LocationMainCallback) context;
         } else {
-            throw new IllegalArgumentException("activity must implement LocationHelper.LocationCallback");
+            throw new IllegalArgumentException("activity must implement LocationHelper.LocationCallbackMain");
         }
     }
 

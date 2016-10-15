@@ -179,9 +179,10 @@ public class PlanetsMain extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        locationTask.setTargetFragment(null, -1);
         outState.putInt("frag", fragIndex);
         outState.putCharSequence("title", actionTitle);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

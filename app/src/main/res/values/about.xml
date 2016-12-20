@@ -3,7 +3,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (C) 2016  Tim Gaddis
+  ~ Copyright (c) 2016 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 <resources>
 
-    <string name="main_about">Planet\'s Position v2.0\n\n
+    <string name="main_about">Planet\'s Position v2.0.3\n\n
         Planets Position is a program to calculate the position of the planets
         in the night sky based on a given location on Earth.\n\n
 

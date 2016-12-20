@@ -28,14 +28,11 @@ android {
         applicationId "planets.position"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 27
-        versionName "2.0.2"
-    }
-    sourceSets {
-        main {
-            jni.srcDirs = []
-            jniLibs.srcDirs = ['src/main/libs']
-            java.srcDirs = ['src/main/java']
+        versionCode 28
+        versionName "2.0.3"
+
+        ndk {
+            abiFilters 'armeabi'
         }
     }
 
@@ -58,22 +55,11 @@ android {
             }
         }
     }
-}
-
-task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
-    def ndkDir = project.getPlugins().getPlugin('android').sdkHandler.getNdkFolder()
-    commandLine "$ndkDir/ndk-build",
-            '-C', file('src/main/jni').absolutePath
-}
-task cleanNative(type: Exec, description: 'Clean JNI object files') {
-    def ndkDir = project.getPlugins().getPlugin('android').sdkHandler.getNdkFolder()
-    commandLine "$ndkDir/ndk-build",
-            '-C', file('src/main/jni').absolutePath,
-            'clean'
-}
-clean.dependsOn 'cleanNative'
-tasks.withType(JavaCompile) {
-    compileTask -> compileTask.dependsOn buildNative
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
 }
 
 dependencies {
@@ -82,6 +68,6 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:support-v13:23.4.0'
-    compile 'com.google.android.gms:play-services-location:9.6.1'
-    compile 'com.google.android.gms:play-services-maps:9.6.1'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
 }

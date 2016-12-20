@@ -178,14 +178,16 @@ public class LivePosition extends Fragment {
 
     private void updateUI(Intent intent) {
         double[] data;
-        double riseT, setT;
+        double riseT, setT, ra;
         Calendar c = Calendar.getInstance();
         data = intent.getDoubleArrayExtra("data");
         riseT = intent.getDoubleExtra("riseT", 0.0);
         setT = intent.getDoubleExtra("setT", 0.0);
         pDateText.setText(mDateFormat.format(c.getTime()));
         pTimeText.setText(mTimeFormat.format(c.getTime()));
-        pRAText.setText(pf.formatRA(data[0]));
+        // convert ra to hours
+        ra = data[0] / 15;
+        pRAText.setText(pf.formatRA(ra));
         pDecText.setText(pf.formatDec(data[1]));
         pAzText.setText(pf.formatAZ(data[3]));
         pAltText.setText(pf.formatALT(data[4]));

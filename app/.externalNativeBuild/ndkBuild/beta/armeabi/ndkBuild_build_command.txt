@@ -1,4 +1,4 @@
-Executable : /media/Storage/Android/android-ndk/ndk-build
+Executable : /media/Storage/Android/android-sdk-linux/ndk-bundle/ndk-build
 arguments : 
 NDK_PROJECT_PATH=null
 APP_BUILD_SCRIPT=/home/tgaddis/MEGA/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/Android.mk

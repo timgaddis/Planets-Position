@@ -1,6 +1,5 @@
 #include <jni.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <android/log.h>
 #include "swiss/swephexp.h"
 
@@ -82,7 +81,7 @@ jdouble Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this,
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_RISE, g, atpress, attemp, &riseT, serr);
     if (i == ERR) {
@@ -120,7 +119,7 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_SET, g, atpress, attemp, &setT, serr);
     if (i == ERR) {
@@ -152,9 +151,9 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
  * 		magnitude, set time, and rise time of planet.
  */
 jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this, jstring eph,
-                                                            jdouble d_et, jdouble d_ut, jint p,
-                                                            jdoubleArray loc, jdouble atpress,
-                                                            jdouble attemp) {
+                                                             jdouble d_et, jdouble d_ut, jint p,
+                                                             jdoubleArray loc, jdouble atpress,
+                                                             jdouble attemp) {
 
     char serr[256];
     double x2[3], az[3], g[3], attr[20], setT, riseT;
@@ -172,7 +171,7 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
     i = swe_calc(d_et, p, iflag, x2, serr);
@@ -244,7 +243,7 @@ jdoubleArray Java_planets_position_LivePositionService_planetLiveData(
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
     i = swe_calc_ut(d_ut, p, iflag, x2, serr);
@@ -317,7 +316,7 @@ jdoubleArray Java_planets_position_WhatsUpTask_planetUpData(JNIEnv *env, jobject
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     swe_set_topo(g[0], g[1], g[2]);
     i = swe_calc(d_et, p, iflag, x2, serr);
@@ -365,7 +364,8 @@ jdoubleArray Java_planets_position_WhatsUpTask_planetUpData(JNIEnv *env, jobject
  * Output: Double array containing eclipse type and eclipse event times.
  */
 jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(JNIEnv *env, jobject this,
-                                                            jstring eph, jdouble d_ut, jint back) {
+                                                                          jstring eph, jdouble d_ut,
+                                                                          jint back) {
 
     char serr[256];
     double tret[10], rval;
@@ -381,7 +381,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataGlobal(JNIEnv
     }
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     retval = swe_sol_eclipse_when_glob(d_ut, SEFLG_SWIEPH, 0, tret, back, serr);
     if (retval == ERR) {
@@ -436,7 +436,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseTask_solarDataLocal(
     }
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
     swe_set_topo(g[0], g[1], g[2]);
@@ -511,7 +511,7 @@ jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
     }
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     swe_sol_eclipse_where(d_ut, SEFLG_SWIEPH, g, attr, serr);
     swe_close();
@@ -552,7 +552,7 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataGlobal(
     }
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     retval = swe_lun_eclipse_when(d_ut, SEFLG_SWIEPH, 0, tret, back, serr);
     if (retval == ERR) {
@@ -605,7 +605,7 @@ jdoubleArray Java_planets_position_lunar_LunarEclipseTask_lunarDataLocal(
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     retval = swe_lun_eclipse_when_loc(d_ut, SEFLG_SWIEPH, g, tret, attr, back,
                                       serr);
@@ -662,7 +662,7 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultGlobal(
         return NULL; /* out of memory error thrown */
     }
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     retval = swe_lun_occult_when_glob(d_ut, p, NULL, iflag, 0, tret, back,
                                       serr);
@@ -721,7 +721,7 @@ jdoubleArray Java_planets_position_lunar_LunarOccultTask_lunarOccultLocal(
     (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
 
     const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
-    swe_set_ephe_path((char *)ephString);
+    swe_set_ephe_path((char *) ephString);
 
     retval = swe_lun_occult_when_loc(d_ut, p, NULL, iflag, g, tret, attr, back,
                                      serr);

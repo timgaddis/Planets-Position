@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2016 Tim Gaddis
+  ~ Copyright (c) 2017 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -224,6 +224,24 @@
 
         <TextView
             android:id="@+id/data_setTime_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/data_card_pad"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text" />
+
+        <TextView
+            android:id="@+id/data_transitTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/data_transit"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text" />
+
+        <TextView
+            android:id="@+id/data_transitTime_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2016 Tim Gaddis
+  ~ Copyright (c) 2017 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -67,6 +67,7 @@
     <string name="data_mag">Magnitude</string>
     <string name="data_set">Set Time</string>
     <string name="data_rise">Rise Time</string>
+    <string name="data_transit">Meridian Transit</string>
     <string name="below_hor">Object below horizon</string>
     <string name="planet_select">Select a planet.</string>
     <!-- Solar/Lunar Eclipse -->

@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2016 Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public class LivePosition extends Fragment {
 
     private TextView pDateText, pTimeText, pRAText, pDecText,
             pMagText, pRiseText, pRise, pAzText, pAltText, pDistText,
-            pBelowText;
+            pBelowText, pTransitText;
     private int planetNum = 0;
     private DateFormat mDateFormat, mTimeFormat;
     private double offset;
@@ -105,6 +105,7 @@ public class LivePosition extends Fragment {
         pMagText = (TextView) v.findViewById(R.id.live_mag_text);
         pRiseText = (TextView) v.findViewById(R.id.live_riseTime_text);
         pRise = (TextView) v.findViewById(R.id.live_riseTime);
+        pTransitText = (TextView) v.findViewById(R.id.live_transitTime_text);
         pBelowText = (TextView) v.findViewById(R.id.live_below_text);
         pf = new PositionFormat(getActivity());
         jdUTC = new JDUTC();
@@ -178,11 +179,12 @@ public class LivePosition extends Fragment {
 
     private void updateUI(Intent intent) {
         double[] data;
-        double riseT, setT, ra;
+        double riseT, setT, transitT, ra;
         Calendar c = Calendar.getInstance();
         data = intent.getDoubleArrayExtra("data");
         riseT = intent.getDoubleExtra("riseT", 0.0);
         setT = intent.getDoubleExtra("setT", 0.0);
+        transitT = intent.getDoubleExtra("transit", 0.0);
         pDateText.setText(mDateFormat.format(c.getTime()));
         pTimeText.setText(mTimeFormat.format(c.getTime()));
         // convert ra to hours
@@ -206,6 +208,10 @@ public class LivePosition extends Fragment {
             utc.setTimeInMillis(jdUTC.jdmills(setT, offset));
         }
         pRiseText.setText(String.format("%s  %s", mDateFormat.format(utc.getTime()),
+                mTimeFormat.format(utc.getTime())));
+
+        utc.setTimeInMillis(jdUTC.jdmills(transitT, offset));
+        pTransitText.setText(String.format("%s  %s", mDateFormat.format(utc.getTime()),
                 mTimeFormat.format(utc.getTime())));
     }
 }

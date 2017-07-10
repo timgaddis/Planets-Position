@@ -137,6 +137,45 @@ jdouble Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, 
 }
 
 /*
+ * Return the time of the meridian transit for a given planet at a given date.
+ * Swiss Ephemeris function called:
+ * 		swe_set_ephe_path
+ * 		swe_rise_trans
+ * 		swe_close
+ * Input: Julian date in ut1, planet number, location array, atmospheric pressure and temperature
+ * Output: Julian date as a double
+ */
+jdouble Java_planets_position_util_RiseSet_planetTransit(JNIEnv *env, jobject this, jstring eph,
+                                                         jdouble d_ut, jint p, jdoubleArray loc,
+                                                         jdouble atpress, jdouble attemp) {
+
+    char serr[256];
+    double g[3], transitT;
+    int i;
+    jboolean isCopy;
+    const char *ephString = (*env)->GetStringUTFChars(env, eph, &isCopy);
+
+    (*env)->GetDoubleArrayRegion(env, loc, 0, 3, g);
+
+    swe_set_ephe_path((char *) ephString);
+
+    i = swe_rise_trans(d_ut, p, "", SEFLG_SWIEPH, SE_CALC_MTRANSIT, g, atpress, attemp, &transitT,
+                       serr);
+    if (i == ERR) {
+        __android_log_print(ANDROID_LOG_ERROR, "planetTransit", "JNI ERROR swe_rise_trans: %-256s",
+                            serr);
+        swe_close();
+        return -1.0;
+    }
+    swe_close();
+    if (isCopy) {
+        (*env)->ReleaseStringUTFChars(env, eph, ephString);
+    }
+
+    return transitT;
+}
+
+/*
  * Calculate the position of a given planet in the sky.
  * Swiss Ephemeris functions called:
  * 		swe_set_ephe_path

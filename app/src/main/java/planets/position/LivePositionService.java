@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2016 Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ public class LivePositionService extends Service {
     private void computeLocation() {
         int m;
         double[] d, data;
-        double setT, riseT;
+        double setT, riseT, transitT;
         Calendar utc = Calendar.getInstance();
         // convert local time to UTC time
         m = (int) (offset * 60);
@@ -118,9 +118,15 @@ public class LivePositionService extends Service {
             Log.e("UpdatePosition error", "planetLiveData rise error");
             return;
         }
+        transitT = riseSet.getTransit(d[1], planetNum);
+        if (riseT < 0) {
+            Log.e("UpdatePosition error", "planetLiveData transit error");
+            return;
+        }
         intent.putExtra("data", data);
         intent.putExtra("setT", setT);
         intent.putExtra("riseT", riseT);
+        intent.putExtra("transit", transitT);
         sendBroadcast(intent);
     }
 

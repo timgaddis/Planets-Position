@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2016 Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class SkyPosition extends Fragment {
 
     private Button nameButton, timeButton, dateButton;
     private TextView pRAText, pDecText, pMagText, pRiseText, pSetText;
-    private TextView pAzText, pAltText, pBelowText, pDistText;
+    private TextView pAzText, pAltText, pBelowText, pDistText, pTransitText;
     private int mHour, mMinute, mDay, mMonth, mYear, planetNum = 0;
     private DateFormat mDateFormat, mTimeFormat;
     private double latitude, longitude, elevation;
@@ -105,6 +105,7 @@ public class SkyPosition extends Fragment {
         pMagText = (TextView) v.findViewById(R.id.pos_mag_text);
         pRiseText = (TextView) v.findViewById(R.id.pos_riseTime_text);
         pSetText = (TextView) v.findViewById(R.id.pos_setTime_text);
+        pTransitText = (TextView) v.findViewById(R.id.pos_transitTime_text);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
         planetsArray = Arrays.asList(getResources().getStringArray(R.array.planets_array));
@@ -354,6 +355,15 @@ public class SkyPosition extends Fragment {
             }
             utc.setTimeInMillis(jdUTC.jdmills(t, offset));
             pRiseText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
+                    mTimeFormat.format(utc.getTime())));
+
+            t = riseSet.getTransit(d, planetNum);
+            if (t < 0) {
+                Log.e("Position error", "planetPosData transit error");
+                return;
+            }
+            utc.setTimeInMillis(jdUTC.jdmills(t, offset));
+            pTransitText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
             if (data[4] <= 0.0) {

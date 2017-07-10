@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2016 Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import planets.position.PlanetsMain;
 
 class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 212;
+    private static final int DATABASE_VERSION = 213;
     private final Context mContext;
 
     public PlanetsDatabaseHelper(Context context) {

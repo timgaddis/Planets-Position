@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ public class PlanetsDatabase {
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_RA,
             PlanetsTable.COLUMN_DEC, PlanetsTable.COLUMN_AZ,
             PlanetsTable.COLUMN_ALT, PlanetsTable.COLUMN_DISTANCE,
-            PlanetsTable.COLUMN_MAGNITUDE, PlanetsTable.COLUMN_SET_TIME};
+            PlanetsTable.COLUMN_MAGNITUDE, PlanetsTable.COLUMN_SET_TIME, PlanetsTable.COLUMN_TRANSIT};
     private final String[] solarEclipseColumns = {SolarEclipseTable.COLUMN_ID,
             SolarEclipseTable.COLUMN_GLOBAL_TYPE,
             SolarEclipseTable.COLUMN_ECLIPSE_DATE,
@@ -171,6 +171,7 @@ public class PlanetsDatabase {
         out.putDouble("distance", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_DISTANCE)));
         out.putDouble("mag", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_MAGNITUDE)));
         out.putLong("setTime", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_SET_TIME)));
+        out.putLong("transit", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_TRANSIT)));
 
         c.close();
 

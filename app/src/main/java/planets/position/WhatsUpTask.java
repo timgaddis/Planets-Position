@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2016 Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,7 +137,7 @@ public class WhatsUpTask extends DialogFragment {
 
         WhatsUpTask mFragment;
         double[] data = null, time;
-        double t, ra;
+        double t, ra, transit;
         PlanetsDatabase planetsDB;
         private RiseSet riseSet;
         private ContentValues values;
@@ -184,6 +184,12 @@ public class WhatsUpTask extends DialogFragment {
                     break;
                 }
 
+                transit = riseSet.getTransit(time[1], i);
+                if (transit < 0) {
+                    Log.e("Position error", "ComputePlanetsTask transit error");
+                    break;
+                }
+
                 ra = data[0];
                 // convert ra to hours
                 ra = ra / 15;
@@ -196,6 +202,7 @@ public class WhatsUpTask extends DialogFragment {
                 values.put(PlanetsTable.COLUMN_DISTANCE, data[2]);
                 values.put(PlanetsTable.COLUMN_MAGNITUDE, data[5]);
                 values.put(PlanetsTable.COLUMN_SET_TIME, jdUTC.jdmills(t, offset));
+                values.put(PlanetsTable.COLUMN_TRANSIT, jdUTC.jdmills(transit, offset));
 
                 planetsDB.addPlanet(values, i);
             }

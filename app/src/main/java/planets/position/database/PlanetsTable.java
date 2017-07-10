@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (C) 2016  Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ public class PlanetsTable {
     public static final String COLUMN_DISTANCE = "dis";
     public static final String COLUMN_MAGNITUDE = "mag";
     public static final String COLUMN_SET_TIME = "setT";
+    public static final String COLUMN_TRANSIT = "transit";
 
     private static final String DATABASE_CREATE = "create table "
             + TABLE_PLANET + "(" + COLUMN_ID
@@ -42,7 +43,7 @@ public class PlanetsTable {
             + " text not null, " + COLUMN_RA + " real," + COLUMN_DEC
             + " real, " + COLUMN_AZ + " real, " + COLUMN_ALT + " real, "
             + COLUMN_DISTANCE + " real, " + COLUMN_MAGNITUDE + " real, "
-            + COLUMN_SET_TIME + " integer " + ");";
+            + COLUMN_SET_TIME + " integer, " + COLUMN_TRANSIT + " integer);";
 
     public static void onCreate(SQLiteDatabase database) {
         String ip1, ip2;
@@ -50,8 +51,8 @@ public class PlanetsTable {
         ip1 = "insert into " + TABLE_PLANET + "(" + COLUMN_ID + ","
                 + COLUMN_NAME + "," + COLUMN_RA + "," + COLUMN_DEC + ","
                 + COLUMN_AZ + "," + COLUMN_ALT + "," + COLUMN_DISTANCE + ","
-                + COLUMN_MAGNITUDE + "," + COLUMN_SET_TIME + ") VALUES (";
-        ip2 = ", 'P', 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0);";
+                + COLUMN_MAGNITUDE + "," + COLUMN_SET_TIME + "," + COLUMN_TRANSIT + ") VALUES (";
+        ip2 = ", 'P', 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0);";
         for (int i = 0; i < 10; i++) {
             database.execSQL(ip1 + i + ip2);
         }

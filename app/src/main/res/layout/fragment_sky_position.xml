@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2016 Tim Gaddis
+  ~ Copyright (c) 2017 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -19,25 +19,25 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pos_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_back"
-    android:paddingBottom="@dimen/data_card"
-    android:id="@+id/pos_scroll">
+    android:paddingBottom="@dimen/data_card">
 
     <LinearLayout
+        android:id="@+id/pos_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/data_card"
-        android:id="@+id/pos_main">
+        android:padding="@dimen/data_card">
 
         <LinearLayout
+            android:id="@+id/pos_name_date"
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/pos_name_date">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/nameButton"
@@ -81,11 +81,11 @@
             android:background="@color/divider_color" />
 
         <LinearLayout
+            android:id="@+id/pos_data_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/data_card"
-            android:id="@+id/pos_data_main">
+            android:paddingTop="@dimen/data_card">
 
             <LinearLayout
                 android:id="@+id/pos_layout"
@@ -96,11 +96,11 @@
                 android:paddingBottom="@dimen/data_card_pad">
 
                 <LinearLayout
+                    android:id="@+id/pos_layout1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:orientation="vertical"
-                    android:id="@+id/pos_layout1">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/pos_ra"
@@ -152,17 +152,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
+                    <TextView
+                        android:id="@+id/pos_riseTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/data_rise"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/pos_riseTime_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="@dimen/data_card_pad"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_text" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/pos_layout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:orientation="vertical"
-                    android:id="@+id/pos_layout2">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/pos_dec"
@@ -214,41 +232,41 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
+                    <TextView
+                        android:id="@+id/pos_setTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/data_set"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/pos_setTime_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="@dimen/data_card_pad"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_text" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/pos_riseTime"
+                android:id="@+id/pos_transitTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/data_rise"
+                android:text="@string/data_transit"
                 android:textColor="@color/alt_text_color"
                 android:textSize="@dimen/label_text" />
 
             <TextView
-                android:id="@+id/pos_riseTime_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card_pad"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/pos_setTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/data_set"
-                android:textColor="@color/alt_text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/pos_setTime_text"
+                android:id="@+id/pos_transitTime_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"

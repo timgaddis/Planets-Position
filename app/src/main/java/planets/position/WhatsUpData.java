@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2016 Tim Gaddis
+ * Copyright (c) 2017 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import planets.position.util.PositionFormat;
 public class WhatsUpData extends Fragment {
 
     private TextView pRAText, pDecText, pMagText, pSetText, pAzText;
-    private TextView pAltText, pDistText, pNameText, pDate, pTime;
+    private TextView pAltText, pDistText, pNameText, pDate, pTime, pTransitText;
     private long planetNum = 0, lastUpdate = 0;
     private static DateFormat mDateFormat, mTimeFormat;
     private PlanetsDatabase planetsDB;
@@ -60,6 +60,7 @@ public class WhatsUpData extends Fragment {
         pSetText = (TextView) v.findViewById(R.id.data_setTime_text);
         pDate = (TextView) v.findViewById(R.id.data_date_text);
         pTime = (TextView) v.findViewById(R.id.data_time_text);
+        pTransitText = (TextView) v.findViewById(R.id.data_transitTime_text);
         pf = new PositionFormat(getActivity());
 
         mDateFormat = android.text.format.DateFormat
@@ -146,5 +147,8 @@ public class WhatsUpData extends Fragment {
 
         c.setTimeInMillis(b.getLong("setTime"));
         pSetText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));
+
+        c.setTimeInMillis(b.getLong("transit"));
+        pTransitText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));
     }
 }

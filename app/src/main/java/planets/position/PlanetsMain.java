@@ -260,6 +260,7 @@ public class PlanetsMain extends AppCompatActivity
         editor.putFloat("offset", (float) offset);
         editor.putInt("ioffset", ioffset);
         editor.putLong("locDate", date);
+        editor.putBoolean("newLocation", true);
         boolean out = editor.commit();
 
         // save to database

@@ -21,7 +21,7 @@
 
 <resources>
 
-    <string name="main_about">Planet\'s Position v2.1\n\n
+    <string name="main_about">Planet\'s Position v2.1.1\n\n
         Planets Position is a program to calculate the position of the planets
         in the night sky based on a given location on Earth.\n\n
 

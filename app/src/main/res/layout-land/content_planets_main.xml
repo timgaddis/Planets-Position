@@ -52,23 +52,15 @@
             android:textSize="@dimen/label_planets_text" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/activity_horizontal_margin" />
-
     <Button
         android:id="@+id/buttonLOMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/data_card_pad"
+        android:layout_marginTop="@dimen/data_card_pad"
         android:text="@string/nav_lunar_occultion"
         android:textColor="@color/button_text"
         android:textSize="@dimen/label_planets_text" />
-
-    <View
-        android:id="@+id/view0"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/activity_horizontal_margin" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Locale;
 
 public class About extends Fragment {
 
@@ -62,14 +63,19 @@ public class About extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_about, container,
-                false);
+        View v = inflater.inflate(R.layout.fragment_about, container, false);
+
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("About", 9);
         }
-        TextView aboutText = (TextView) v.findViewById(R.id.aboutText);
-        aboutText.setText(R.string.main_about);
-        Linkify.addLinks(aboutText, Linkify.ALL);
+
+        TextView aboutText1 = (TextView) v.findViewById(R.id.aboutText1);
+        TextView aboutText2 = (TextView) v.findViewById(R.id.aboutText2);
+
+        aboutText1.setText(String.format(Locale.getDefault(), "Planet's Position v%s", BuildConfig.VERSION_NAME));
+        aboutText2.setText(R.string.about_main);
+        Linkify.addLinks(aboutText2, Linkify.ALL);
+
         return v;
     }
 

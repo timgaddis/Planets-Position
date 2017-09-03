@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
@@ -20,9 +19,7 @@
   -->
 
 <resources>
-
-    <string name="main_about">Planet\'s Position v2.1.1\n\n
-        Planets Position is a program to calculate the position of the planets
+    <string name="about_main">Planets Position is a program to calculate the position of the planets
         in the night sky based on a given location on Earth.\n\n
 
         License and Copyright\n\n
@@ -41,7 +38,7 @@
 
         You should have received a copy of the GNU General Public License along
         with this program. If not, see \n
-        http://www.gnu.org/licenses/.\n\n
+        http://www.gnu.org/licenses.\n\n
 
         Feedback can be sent to\n
         planets.position@gmail.com\n

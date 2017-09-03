@@ -21,12 +21,10 @@
 package planets.position.location;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -53,7 +51,6 @@ import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
-import planets.position.util.ScreenReceiver;
 
 public class UserLocation extends Fragment {
 
@@ -77,7 +74,6 @@ public class UserLocation extends Fragment {
     private boolean edit = false;
     private List<String> gmtArray, gmtValues;
     private SharedPreferences settings;
-    private BroadcastReceiver mReceiver;
 
     public UserLocation() {
     }
@@ -187,12 +183,6 @@ public class UserLocation extends Fragment {
                 }
             }
         });
-
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        mReceiver = new ScreenReceiver();
-        getActivity().registerReceiver(mReceiver, filter);
-
         return v;
     }
 
@@ -267,26 +257,24 @@ public class UserLocation extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!ScreenReceiver.wasScreenOn) {
-            locHelper = (LocationHelper) getActivity().getSupportFragmentManager().
-                    findFragmentByTag(LocationHelper.TAG);
-            if (locHelper == null) {
-                locHelper = LocationHelper.newInstance();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(locHelper, LocationHelper.TAG)
-                        .commit();
-            }
-            locHelper.setTargetFragment(this, LocationHelper.LOCATION_HELPER);
-            locationTask = (LocationTask) getActivity().getSupportFragmentManager()
-                    .findFragmentByTag(LocationTask.TAG);
-            if (locationTask == null) {
-                locationTask = LocationTask.newInstance();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(locationTask, LocationTask.TAG)
-                        .commit();
-            }
-            locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
+        locHelper = (LocationHelper) getActivity().getSupportFragmentManager().
+                findFragmentByTag(LocationHelper.TAG);
+        if (locHelper == null) {
+            locHelper = LocationHelper.newInstance();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(locHelper, LocationHelper.TAG)
+                    .commit();
         }
+        locHelper.setTargetFragment(this, LocationHelper.LOCATION_HELPER);
+        locationTask = (LocationTask) getActivity().getSupportFragmentManager()
+                .findFragmentByTag(LocationTask.TAG);
+        if (locationTask == null) {
+            locationTask = LocationTask.newInstance();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(locationTask, LocationTask.TAG)
+                    .commit();
+        }
+        locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
     }
 
     @Override
@@ -314,7 +302,6 @@ public class UserLocation extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-        getActivity().unregisterReceiver(mReceiver);
     }
 
     @Override

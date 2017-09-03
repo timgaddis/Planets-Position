@@ -28,11 +28,16 @@ android {
         applicationId "planets.position"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 30
-        versionName "2.1.1"
+        versionCode 31
+        versionName "2.1.2"
 
         ndk {
             abiFilters 'armeabi'
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
         }
     }
 
@@ -56,8 +61,8 @@ android {
         }
     }
     externalNativeBuild {
-        ndkBuild {
-            path 'src/main/jni/Android.mk'
+        cmake {
+            path "CMakeLists.txt"
         }
     }
 }

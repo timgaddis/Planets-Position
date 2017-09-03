@@ -19,16 +19,31 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aboutScroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_back"
-    android:paddingBottom="@dimen/data_card">
+    android:paddingBottom="@dimen/data_card_pad">
 
-    <TextView
-        android:id="@+id/aboutText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:textColorLink="@color/text_color" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/aboutText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/data_card_pad"
+            android:layout_marginRight="@dimen/data_card_pad"
+            android:layout_marginTop="@dimen/data_card_pad" />
+
+        <TextView
+            android:id="@+id/aboutText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/data_card_pad"
+            android:textColorLink="@color/text_color" />
+    </LinearLayout>
 
 </ScrollView>

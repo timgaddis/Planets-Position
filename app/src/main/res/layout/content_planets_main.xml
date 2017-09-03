@@ -37,54 +37,38 @@
         android:textColor="@color/button_text"
         android:textSize="@dimen/label_planets_text" />
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/activity_horizontal_margin" />
-
     <Button
         android:id="@+id/buttonLEMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/data_card_pad"
         android:text="@string/nav_lunar_eclipse"
         android:textColor="@color/button_text"
         android:textSize="@dimen/label_planets_text" />
-
-    <View
-        android:id="@+id/view4"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/activity_horizontal_margin" />
 
     <Button
         android:id="@+id/buttonLOMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/data_card_pad"
         android:text="@string/nav_lunar_occultion"
         android:textColor="@color/button_text"
         android:textSize="@dimen/label_planets_text" />
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/activity_horizontal_margin" />
 
     <Button
         android:id="@+id/buttonSky"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/data_card_pad"
         android:text="@string/nav_sky_position"
         android:textColor="@color/button_text"
         android:textSize="@dimen/label_planets_text" />
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/activity_horizontal_margin" />
 
     <Button
         android:id="@+id/buttonWhatsUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/data_card_pad"
         android:text="@string/nav_whats_up"
         android:textColor="@color/button_text"
         android:textSize="@dimen/label_planets_text" />

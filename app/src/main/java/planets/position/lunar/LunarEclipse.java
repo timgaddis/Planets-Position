@@ -80,7 +80,7 @@ public class LunarEclipse extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_eclipse, container, false);
-        lunarList = (ListView) v.findViewById(R.id.eclipseList);
+        lunarList = v.findViewById(R.id.eclipseList);
 
         lunarList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

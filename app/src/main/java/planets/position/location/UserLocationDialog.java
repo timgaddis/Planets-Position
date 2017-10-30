@@ -117,8 +117,8 @@ public class UserLocationDialog extends DialogFragment {
                 // Latitude
                 LayoutInflater inflaterLat = getActivity().getLayoutInflater();
                 View v1 = inflaterLat.inflate(R.layout.lat_dialog, null);
-                inputLat = (EditText) v1.findViewById(R.id.locLatText);
-                rbSouth = (RadioButton) v1.findViewById(R.id.radioLatSouth);
+                inputLat = v1.findViewById(R.id.locLatText);
+                rbSouth = v1.findViewById(R.id.radioLatSouth);
                 inputLat.setText(String.valueOf(Math.abs(value)));
                 if (value < 0)
                     rbSouth.setChecked(true);
@@ -152,8 +152,8 @@ public class UserLocationDialog extends DialogFragment {
                 // Longitude
                 LayoutInflater inflater1 = getActivity().getLayoutInflater();
                 View v2 = inflater1.inflate(R.layout.long_dialog, null);
-                inputLong = (EditText) v2.findViewById(R.id.locLongText);
-                rbWest = (RadioButton) v2.findViewById(R.id.radioLongWest);
+                inputLong = v2.findViewById(R.id.locLongText);
+                rbWest = v2.findViewById(R.id.radioLongWest);
                 inputLong.setText(String.valueOf(Math.abs(value)));
                 if (value < 0)
                     rbWest.setChecked(true);

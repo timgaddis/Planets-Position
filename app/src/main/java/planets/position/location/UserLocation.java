@@ -86,11 +86,11 @@ public class UserLocation extends Fragment {
             mCallbacks.onToolbarTitleChange("User Location", 7);
         }
 
-        latitudeText = (TextView) v.findViewById(R.id.newLatText);
-        longitudeText = (TextView) v.findViewById(R.id.newLongText);
-        elevationText = (TextView) v.findViewById(R.id.newElevationText);
-        gmtOffsetText = (TextView) v.findViewById(R.id.newGMTOffsetText);
-        editLocText = (TextView) v.findViewById(R.id.locEditText);
+        latitudeText = v.findViewById(R.id.newLatText);
+        longitudeText = v.findViewById(R.id.newLongText);
+        elevationText = v.findViewById(R.id.newElevationText);
+        gmtOffsetText = v.findViewById(R.id.newGMTOffsetText);
+        editLocText = v.findViewById(R.id.locEditText);
         mLayout = v.findViewById(R.id.user_main);
 
         gmtArray = Arrays.asList(getResources().getStringArray(

@@ -50,17 +50,17 @@ public class WhatsUpData extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_planet_data, container,
                 false);
-        pNameText = (TextView) v.findViewById(R.id.data_name_text);
-        pAzText = (TextView) v.findViewById(R.id.data_az_text);
-        pAltText = (TextView) v.findViewById(R.id.data_alt_text);
-        pRAText = (TextView) v.findViewById(R.id.data_ra_text);
-        pDecText = (TextView) v.findViewById(R.id.data_dec_text);
-        pDistText = (TextView) v.findViewById(R.id.data_dis_text);
-        pMagText = (TextView) v.findViewById(R.id.data_mag_text);
-        pSetText = (TextView) v.findViewById(R.id.data_setTime_text);
-        pDate = (TextView) v.findViewById(R.id.data_date_text);
-        pTime = (TextView) v.findViewById(R.id.data_time_text);
-        pTransitText = (TextView) v.findViewById(R.id.data_transitTime_text);
+        pNameText = v.findViewById(R.id.data_name_text);
+        pAzText = v.findViewById(R.id.data_az_text);
+        pAltText = v.findViewById(R.id.data_alt_text);
+        pRAText = v.findViewById(R.id.data_ra_text);
+        pDecText = v.findViewById(R.id.data_dec_text);
+        pDistText = v.findViewById(R.id.data_dis_text);
+        pMagText = v.findViewById(R.id.data_mag_text);
+        pSetText = v.findViewById(R.id.data_setTime_text);
+        pDate = v.findViewById(R.id.data_date_text);
+        pTime = v.findViewById(R.id.data_time_text);
+        pTransitText = v.findViewById(R.id.data_transitTime_text);
         pf = new PositionFormat(getActivity());
 
         mDateFormat = android.text.format.DateFormat

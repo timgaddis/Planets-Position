@@ -61,8 +61,8 @@ class CustomSettingsAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.settings_row, null);
             holder = new ViewHolder();
-            holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-            holder.txtFormat = (TextView) convertView.findViewById(R.id.txtFormat);
+            holder.txtTitle = convertView.findViewById(R.id.txtTitle);
+            holder.txtFormat = convertView.findViewById(R.id.txtFormat);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

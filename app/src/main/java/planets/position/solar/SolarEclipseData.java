@@ -73,26 +73,26 @@ public class SolarEclipseData extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_solar_data, container,
                 false);
-        seDateText = (TextView) v.findViewById(R.id.se_date);
-        seTypeText = (TextView) v.findViewById(R.id.se_type);
-        seStartText = (TextView) v.findViewById(R.id.se_start_text);
-        seTStartText = (TextView) v.findViewById(R.id.se_tstart_text);
-        seMaxText = (TextView) v.findViewById(R.id.se_max_text);
-        seTEndText = (TextView) v.findViewById(R.id.se_tend_text);
-        seEndText = (TextView) v.findViewById(R.id.se_end_text);
-        seSunRiseText = (TextView) v.findViewById(R.id.se_sunrise_text);
-        seSunSetText = (TextView) v.findViewById(R.id.se_sunset_text);
-        seAzText = (TextView) v.findViewById(R.id.se_sun_az_text);
-        seAltText = (TextView) v.findViewById(R.id.se_sun_alt_text);
-        seLocalText = (TextView) v.findViewById(R.id.ecl_local);
-        seLocalTypeText = (TextView) v.findViewById(R.id.ecl_local_type);
-        seCoverText = (TextView) v.findViewById(R.id.se_cover_text);
-        seMagText = (TextView) v.findViewById(R.id.se_mag_text);
-        seSarosText = (TextView) v.findViewById(R.id.se_saros_text);
-        seSarosMText = (TextView) v.findViewById(R.id.se_sarosm_text);
-        seLocalVisible = (LinearLayout) v.findViewById(R.id.se_local_visible);
-        seLocalLayout = (LinearLayout) v.findViewById(R.id.se_data_layout1);
-        seSunriseLayout = (LinearLayout) v.findViewById(R.id.se_times_layout2);
+        seDateText = v.findViewById(R.id.se_date);
+        seTypeText = v.findViewById(R.id.se_type);
+        seStartText = v.findViewById(R.id.se_start_text);
+        seTStartText = v.findViewById(R.id.se_tstart_text);
+        seMaxText = v.findViewById(R.id.se_max_text);
+        seTEndText = v.findViewById(R.id.se_tend_text);
+        seEndText = v.findViewById(R.id.se_end_text);
+        seSunRiseText = v.findViewById(R.id.se_sunrise_text);
+        seSunSetText = v.findViewById(R.id.se_sunset_text);
+        seAzText = v.findViewById(R.id.se_sun_az_text);
+        seAltText = v.findViewById(R.id.se_sun_alt_text);
+        seLocalText = v.findViewById(R.id.ecl_local);
+        seLocalTypeText = v.findViewById(R.id.ecl_local_type);
+        seCoverText = v.findViewById(R.id.se_cover_text);
+        seMagText = v.findViewById(R.id.se_mag_text);
+        seSarosText = v.findViewById(R.id.se_saros_text);
+        seSarosMText = v.findViewById(R.id.se_sarosm_text);
+        seLocalVisible = v.findViewById(R.id.se_local_visible);
+        seLocalLayout = v.findViewById(R.id.se_data_layout1);
+        seSunriseLayout = v.findViewById(R.id.se_times_layout2);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
 

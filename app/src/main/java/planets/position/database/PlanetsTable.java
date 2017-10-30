@@ -37,21 +37,12 @@ public class PlanetsTable {
     public static final String COLUMN_SET_TIME = "setT";
     public static final String COLUMN_TRANSIT = "transit";
 
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_PLANET + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_NAME
-            + " text not null, " + COLUMN_RA + " real," + COLUMN_DEC
-            + " real, " + COLUMN_AZ + " real, " + COLUMN_ALT + " real, "
-            + COLUMN_DISTANCE + " real, " + COLUMN_MAGNITUDE + " real, "
-            + COLUMN_SET_TIME + " integer, " + COLUMN_TRANSIT + " integer);";
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s text not null, %s real,%s real, %s real, %s real, %s real, %s real, %s integer, %s integer);", TABLE_PLANET, COLUMN_ID, COLUMN_NAME, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_TRANSIT);
 
     public static void onCreate(SQLiteDatabase database) {
         String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
-        ip1 = "insert into " + TABLE_PLANET + "(" + COLUMN_ID + ","
-                + COLUMN_NAME + "," + COLUMN_RA + "," + COLUMN_DEC + ","
-                + COLUMN_AZ + "," + COLUMN_ALT + "," + COLUMN_DISTANCE + ","
-                + COLUMN_MAGNITUDE + "," + COLUMN_SET_TIME + "," + COLUMN_TRANSIT + ") VALUES (";
+        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_PLANET, COLUMN_ID, COLUMN_NAME, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_TRANSIT);
         ip2 = ", 'P', 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0);";
         for (int i = 0; i < 10; i++) {
             database.execSQL(ip1 + i + ip2);

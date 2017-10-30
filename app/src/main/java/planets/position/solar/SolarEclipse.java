@@ -80,7 +80,7 @@ public class SolarEclipse extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_eclipse, container, false);
-        solarList = (ListView) v.findViewById(R.id.eclipseList);
+        solarList = v.findViewById(R.id.eclipseList);
 
         solarList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

@@ -94,19 +94,19 @@ public class LivePosition extends Fragment {
         List<String> planetNames;
         View v = inflater.inflate(R.layout.fragment_live_position, container,
                 false);
-        pNameText = (TextView) v.findViewById(R.id.live_name_text);
-        pDateText = (TextView) v.findViewById(R.id.live_date_text);
-        pTimeText = (TextView) v.findViewById(R.id.live_time_text);
-        pAzText = (TextView) v.findViewById(R.id.live_az_text);
-        pAltText = (TextView) v.findViewById(R.id.live_alt_text);
-        pRAText = (TextView) v.findViewById(R.id.live_ra_text);
-        pDecText = (TextView) v.findViewById(R.id.live_dec_text);
-        pDistText = (TextView) v.findViewById(R.id.live_dis_text);
-        pMagText = (TextView) v.findViewById(R.id.live_mag_text);
-        pRiseText = (TextView) v.findViewById(R.id.live_riseTime_text);
-        pRise = (TextView) v.findViewById(R.id.live_riseTime);
-        pTransitText = (TextView) v.findViewById(R.id.live_transitTime_text);
-        pBelowText = (TextView) v.findViewById(R.id.live_below_text);
+        pNameText = v.findViewById(R.id.live_name_text);
+        pDateText = v.findViewById(R.id.live_date_text);
+        pTimeText = v.findViewById(R.id.live_time_text);
+        pAzText = v.findViewById(R.id.live_az_text);
+        pAltText = v.findViewById(R.id.live_alt_text);
+        pRAText = v.findViewById(R.id.live_ra_text);
+        pDecText = v.findViewById(R.id.live_dec_text);
+        pDistText = v.findViewById(R.id.live_dis_text);
+        pMagText = v.findViewById(R.id.live_mag_text);
+        pRiseText = v.findViewById(R.id.live_riseTime_text);
+        pRise = v.findViewById(R.id.live_riseTime);
+        pTransitText = v.findViewById(R.id.live_transitTime_text);
+        pBelowText = v.findViewById(R.id.live_below_text);
         pf = new PositionFormat(getActivity());
         jdUTC = new JDUTC();
         mDateFormat = android.text.format.DateFormat

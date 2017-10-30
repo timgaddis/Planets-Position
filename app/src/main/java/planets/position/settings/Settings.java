@@ -58,7 +58,7 @@ public class Settings extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        settingsList = (ListView) v.findViewById(R.id.settingsList);
+        settingsList = v.findViewById(R.id.settingsList);
         settingList = loadSettings();
         adapter = new CustomSettingsAdapter(getActivity(), settingList);
         settingsList.setAdapter(adapter);

@@ -83,8 +83,8 @@ public class WhatsUpNow extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_whats_up, container, false);
-        updateText = (TextView) v.findViewById(R.id.lastUpdateText);
-        planetsList = (ListView) v.findViewById(R.id.planetList);
+        updateText = v.findViewById(R.id.lastUpdateText);
+        planetsList = v.findViewById(R.id.planetList);
         pf = new PositionFormat(getActivity());
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 

@@ -56,43 +56,12 @@ public class SolarEclipseTable {
     public static final String COLUMN_ECLIPSE_DATE = "eclipseDate";
     public static final String COLUMN_ECLIPSE_TYPE = "eclipseType";
 
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_SOLAR_ECLIPSE + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_LOCAL_TYPE
-            + " integer, " + COLUMN_GLOBAL_TYPE + " integer," + COLUMN_LOCAL
-            + " integer, " + COLUMN_LOCAL_MAX + " real, " + COLUMN_LOCAL_FIRST
-            + " real, " + COLUMN_LOCAL_SECOND + " real, " + COLUMN_LOCAL_THIRD
-            + " real, " + COLUMN_LOCAL_FOURTH + " real, " + COLUMN_SUNRISE
-            + " real, " + COLUMN_SUNSET + " real, " + COLUMN_RATIO
-            + " real, " + COLUMN_FRACTION_COVERED + " real, " + COLUMN_SUN_AZ
-            + " real, " + COLUMN_SUN_ALT + " real, " + COLUMN_LOCAL_MAG
-            + " real, " + COLUMN_SAROS_NUM + " integer, "
-            + COLUMN_SAROS_MEMBER_NUM + " integer, " + COLUMN_MOON_AZ
-            + " real, " + COLUMN_MOON_ALT + " real, " + COLUMN_GLOBAL_MAX
-            + " real, " + COLUMN_GLOBAL_BEGIN + " real, " + COLUMN_GLOBAL_END
-            + " real, " + COLUMN_GLOBAL_TOTAL_BEGIN + " real, "
-            + COLUMN_GLOBAL_TOTAL_END + " real, " + COLUMN_GLOBAL_CENTER_BEGIN
-            + " real, " + COLUMN_GLOBAL_CENTER_END + " real, "
-            + COLUMN_ECLIPSE_DATE + " real, " + COLUMN_ECLIPSE_TYPE + " text);";
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s integer, %s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s text);", TABLE_SOLAR_ECLIPSE, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_SUNRISE, COLUMN_SUNSET, COLUMN_RATIO, COLUMN_FRACTION_COVERED, COLUMN_SUN_AZ, COLUMN_SUN_ALT, COLUMN_LOCAL_MAG, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
 
     public static void onCreate(SQLiteDatabase database) {
         String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
-        ip1 = "insert into " + TABLE_SOLAR_ECLIPSE + "(" + COLUMN_ID + ","
-                + COLUMN_LOCAL_TYPE + "," + COLUMN_GLOBAL_TYPE + ","
-                + COLUMN_LOCAL + "," + COLUMN_LOCAL_MAX + ","
-                + COLUMN_LOCAL_FIRST + "," + COLUMN_LOCAL_SECOND + ","
-                + COLUMN_LOCAL_THIRD + "," + COLUMN_LOCAL_FOURTH + ","
-                + COLUMN_SUNRISE + "," + COLUMN_SUNSET + ","
-                + COLUMN_RATIO + "," + COLUMN_FRACTION_COVERED + ","
-                + COLUMN_SUN_AZ + "," + COLUMN_SUN_ALT + "," + COLUMN_LOCAL_MAG
-                + "," + COLUMN_SAROS_NUM + "," + COLUMN_SAROS_MEMBER_NUM + ","
-                + COLUMN_MOON_AZ + "," + COLUMN_MOON_ALT + ","
-                + COLUMN_GLOBAL_MAX + "," + COLUMN_GLOBAL_BEGIN + ","
-                + COLUMN_GLOBAL_END + "," + COLUMN_GLOBAL_TOTAL_BEGIN + ","
-                + COLUMN_GLOBAL_TOTAL_END + "," + COLUMN_GLOBAL_CENTER_BEGIN
-                + "," + COLUMN_GLOBAL_CENTER_END + "," + COLUMN_ECLIPSE_DATE
-                + "," + COLUMN_ECLIPSE_TYPE + ") VALUES (";
+        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_SOLAR_ECLIPSE, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_SUNRISE, COLUMN_SUNSET, COLUMN_RATIO, COLUMN_FRACTION_COVERED, COLUMN_SUN_AZ, COLUMN_SUN_ALT, COLUMN_LOCAL_MAG, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
         ip2 = ",0,0,-1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0.0,"
                 + "0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,'T');";
         for (int i = 0; i < 10; i++) {

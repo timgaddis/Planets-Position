@@ -69,8 +69,8 @@ public class About extends Fragment {
             mCallbacks.onToolbarTitleChange("About", 9);
         }
 
-        TextView aboutText1 = (TextView) v.findViewById(R.id.aboutText1);
-        TextView aboutText2 = (TextView) v.findViewById(R.id.aboutText2);
+        TextView aboutText1 = v.findViewById(R.id.aboutText1);
+        TextView aboutText2 = v.findViewById(R.id.aboutText2);
 
         aboutText1.setText(String.format(Locale.getDefault(), "Planet's Position v%s", BuildConfig.VERSION_NAME));
         aboutText2.setText(R.string.about_main);

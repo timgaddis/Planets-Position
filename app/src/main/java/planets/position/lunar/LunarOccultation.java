@@ -92,8 +92,8 @@ public class LunarOccultation extends Fragment {
         View v = inflater.inflate(R.layout.fragment_lunar_occult, container,
                 false);
 
-        nameButton = (Button) v.findViewById(R.id.nameButton);
-        occultList = (ListView) v.findViewById(R.id.occultList);
+        nameButton = v.findViewById(R.id.nameButton);
+        occultList = v.findViewById(R.id.occultList);
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.occult_array));
 

@@ -89,8 +89,8 @@ public class SolarEclipseTask extends DialogFragment {
         TextView tv;
         View v = inflater.inflate(R.layout.progress_dialog_hor, container,
                 false);
-        tv = (TextView) v.findViewById(R.id.progress_text);
-        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+        tv = v.findViewById(R.id.progress_text);
+        pb = v.findViewById(R.id.progressBar);
         tv.setText(R.string.eclipse_dialog);
         pb.setMax(10);
         pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);

@@ -72,20 +72,20 @@ public class LunarOccultData extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_occult_data, container, false);
-        loDateText = (TextView) v.findViewById(R.id.lo_date);
-        loPlanetText = (TextView) v.findViewById(R.id.lo_planet);
-        loStartText = (TextView) v.findViewById(R.id.lo_start_text);
-        loMaxText = (TextView) v.findViewById(R.id.lo_max_text);
-        loEndText = (TextView) v.findViewById(R.id.lo_end_text);
-        loMoonRiseText = (TextView) v.findViewById(R.id.lo_moonrise_text);
-        loMoonSetText = (TextView) v.findViewById(R.id.lo_moonset_text);
-        loMoonSAzText = (TextView) v.findViewById(R.id.lo_moons_az_text);
-        loMoonSAltText = (TextView) v.findViewById(R.id.lo_moons_alt_text);
-        loMoonEAzText = (TextView) v.findViewById(R.id.lo_moone_az_text);
-        loMoonEAltText = (TextView) v.findViewById(R.id.lo_moone_alt_text);
-        loMoonLayout = (LinearLayout) v.findViewById(R.id.lo_moon_layout);
-        loLocalVisible = (LinearLayout) v.findViewById(R.id.lo_local_visible);
-        loLocalLayout = (LinearLayout) v.findViewById(R.id.lo_data_layout1);
+        loDateText = v.findViewById(R.id.lo_date);
+        loPlanetText = v.findViewById(R.id.lo_planet);
+        loStartText = v.findViewById(R.id.lo_start_text);
+        loMaxText = v.findViewById(R.id.lo_max_text);
+        loEndText = v.findViewById(R.id.lo_end_text);
+        loMoonRiseText = v.findViewById(R.id.lo_moonrise_text);
+        loMoonSetText = v.findViewById(R.id.lo_moonset_text);
+        loMoonSAzText = v.findViewById(R.id.lo_moons_az_text);
+        loMoonSAltText = v.findViewById(R.id.lo_moons_alt_text);
+        loMoonEAzText = v.findViewById(R.id.lo_moone_az_text);
+        loMoonEAltText = v.findViewById(R.id.lo_moone_alt_text);
+        loMoonLayout = v.findViewById(R.id.lo_moon_layout);
+        loLocalVisible = v.findViewById(R.id.lo_local_visible);
+        loLocalLayout = v.findViewById(R.id.lo_data_layout1);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
         planetArray = Arrays.asList(getResources().getStringArray(

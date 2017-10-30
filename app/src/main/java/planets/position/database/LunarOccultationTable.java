@@ -51,39 +51,12 @@ public class LunarOccultationTable {
     public static final String COLUMN_OCCULT_DATE = "occultDate";
     public static final String COLUMN_OCCULT_PLANET = "occultPlanet";
 
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_LUNAR_OCCULT + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_LOCAL_TYPE
-            + " integer, " + COLUMN_GLOBAL_TYPE + " integer," + COLUMN_LOCAL
-            + " integer, " + COLUMN_LOCAL_MAX + " real, " + COLUMN_LOCAL_FIRST
-            + " real, " + COLUMN_LOCAL_SECOND + " real, " + COLUMN_LOCAL_THIRD
-            + " real, " + COLUMN_LOCAL_FOURTH + " real, " + COLUMN_MOONRISE
-            + " real, " + COLUMN_MOONSET + " real, " + COLUMN_MOONS_AZ
-            + " real, " + COLUMN_MOONS_ALT + " real, " + COLUMN_MOONE_AZ
-            + " real, " + COLUMN_MOONE_ALT + " real, " + COLUMN_GLOBAL_MAX
-            + " real, " + COLUMN_GLOBAL_BEGIN + " real, " + COLUMN_GLOBAL_END
-            + " real, " + COLUMN_GLOBAL_TOTAL_BEGIN + " real, "
-            + COLUMN_GLOBAL_TOTAL_END + " real, " + COLUMN_GLOBAL_CENTER_BEGIN
-            + " real, " + COLUMN_GLOBAL_CENTER_END + " real, "
-            + COLUMN_OCCULT_DATE + " real, " + COLUMN_OCCULT_PLANET
-            + " integer);";
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s integer);", TABLE_LUNAR_OCCULT, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_MOONS_AZ, COLUMN_MOONS_ALT, COLUMN_MOONE_AZ, COLUMN_MOONE_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_OCCULT_DATE, COLUMN_OCCULT_PLANET);
 
     public static void onCreate(SQLiteDatabase database) {
         String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
-        ip1 = "insert into " + TABLE_LUNAR_OCCULT + "(" + COLUMN_ID + ","
-                + COLUMN_LOCAL_TYPE + "," + COLUMN_GLOBAL_TYPE + ","
-                + COLUMN_LOCAL + "," + COLUMN_LOCAL_MAX + ","
-                + COLUMN_LOCAL_FIRST + "," + COLUMN_LOCAL_SECOND + ","
-                + COLUMN_LOCAL_THIRD + "," + COLUMN_LOCAL_FOURTH + ","
-                + COLUMN_MOONRISE + "," + COLUMN_MOONSET + ","
-                + COLUMN_MOONS_AZ + "," + COLUMN_MOONS_ALT + ","
-                + COLUMN_MOONE_AZ + "," + COLUMN_MOONE_ALT + ","
-                + COLUMN_GLOBAL_MAX + "," + COLUMN_GLOBAL_BEGIN + ","
-                + COLUMN_GLOBAL_END + "," + COLUMN_GLOBAL_TOTAL_BEGIN + ","
-                + COLUMN_GLOBAL_TOTAL_END + "," + COLUMN_GLOBAL_CENTER_BEGIN
-                + "," + COLUMN_GLOBAL_CENTER_END + "," + COLUMN_OCCULT_DATE
-                + "," + COLUMN_OCCULT_PLANET + ") VALUES (";
+        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_LUNAR_OCCULT, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_MOONS_AZ, COLUMN_MOONS_ALT, COLUMN_MOONE_AZ, COLUMN_MOONE_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_OCCULT_DATE, COLUMN_OCCULT_PLANET);
         ip2 = ",0,0,-1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,"
                 + "0.0,0.0,0.0,0.0,-1);";
         for (int i = 0; i < 10; i++) {

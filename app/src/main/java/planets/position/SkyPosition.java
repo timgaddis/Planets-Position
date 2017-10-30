@@ -93,19 +93,19 @@ public class SkyPosition extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_sky_position, container, false);
 
-        nameButton = (Button) v.findViewById(R.id.nameButton);
-        timeButton = (Button) v.findViewById(R.id.timeButton);
-        dateButton = (Button) v.findViewById(R.id.dateButton);
-        pAzText = (TextView) v.findViewById(R.id.pos_az_text);
-        pAltText = (TextView) v.findViewById(R.id.pos_alt_text);
-        pRAText = (TextView) v.findViewById(R.id.pos_ra_text);
-        pDecText = (TextView) v.findViewById(R.id.pos_dec_text);
-        pBelowText = (TextView) v.findViewById(R.id.pos_below_text);
-        pDistText = (TextView) v.findViewById(R.id.pos_dis_text);
-        pMagText = (TextView) v.findViewById(R.id.pos_mag_text);
-        pRiseText = (TextView) v.findViewById(R.id.pos_riseTime_text);
-        pSetText = (TextView) v.findViewById(R.id.pos_setTime_text);
-        pTransitText = (TextView) v.findViewById(R.id.pos_transitTime_text);
+        nameButton = v.findViewById(R.id.nameButton);
+        timeButton = v.findViewById(R.id.timeButton);
+        dateButton = v.findViewById(R.id.dateButton);
+        pAzText = v.findViewById(R.id.pos_az_text);
+        pAltText = v.findViewById(R.id.pos_alt_text);
+        pRAText = v.findViewById(R.id.pos_ra_text);
+        pDecText = v.findViewById(R.id.pos_dec_text);
+        pBelowText = v.findViewById(R.id.pos_below_text);
+        pDistText = v.findViewById(R.id.pos_dis_text);
+        pMagText = v.findViewById(R.id.pos_mag_text);
+        pRiseText = v.findViewById(R.id.pos_riseTime_text);
+        pSetText = v.findViewById(R.id.pos_setTime_text);
+        pTransitText = v.findViewById(R.id.pos_transitTime_text);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
         planetsArray = Arrays.asList(getResources().getStringArray(R.array.planets_array));

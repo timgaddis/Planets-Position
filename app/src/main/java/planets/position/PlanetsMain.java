@@ -29,6 +29,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -89,7 +90,7 @@ public class PlanetsMain extends AppCompatActivity
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planets_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             getDelegate().setSupportActionBar(toolbar);
         }
@@ -98,7 +99,7 @@ public class PlanetsMain extends AppCompatActivity
         planetsDB = new PlanetsDatabase(this);
         gmtValues = Arrays.asList(getResources().getStringArray(
                 R.array.gmt_values));
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         assert drawer != null;
@@ -107,7 +108,7 @@ public class PlanetsMain extends AppCompatActivity
         getDelegate().getSupportActionBar().setHomeButtonEnabled(true);
         getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -187,7 +188,7 @@ public class PlanetsMain extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -197,7 +198,7 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -219,7 +220,7 @@ public class PlanetsMain extends AppCompatActivity
             selectItem(9, false);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;

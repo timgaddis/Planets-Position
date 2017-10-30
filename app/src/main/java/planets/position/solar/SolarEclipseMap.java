@@ -67,8 +67,8 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
         settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         mDateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
 
-        overlayTop = (TextView) findViewById(R.id.overTop);
-        overlayBottom = (TextView) findViewById(R.id.overBottom);
+        overlayTop = findViewById(R.id.overTop);
+        overlayBottom = findViewById(R.id.overBottom);
 
         if (savedInstanceState == null) {
             mapFragment.setRetainInstance(true);

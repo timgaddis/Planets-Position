@@ -90,8 +90,8 @@ public class WhatsUpTask extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.progress_dialog_hor, container,
                 false);
-        tv = (TextView) v.findViewById(R.id.progress_text);
-        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+        tv = v.findViewById(R.id.progress_text);
+        pb = v.findViewById(R.id.progressBar);
         pb.setMax(10);
         pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
         getDialog().setCanceledOnTouchOutside(false);

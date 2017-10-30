@@ -21,13 +21,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
-
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "planets.position"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 31
         versionName "2.1.2"
 
@@ -40,22 +39,18 @@ android {
             }
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         beta {
-            def formattedDate = new Date().format('yyyyMMddHHmmss')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix("-beta-" + formattedDate)
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def newName = output.outputFile.name
-                    newName = newName.replace("-beta", "-beta_" + formattedDate)
-                    output.outputFile = new File(output.outputFile.parent, newName)
+            def formattedDate = new Date().format('yyyyMMddHHmmss')
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "${variant.name}-${variant.versionName}-${formattedDate}.apk"
                 }
             }
         }
@@ -65,14 +60,16 @@ android {
             path "CMakeLists.txt"
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:support-v13:25.3.1'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:support-v13:26.1.0'
+    implementation 'com.google.android.gms:play-services-location:11.4.2'
+    implementation 'com.google.android.gms:play-services-maps:11.4.2'
 }

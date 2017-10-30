@@ -37,23 +37,11 @@ public class LocationTable {
     public static final String COLUMN_OFFSET = "offset";
     public static final String COLUMN_IOFFSET = "ioffset";
 
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_LOCATION + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_NAME
-            + " text not null, " + COLUMN_LATITUDE + " real,"
-            + COLUMN_LONGITUDE + " real, " + COLUMN_ELEVATION + " real, "
-            + COLUMN_TEMP + " real, " + COLUMN_PRESSURE + " real, "
-            + COLUMN_DATE + " integer, " + COLUMN_OFFSET + " real, "
-            + COLUMN_IOFFSET + " integer" + ");";
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s text not null, %s real,%s real, %s real, %s real, %s real, %s integer, %s real, %s integer);", TABLE_LOCATION, COLUMN_ID, COLUMN_NAME, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE, COLUMN_OFFSET, COLUMN_IOFFSET);
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
-        database.execSQL("insert into " + TABLE_LOCATION + "(" + COLUMN_ID
-                + "," + COLUMN_NAME + "," + COLUMN_LATITUDE + ","
-                + COLUMN_LONGITUDE + "," + COLUMN_ELEVATION + "," + COLUMN_TEMP
-                + "," + COLUMN_PRESSURE + "," + COLUMN_DATE + ","
-                + COLUMN_OFFSET + "," + COLUMN_IOFFSET
-                + ") VALUES (0,\"default\",-91.0,0.0,0.0,0.0,0.0,0,0.0,15);");
+        database.execSQL(String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (0,\"default\",-91.0,0.0,0.0,0.0,0.0,0,0.0,15);", TABLE_LOCATION, COLUMN_ID, COLUMN_NAME, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE, COLUMN_OFFSET, COLUMN_IOFFSET));
     }
 
     public static void onUpgrade(int oldVersion, int newVersion) {

@@ -96,8 +96,8 @@ public class LunarOccultTask extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.progress_dialog_hor, container,
                 false);
-        tv = (TextView) v.findViewById(R.id.progress_text);
-        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+        tv = v.findViewById(R.id.progress_text);
+        pb = v.findViewById(R.id.progressBar);
         if (planetNum < 2)
             pb.setMax(8);
         else

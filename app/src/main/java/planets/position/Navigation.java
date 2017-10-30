@@ -40,11 +40,11 @@ public class Navigation extends Fragment {
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.content_planets_main,
                 container, false);
 
-        seButton = (Button) view.findViewById(R.id.buttonSEMain);
-        leButton = (Button) view.findViewById(R.id.buttonLEMain);
-        loButton = (Button) view.findViewById(R.id.buttonLOMain);
-        skyButton = (Button) view.findViewById(R.id.buttonSky);
-        whatsupButton = (Button) view.findViewById(R.id.buttonWhatsUp);
+        seButton = view.findViewById(R.id.buttonSEMain);
+        leButton = view.findViewById(R.id.buttonLEMain);
+        loButton = view.findViewById(R.id.buttonLOMain);
+        skyButton = view.findViewById(R.id.buttonSky);
+        whatsupButton = view.findViewById(R.id.buttonWhatsUp);
 
         skyButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -73,26 +73,26 @@ public class LunarEclipseData extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lunar_data, container,
                 false);
-        leDateText = (TextView) v.findViewById(R.id.le_date);
-        leTypeText = (TextView) v.findViewById(R.id.le_type);
-        leStartText = (TextView) v.findViewById(R.id.le_start_text);
-        lePStartText = (TextView) v.findViewById(R.id.le_pstart_text);
-        leTStartText = (TextView) v.findViewById(R.id.le_tstart_text);
-        leMaxText = (TextView) v.findViewById(R.id.le_max_text);
-        leTEndText = (TextView) v.findViewById(R.id.le_tend_text);
-        lePEndText = (TextView) v.findViewById(R.id.le_pend_text);
-        leEndText = (TextView) v.findViewById(R.id.le_end_text);
-        leMoonRise = (TextView) v.findViewById(R.id.le_moonrise_text);
-        leMoonSet = (TextView) v.findViewById(R.id.le_moonset_text);
-        leAzText = (TextView) v.findViewById(R.id.le_moon_az_text);
-        leAltText = (TextView) v.findViewById(R.id.le_moon_alt_text);
-        lePMagText = (TextView) v.findViewById(R.id.le_pmag_text);
-        leUMagText = (TextView) v.findViewById(R.id.le_umag_text);
-        leSarosText = (TextView) v.findViewById(R.id.le_saros_text);
-        leSarosMText = (TextView) v.findViewById(R.id.le_sarosm_text);
-        leMoonRiseLayout = (LinearLayout) v.findViewById(R.id.le_moonrise_layout);
-        leLocalVisible = (LinearLayout) v.findViewById(R.id.le_local_visible);
-        leLocalLayout = (LinearLayout) v.findViewById(R.id.le_data_layout1);
+        leDateText = v.findViewById(R.id.le_date);
+        leTypeText = v.findViewById(R.id.le_type);
+        leStartText = v.findViewById(R.id.le_start_text);
+        lePStartText = v.findViewById(R.id.le_pstart_text);
+        leTStartText = v.findViewById(R.id.le_tstart_text);
+        leMaxText = v.findViewById(R.id.le_max_text);
+        leTEndText = v.findViewById(R.id.le_tend_text);
+        lePEndText = v.findViewById(R.id.le_pend_text);
+        leEndText = v.findViewById(R.id.le_end_text);
+        leMoonRise = v.findViewById(R.id.le_moonrise_text);
+        leMoonSet = v.findViewById(R.id.le_moonset_text);
+        leAzText = v.findViewById(R.id.le_moon_az_text);
+        leAltText = v.findViewById(R.id.le_moon_alt_text);
+        lePMagText = v.findViewById(R.id.le_pmag_text);
+        leUMagText = v.findViewById(R.id.le_umag_text);
+        leSarosText = v.findViewById(R.id.le_saros_text);
+        leSarosMText = v.findViewById(R.id.le_sarosm_text);
+        leMoonRiseLayout = v.findViewById(R.id.le_moonrise_layout);
+        leLocalVisible = v.findViewById(R.id.le_local_visible);
+        leLocalLayout = v.findViewById(R.id.le_data_layout1);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
 

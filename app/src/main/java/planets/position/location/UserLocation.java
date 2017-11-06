@@ -21,129 +21,121 @@
 package planets.position.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import planets.position.FragmentListener;
+import planets.position.BuildConfig;
 import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
 
-public class UserLocation extends Fragment {
+public class UserLocation extends AppCompatActivity implements UserLocationDialog.LocationDialogListener {
 
     private final static int LATITUDE_REQUEST = 100;
     private final static int LONGITUDE_REQUEST = 200;
     private final static int ELEVATION_REQUEST = 300;
     private final static int OFFSET_REQUEST = 400;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 500;
+    private static final String TAG = "UserLocation";
 
-    private FragmentListener mCallbacks;
     private TextView latitudeText, longitudeText, elevationText, gmtOffsetText,
             editLocText;
-    private Snackbar mySnackbar;
-    private View mLayout;
     private MenuItem editLoc, saveLoc;
     private UserLocationDialog offsetDialog;
-    private LocationTask locationTask;
-    private LocationHelper locHelper;
     private PlanetsDatabase planetsDB;
     private int ioffset = -1;
     private double latitude, longitude, elevation, offset;
-    private boolean edit = false;
+    private boolean edit = false, startLoc = false;
     private List<String> gmtArray, gmtValues;
     private SharedPreferences settings;
-
-    public UserLocation() {
-    }
+    private FusedLocationProviderClient mFusedLocationClient;
+    private Location mLastLocation;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_user_location, container, false);
-        if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("User Location", 7);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_location);
+
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setTitle("User Location");
+
+        ActionBar ab = getSupportActionBar();
+        assert ab != null;
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        if (savedInstanceState == null) {
+            // load data passed from main activity
+            Bundle b = getIntent().getExtras();
+            if (b != null) {
+                edit = b.getBoolean("edit");
+                startLoc = b.getBoolean("loc");
+            }
+        } else {
+            edit = savedInstanceState.getBoolean("edit");
+            startLoc = savedInstanceState.getBoolean("loc");
         }
 
-        latitudeText = v.findViewById(R.id.newLatText);
-        longitudeText = v.findViewById(R.id.newLongText);
-        elevationText = v.findViewById(R.id.newElevationText);
-        gmtOffsetText = v.findViewById(R.id.newGMTOffsetText);
-        editLocText = v.findViewById(R.id.locEditText);
-        mLayout = v.findViewById(R.id.user_main);
+        if (edit)
+            editLocText.setVisibility(View.VISIBLE);
+
+        latitudeText = findViewById(R.id.newLatText);
+        longitudeText = findViewById(R.id.newLongText);
+        elevationText = findViewById(R.id.newElevationText);
+        gmtOffsetText = findViewById(R.id.newGMTOffsetText);
+        editLocText = findViewById(R.id.locEditText);
 
         gmtArray = Arrays.asList(getResources().getStringArray(
                 R.array.gmt_array));
         gmtValues = Arrays.asList(getResources().getStringArray(
                 R.array.gmt_values));
 
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        planetsDB = new PlanetsDatabase(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
-
-        locationTask = (LocationTask) getActivity().getSupportFragmentManager()
-                .findFragmentByTag(LocationTask.TAG);
-        if (locationTask == null) {
-            locationTask = LocationTask.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(locationTask, LocationTask.TAG)
-                    .commit();
-        }
-        locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
-
-        locHelper = (LocationHelper) getActivity().getSupportFragmentManager().
-                findFragmentByTag(LocationHelper.TAG);
-        if (locHelper == null) {
-            locHelper = LocationHelper.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(locHelper, LocationHelper.TAG)
-                    .commit();
-        }
-        locHelper.setTargetFragment(this, LocationHelper.LOCATION_HELPER);
-
-        if (savedInstanceState == null) {
-            // load bundle from previous activity
-            Bundle bundle = getArguments();
-            if (bundle != null)
-                edit = bundle.getBoolean("edit");
-        }
-
-        if (edit)
-            editLocText.setVisibility(View.VISIBLE);
-
-        loadLocation();
+        if (startLoc)
+            startGPS();
+        else
+            loadLocation();
 
         latitudeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (edit) {
                     offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_edit_lat, -1, 0, latitude);
-                    offsetDialog.setTargetFragment(UserLocation.this,
-                            LATITUDE_REQUEST);
-                    offsetDialog.show(getFragmentManager(), "latitudeDialog");
+                            R.string.loc_edit_lat, -1, 0, latitude, LATITUDE_REQUEST);
+                    offsetDialog.show(getSupportFragmentManager(), "latitudeDialog");
                 }
             }
         });
@@ -152,10 +144,8 @@ public class UserLocation extends Fragment {
             public void onClick(View v) {
                 if (edit) {
                     offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_edit_long, -1, 1, longitude);
-                    offsetDialog.setTargetFragment(UserLocation.this,
-                            LONGITUDE_REQUEST);
-                    offsetDialog.show(getFragmentManager(), "longitudeDialog");
+                            R.string.loc_edit_long, -1, 1, longitude, LONGITUDE_REQUEST);
+                    offsetDialog.show(getSupportFragmentManager(), "longitudeDialog");
                 }
             }
         });
@@ -164,10 +154,8 @@ public class UserLocation extends Fragment {
             public void onClick(View v) {
                 if (edit) {
                     offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_edit_ele, -1, 2, elevation);
-                    offsetDialog.setTargetFragment(UserLocation.this,
-                            ELEVATION_REQUEST);
-                    offsetDialog.show(getFragmentManager(), "elevationDialog");
+                            R.string.loc_edit_ele, -1, 2, elevation, ELEVATION_REQUEST);
+                    offsetDialog.show(getSupportFragmentManager(), "elevationDialog");
                 }
             }
         });
@@ -176,42 +164,33 @@ public class UserLocation extends Fragment {
             public void onClick(View v) {
                 if (edit) {
                     offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_gmt, R.array.gmt_array, 3, -1.0);
-                    offsetDialog.setTargetFragment(UserLocation.this,
-                            OFFSET_REQUEST);
-                    offsetDialog.show(getFragmentManager(), "offsetDialog");
+                            R.string.loc_gmt, R.array.gmt_array, 3, -1.0, OFFSET_REQUEST);
+                    offsetDialog.show(getSupportFragmentManager(), "offsetDialog");
                 }
             }
         });
-        return v;
+
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        setRetainInstance(true);
-        if (savedInstanceState != null) {
-            edit = savedInstanceState.getBoolean("edit");
-        }
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("edit", edit);
+        outState.putBoolean("loc", startLoc);
+        if (edit)
+            saveLocation();
+        super.onSaveInstanceState(outState);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.location_menu, menu);
-        // inflater.inflate(R.menu.base_menu, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.location_menu, menu);
         editLoc = menu.findItem(R.id.action_edit);
         saveLoc = menu.findItem(R.id.action_save);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
         if (edit) {
             editLoc.setVisible(false);
             saveLoc.setVisible(true);
         }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -224,10 +203,10 @@ public class UserLocation extends Fragment {
                 editLoc.setVisible(true);
                 saveLoc.setVisible(false);
                 if (saveLocation()) {
-                    Toast.makeText(getActivity().getApplicationContext(),
+                    Toast.makeText(getApplicationContext(),
                             "Location saved.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(),
+                    Toast.makeText(getApplicationContext(),
                             "Location not saved.", Toast.LENGTH_SHORT).show();
                 }
                 displayLocation();
@@ -239,193 +218,18 @@ public class UserLocation extends Fragment {
                 saveLoc.setVisible(true);
                 return true;
             case R.id.action_gps:
-                locHelper.setCheckingPermission(true);
-                locHelper.checkLocationPermissions(false);
+                startGPS();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    public void onPause() {
-        if (edit)
-            saveLocation();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        locHelper = (LocationHelper) getActivity().getSupportFragmentManager().
-                findFragmentByTag(LocationHelper.TAG);
-        if (locHelper == null) {
-            locHelper = LocationHelper.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(locHelper, LocationHelper.TAG)
-                    .commit();
-        }
-        locHelper.setTargetFragment(this, LocationHelper.LOCATION_HELPER);
-        locationTask = (LocationTask) getActivity().getSupportFragmentManager()
-                .findFragmentByTag(LocationTask.TAG);
-        if (locationTask == null) {
-            locationTask = LocationTask.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(locationTask, LocationTask.TAG)
-                    .commit();
-        }
-        locationTask.setTargetFragment(this, LocationTask.LOCATION_TASK);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("edit", edit);
-        if (edit)
-            saveLocation();
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (getTargetFragment() == null) {
-            // attach to PlanetsMain
-            if (!(context instanceof FragmentListener)) {
-                throw new IllegalStateException(
-                        "Activity must implement the FragmentListener interface.");
-            }
-            mCallbacks = (FragmentListener) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Decide what to do based on the original request code
-        switch (requestCode) {
-            case LATITUDE_REQUEST:
-                // Enter an latitude value
-                if (resultCode == DialogInterface.BUTTON_POSITIVE) {
-                    String value = data.getStringExtra("value");
-                    boolean south = data.getBooleanExtra("south", false);
-                    try {
-                        latitude = Double.parseDouble(value);
-                        if (south)
-                            latitude *= -1;
-                    } catch (NumberFormatException ex) {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "Enter a number for the latitude.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-            case LONGITUDE_REQUEST:
-                // Enter an longitude value
-                if (resultCode == DialogInterface.BUTTON_POSITIVE) {
-                    String value = data.getStringExtra("value");
-                    boolean west = data.getBooleanExtra("west", false);
-                    try {
-                        longitude = Double.parseDouble(value);
-                        if (west)
-                            longitude *= -1;
-                    } catch (NumberFormatException ex) {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "Enter a number for the longitude.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-            case ELEVATION_REQUEST:
-                // Enter an elevation value
-                if (resultCode == DialogInterface.BUTTON_POSITIVE) {
-                    String value = data.getStringExtra("value");
-                    try {
-                        elevation = Double.parseDouble(value);
-                    } catch (NumberFormatException ex) {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                "Enter a number for the elevation.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-            case OFFSET_REQUEST:
-                // Select a value from the GMT offset list
-                ioffset = resultCode;
-                if (ioffset >= 0) {
-                    offset = Double.parseDouble(gmtValues.get(ioffset));
-                    gmtOffsetText.setText(gmtArray.get(ioffset));
-                } else {
-                    offset = -1.0;
-                }
-                break;
-            case LocationTask.LOCATION_TASK:
-                mySnackbar.dismiss();
-                Bundle b = data.getExtras();
-                if (b.getBoolean("locationNull")) {
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            "Location not found.", Toast.LENGTH_LONG).show();
-                } else {
-                    latitude = b.getDouble("latitude");
-                    longitude = b.getDouble("longitude");
-                    elevation = b.getDouble("elevation");
-                    offset = b.getDouble("offset");
-                    ioffset = gmtValues.indexOf(offset + "");
-                }
-                locationTask.stop();
-                break;
-            case LocationHelper.LOCATION_HELPER:
-                if (resultCode > 0) {
-                    // Location Permission Granted
-                    locHelper.setCheckingPermission(false);
-                    locHelper.setLocationPermissionDenied(false);
-                    startLocationTask();
-                } else {
-                    // Location Permission Denied
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        Log.i(PlanetsMain.TAG,
-                                "Displaying Location permission rationale to provide additional context.");
-                        // Show an expanation and try again
-                        Snackbar.make(mLayout, R.string.permission_reason, Snackbar.LENGTH_LONG).show();
-                        locHelper.checkLocationPermissions(false);
-                    } else {
-                        locHelper.setCheckingPermission(false);
-                        locHelper.setLocationPermissionDenied(true);
-                    }
-                }
-                break;
-        }
-        if (saveLocation()) {
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Location saved.", Toast.LENGTH_SHORT).show();
+    private void startGPS() {
+        if (!checkPermissions()) {
+            requestPermissions();
         } else {
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Location not saved.", Toast.LENGTH_SHORT).show();
-        }
-        displayLocation();
-    }
-
-    private void startLocationTask() {
-        mySnackbar = Snackbar.make(mLayout, R.string.location_dialog, Snackbar.LENGTH_INDEFINITE);
-        mySnackbar.setActionTextColor(Color.WHITE);
-        mySnackbar.setAction(R.string.action_cancel, new MyCancelListener());
-        mySnackbar.show();
-        locationTask.start(false);
-    }
-
-    private class MyCancelListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (mySnackbar.isShown()) {
-                locationTask.stop();
-                mySnackbar.dismiss();
-            }
+            getLastLocation();
         }
     }
 
@@ -505,4 +309,192 @@ public class UserLocation extends Fragment {
         return row > -1 && out;
     }
 
+    @Override
+    public void onDialogPositiveClick(int id, double value, boolean hemisphere) {
+        switch (id) {
+            case LATITUDE_REQUEST:
+                latitude = value;
+                if (hemisphere)
+                    latitude *= -1.0;
+                break;
+            case LONGITUDE_REQUEST:
+                longitude = value;
+                if (hemisphere)
+                    longitude *= -1.0;
+                break;
+            case ELEVATION_REQUEST:
+                elevation = value;
+                break;
+            default:
+                break;
+        }
+        if (saveLocation()) {
+            Toast.makeText(getApplicationContext(),
+                    "Location saved.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Location not saved.", Toast.LENGTH_SHORT).show();
+        }
+        displayLocation();
+    }
+
+    @Override
+    public void onDialogNegativeClick() {
+        displayLocation();
+    }
+
+    @Override
+    public void onDialogGMTClick(int off) {
+        ioffset = off;
+        if (ioffset >= 0) {
+            offset = Double.parseDouble(gmtValues.get(ioffset));
+        } else {
+            offset = -1.0;
+        }
+        if (saveLocation()) {
+            Toast.makeText(getApplicationContext(),
+                    "Location saved.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Location not saved.", Toast.LENGTH_SHORT).show();
+        }
+        displayLocation();
+    }
+
+    /**
+     * Shows a {@link Snackbar} using {@code text}.
+     *
+     * @param text The Snackbar text.
+     */
+    private void showSnackbar(final String text) {
+        View container = findViewById(R.id.user_main);
+        if (container != null) {
+            Snackbar.make(container, text, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Shows a {@link Snackbar}.
+     *
+     * @param mainTextStringId The id for the string resource for the Snackbar text.
+     * @param actionStringId   The text of the action item.
+     * @param listener         The listener associated with the Snackbar action.
+     */
+    private void showSnackbar(final int mainTextStringId, final int actionStringId,
+                              View.OnClickListener listener) {
+        Snackbar.make(findViewById(android.R.id.content),
+                getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(actionStringId), listener).show();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+                            latitude = mLastLocation.getLatitude();
+                            longitude = mLastLocation.getLongitude();
+                            elevation = mLastLocation.getAltitude();
+                            offset = Calendar.getInstance().getTimeZone()
+                                    .getOffset(mLastLocation.getTime()) / 3600000.0;
+                            ioffset = gmtValues.indexOf(offset + "");
+                            startLoc = false;
+                            if (saveLocation()) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Location saved.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Location not saved.", Toast.LENGTH_SHORT).show();
+                            }
+                            displayLocation();
+                        } else {
+                            showSnackbar(getString(R.string.no_location_detected));
+                        }
+                    }
+                });
+    }
+
+    private boolean checkPermissions() {
+        int permissionStateC = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        int permissionStateF = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        return (permissionStateF == PackageManager.PERMISSION_GRANTED) &&
+                (permissionStateC == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void startLocationPermissionRequest() {
+        ActivityCompat.requestPermissions(UserLocation.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+
+    private void requestPermissions() {
+        boolean shouldProvideRationale =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+
+        // Provide an additional rationale to the user. This would happen if the user denied the
+        // request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale) {
+            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+
+            showSnackbar(R.string.permission_reason, android.R.string.ok,
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Request permission
+                            startLocationPermissionRequest();
+                        }
+                    });
+
+        } else {
+            Log.i(TAG, "Requesting permission");
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the user denied the permission
+            // previously and checked "Never ask again".
+            startLocationPermissionRequest();
+        }
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "onRequestPermissionResult");
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length <= 0) {
+                // If user interaction was interrupted, the permission request is cancelled and you
+                // receive empty arrays.
+                Log.i(TAG, "User interaction was cancelled.");
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted.
+                getLastLocation();
+            } else {
+                // Permission denied.
+                showSnackbar(R.string.permission_reason, R.string.action_settings,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Build intent that displays the App settings screen.
+                                Intent intent = new Intent();
+                                intent.setAction(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package",
+                                        BuildConfig.APPLICATION_ID, null);
+                                intent.setData(uri);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+            }
+        }
+    }
 }

@@ -17,8 +17,8 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="planets.position">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -33,12 +33,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:extractNativeLibs="false">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -60,6 +59,17 @@
             android:theme="@style/AppTheme" />
 
         <service android:name=".LivePositionService" />
+
+        <activity
+            android:name=".location.UserLocation"
+            android:parentActivityName=".PlanetsMain"
+            tools:targetApi="jelly_bean">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PlanetsMain" />
+
+        </activity>
     </application>
 
 </manifest>

@@ -20,10 +20,11 @@
 
 package planets.position.location;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -37,19 +38,29 @@ import planets.position.R;
 
 public class UserLocationDialog extends DialogFragment {
 
-    private int title, list, index;
+    private int title, list, index, diaglogID;
     private double value, newValue;
     private EditText inputLat, inputLong, inputElevation;
     private RadioButton rbSouth, rbWest;
+    private LocationDialogListener mListener;
+
+    public interface LocationDialogListener {
+        void onDialogPositiveClick(int id, double value, boolean hemisphere);
+
+        void onDialogNegativeClick();
+
+        void onDialogGMTClick(int off);
+    }
 
     public static UserLocationDialog newInstance(int title, int list,
-                                                 int index, double value) {
+                                                 int index, double value, int id) {
         UserLocationDialog frag = new UserLocationDialog();
         Bundle args = new Bundle();
         args.putInt("title", title);
         args.putInt("list", list);
         args.putInt("index", index);
         args.putDouble("value", value);
+        args.putInt("diaglogID", id);
         frag.setArguments(args);
         return frag;
     }
@@ -61,8 +72,19 @@ public class UserLocationDialog extends DialogFragment {
             list = savedInstanceState.getInt("list");
             title = savedInstanceState.getInt("title");
             value = savedInstanceState.getDouble("newValue");
+            diaglogID = savedInstanceState.getInt("diaglogID");
         }
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (LocationDialogListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement LocationDialogListener");
+        }
     }
 
     @Override
@@ -70,6 +92,7 @@ public class UserLocationDialog extends DialogFragment {
         bundle.putInt("index", index);
         bundle.putInt("list", list);
         bundle.putInt("title", title);
+        bundle.putInt("diaglogID", diaglogID);
         // bundle.putDouble("value", value);
         switch (index) {
             case 0:
@@ -108,6 +131,7 @@ public class UserLocationDialog extends DialogFragment {
             list = getArguments().getInt("list");
             index = getArguments().getInt("index");
             value = getArguments().getDouble("value");
+            diaglogID = getArguments().getInt("diaglogID");
         }
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.LocDialogTheme);
@@ -116,6 +140,7 @@ public class UserLocationDialog extends DialogFragment {
             case 0:
                 // Latitude
                 LayoutInflater inflaterLat = getActivity().getLayoutInflater();
+                @SuppressLint("InflateParams")
                 View v1 = inflaterLat.inflate(R.layout.lat_dialog, null);
                 inputLat = v1.findViewById(R.id.locLatText);
                 rbSouth = v1.findViewById(R.id.radioLatSouth);
@@ -127,30 +152,23 @@ public class UserLocationDialog extends DialogFragment {
                         .setPositiveButton("Save",
                                 new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        String value = inputLat.getText()
-                                                .toString();
-                                        Intent i = new Intent();
-                                        i.putExtra("value", value);
-                                        i.putExtra("south", rbSouth.isChecked());
-                                        getTargetFragment().onActivityResult(
-                                                getTargetRequestCode(), id, i);
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        double value = Double.parseDouble(inputLat.getText().toString());
+                                        mListener.onDialogPositiveClick(diaglogID, value, rbSouth.isChecked());
                                     }
                                 })
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        getTargetFragment().onActivityResult(
-                                                getTargetRequestCode(), id, null);
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        mListener.onDialogNegativeClick();
                                     }
                                 });
                 break;
             case 1:
                 // Longitude
                 LayoutInflater inflater1 = getActivity().getLayoutInflater();
+                @SuppressLint("InflateParams")
                 View v2 = inflater1.inflate(R.layout.long_dialog, null);
                 inputLong = v2.findViewById(R.id.locLongText);
                 rbWest = v2.findViewById(R.id.radioLongWest);
@@ -162,15 +180,9 @@ public class UserLocationDialog extends DialogFragment {
                         .setPositiveButton("Save",
                                 new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        String value = inputLong.getText()
-                                                .toString();
-                                        Intent i = new Intent();
-                                        i.putExtra("value", value);
-                                        i.putExtra("west", rbWest.isChecked());
-                                        getTargetFragment().onActivityResult(
-                                                getTargetRequestCode(), id, i);
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        double value = Double.parseDouble(inputLong.getText().toString());
+                                        mListener.onDialogPositiveClick(diaglogID, value, rbWest.isChecked());
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -178,8 +190,7 @@ public class UserLocationDialog extends DialogFragment {
                                     @Override
                                     public void onClick(DialogInterface dialog,
                                                         int id) {
-                                        getTargetFragment().onActivityResult(
-                                                getTargetRequestCode(), id, null);
+                                        mListener.onDialogNegativeClick();
                                     }
                                 });
                 break;
@@ -194,14 +205,9 @@ public class UserLocationDialog extends DialogFragment {
                         .setPositiveButton("Save",
                                 new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        String value = inputElevation.getText()
-                                                .toString();
-                                        Intent i = new Intent();
-                                        i.putExtra("value", value);
-                                        getTargetFragment().onActivityResult(
-                                                getTargetRequestCode(), id, i);
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        double value = Double.parseDouble(inputElevation.getText().toString());
+                                        mListener.onDialogPositiveClick(diaglogID, value, false);
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -209,8 +215,7 @@ public class UserLocationDialog extends DialogFragment {
                                     @Override
                                     public void onClick(DialogInterface dialog,
                                                         int id) {
-                                        getTargetFragment().onActivityResult(
-                                                getTargetRequestCode(), id, null);
+                                        mListener.onDialogNegativeClick();
                                     }
                                 });
                 break;
@@ -221,8 +226,7 @@ public class UserLocationDialog extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // select a value from list
-                                getTargetFragment().onActivityResult(
-                                        getTargetRequestCode(), which, null);
+                                mListener.onDialogGMTClick(which);
                             }
                         });
                 break;

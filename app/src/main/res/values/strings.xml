@@ -36,7 +36,6 @@
     <string name="action_map">Map</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_live">Real Time Position</string>
-    <string name="action_cancel">Cancel</string>
     <!-- Navigation Drawer -->
     <string name="nav_solar_eclipse">Solar Eclipses</string>
     <string name="nav_lunar_eclipse">Lunar Eclipses</string>
@@ -110,10 +109,10 @@
     <string name="permission_reason">This permission is to save your location for use
         in calculating local planetary events.</string>
     <string name="alert_manual">Manual</string>
-    <string name="location_dialog">Downloading Location. Please wait…</string>
-    <string name="permision_location">Location Permission has been granted</string>
     <string name="copy_dialog">Copying files.\nPlease wait…</string>
     <string name="wup_desc">Planet Symbol</string>
     <string name="title_activity_solar_eclipse_map">Solar Eclipse Map</string>
-
+    <string name="no_location_detected">
+        No location detected. Make sure location is enabled on the device.
+    </string>
 </resources>

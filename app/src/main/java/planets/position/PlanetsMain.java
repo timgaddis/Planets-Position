@@ -20,8 +20,6 @@
 
 package planets.position;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -31,8 +29,6 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -41,21 +37,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
-import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
 import planets.position.location.LocationDialog;
-import planets.position.location.LocationHelper;
-import planets.position.location.LocationTask;
 import planets.position.location.UserLocation;
 import planets.position.lunar.LunarEclipse;
 import planets.position.lunar.LunarOccultation;
@@ -63,8 +51,8 @@ import planets.position.settings.Settings;
 import planets.position.solar.SolarEclipse;
 
 public class PlanetsMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener, LocationTask.LocationCallbackMain,
-        FileCopyTask.FileCopyCallback, LocationHelper.LocationMainCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentListener,
+        FileCopyTask.FileCopyCallback {
 
     public static final String TAG = "PlanetsMain";
     public static final String MAIN_PREFS = "MainPrefsFile";
@@ -72,17 +60,13 @@ public class PlanetsMain extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     private SharedPreferences settings;
-    private LocationTask locationTask;
-    private LocationHelper locationHelper;
-    private Snackbar mySnackbar;
     private FileCopyTask copyTask;
     private PlanetsDatabase planetsDB;
-    private int ioffset = -1, fragIndex;
-    private double latitude, longitude, elevation, offset;
-    private List<String> gmtValues;
+    private int fragIndex;
+    private double latitude;
+    private double longitude;
     private CharSequence actionTitle;
     private FragmentManager fm;
-    private View mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +79,7 @@ public class PlanetsMain extends AppCompatActivity
             getDelegate().setSupportActionBar(toolbar);
         }
 
-        mLayout = findViewById(R.id.content_frame);
         planetsDB = new PlanetsDatabase(this);
-        gmtValues = Arrays.asList(getResources().getStringArray(
-                R.array.gmt_values));
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -119,24 +100,6 @@ public class PlanetsMain extends AppCompatActivity
         fm = getSupportFragmentManager();
         copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
 
-        locationTask = (LocationTask) getSupportFragmentManager()
-                .findFragmentByTag(LocationTask.TAG);
-        if (locationTask == null) {
-            locationTask = LocationTask.newInstance();
-            getSupportFragmentManager().beginTransaction()
-                    .add(locationTask, LocationTask.TAG)
-                    .commit();
-        }
-
-        locationHelper = (LocationHelper) getSupportFragmentManager().
-                findFragmentByTag(LocationHelper.TAG);
-        if (locationHelper == null) {
-            locationHelper = LocationHelper.newInstance();
-            getSupportFragmentManager().beginTransaction()
-                    .add(locationHelper, LocationHelper.TAG)
-                    .commit();
-        }
-
         if ((checkFiles("semo_18.se1") && checkFiles("sepl_18.se1"))) {
             if (latitude < -90) {
                 startLocationDialog();
@@ -146,7 +109,7 @@ public class PlanetsMain extends AppCompatActivity
         }
 
         if (savedInstanceState == null) {
-            selectItem(0, false);
+            selectItem(0, false, false);
         }
 
         SharedPreferences.Editor editor = settings.edit();
@@ -180,7 +143,6 @@ public class PlanetsMain extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        locationTask.setTargetFragment(null, -1);
         outState.putInt("frag", fragIndex);
         outState.putCharSequence("title", actionTitle);
         super.onSaveInstanceState(outState);
@@ -203,21 +165,21 @@ public class PlanetsMain extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_solar_ecl) {
-            selectItem(1, false);
+            selectItem(1, false, false);
         } else if (id == R.id.nav_lunar_ecl) {
-            selectItem(3, false);
+            selectItem(3, false, false);
         } else if (id == R.id.nav_lunar_occ) {
-            selectItem(4, false);
+            selectItem(4, false, false);
         } else if (id == R.id.nav_sky_pos) {
-            selectItem(5, false);
+            selectItem(5, false, false);
         } else if (id == R.id.nav_whats_up) {
-            selectItem(6, false);
+            selectItem(6, false, false);
         } else if (id == R.id.nav_location) {
-            selectItem(7, false);
+            selectItem(7, false, false);
         } else if (id == R.id.nav_settings) {
-            selectItem(8, false);
+            selectItem(8, false, false);
         } else if (id == R.id.nav_about) {
-            selectItem(9, false);
+            selectItem(9, false, false);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -231,65 +193,22 @@ public class PlanetsMain extends AppCompatActivity
             // read location from Shared Preferences
             latitude = settings.getFloat("latitude", 0);
             longitude = settings.getFloat("longitude", 0);
-            elevation = settings.getFloat("elevation", 0);
-            offset = settings.getFloat("offset", 0);
-            ioffset = settings.getInt("ioffset", 15);
         } else {
             // Read location from database
             planetsDB.open();
             Bundle loc = planetsDB.getLocation();
             planetsDB.close();
-
             latitude = loc.getDouble("latitude");
             longitude = loc.getDouble("longitude");
-            elevation = loc.getDouble("elevation");
-            offset = loc.getDouble("offset");
-            ioffset = loc.getInt("ioffset");
         }
     }
 
-    // Save location to database and Shared Preferences
-    private boolean saveLocation() {
-
-        long date = Calendar.getInstance().getTimeInMillis();
-
-        // save to Shared Preferences
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putFloat("latitude", (float) latitude);
-        editor.putFloat("longitude", (float) longitude);
-        editor.putFloat("elevation", (float) elevation);
-        editor.putFloat("offset", (float) offset);
-        editor.putInt("ioffset", ioffset);
-        editor.putLong("locDate", date);
-        editor.putBoolean("newLocation", true);
-        boolean out = editor.commit();
-
-        // save to database
-        ContentValues values = new ContentValues();
-        values.put(LocationTable.COLUMN_NAME, "Home");
-        values.put(LocationTable.COLUMN_LATITUDE, latitude);
-        values.put(LocationTable.COLUMN_LONGITUDE, longitude);
-        values.put(LocationTable.COLUMN_TEMP, 0.0);
-        values.put(LocationTable.COLUMN_PRESSURE, 0.0);
-        values.put(LocationTable.COLUMN_ELEVATION, elevation);
-        values.put(LocationTable.COLUMN_DATE, date);
-        values.put(LocationTable.COLUMN_OFFSET, offset);
-        values.put(LocationTable.COLUMN_IOFFSET, ioffset);
-
-        planetsDB.open();
-        long row = planetsDB.addLocation(values);
-        planetsDB.close();
-
-        return row > -1 && out;
-    }
-
     public void navigate(int position) {
-        selectItem(position, false);
+        selectItem(position, false, false);
     }
 
-    private void selectItem(int position, boolean edit) {
+    private void selectItem(int position, boolean edit, boolean location) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Bundle args = new Bundle();
 
         switch (position) {
             case 0: // Main navigaton
@@ -328,12 +247,12 @@ public class PlanetsMain extends AppCompatActivity
                 ft.commit();
                 break;
             case 7: // User Location
-                UserLocation userLoc = new UserLocation();
-                args.putBoolean("edit", edit);
-                userLoc.setArguments(args);
-                ft.replace(R.id.content_frame, userLoc);
-                ft.addToBackStack(null);
-                ft.commit();
+                Bundle b = new Bundle();
+                b.putBoolean("edit", edit);
+                b.putBoolean("loc", location);
+                Intent i = new Intent(this, UserLocation.class);
+                i.putExtras(b);
+                startActivity(i);
                 break;
             case 8: // Settings
                 ft.replace(R.id.content_frame, new Settings());
@@ -396,109 +315,28 @@ public class PlanetsMain extends AppCompatActivity
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LocationTask.REQUEST_RESOLVE_ERROR) {
-            if (resultCode == RESULT_OK) {
-                startLocationTask();
-            }
-        }
-    }
-
-    @Override
-    public void onLocationPermissionGranted() {
-        Snackbar.make(mLayout, R.string.permision_location,
-                Snackbar.LENGTH_SHORT).show();
-        locationHelper.setLocationPermissionDenied(false);
-        startLocationTask();
-    }
-
-    @Override
-    public void onLocationPermissionDenied() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Log.i(PlanetsMain.TAG,
-                    "Displaying Location permission rationale to provide additional context.");
-            // Show an expanation and try again
-            Snackbar.make(mLayout, R.string.permission_reason, Snackbar.LENGTH_LONG).show();
-            locationHelper.checkLocationPermissions(true);
-        } else {
-            locationHelper.setCheckingPermission(false);
-            locationHelper.setLocationPermissionDenied(true);
-        }
-    }
-
-    // ********************************
-    // ******* Location callback ******
-    // ********************************
-    @Override
-    public void onLocationFoundMain(Bundle data) {
-        mySnackbar.dismiss();
-        locationTask.stop();
-        if (data != null) {
-            if (data.getBoolean("locationNull")) {
-                Toast.makeText(this, "Location not found.", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d(TAG, "onLocationFoundMain, Location found");
-                latitude = data.getDouble("latitude");
-                longitude = data.getDouble("longitude");
-                elevation = data.getDouble("elevation");
-                offset = data.getDouble("offset");
-                ioffset = gmtValues.indexOf(offset + "");
-                if (saveLocation())
-                    Toast.makeText(this, "Location saved.", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(this, "Location not saved.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Log.d(TAG, "onLocationFoundMain, No location found");
-            Toast.makeText(this, "No location found.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     // ********************************
     // ***** Location dialog code *****
     // ********************************
     @Override
     public void onDialogPositiveClick() {
         // GPS
-        locationHelper.setCheckingPermission(true);
-        locationHelper.checkLocationPermissions(true);
+        selectItem(7, false, true);
     }
 
     @Override
     public void onDialogNegativeClick() {
         // Manual
-        selectItem(7, true);
+        selectItem(7, true, false);
     }
     // ********************************
 
     private void startLocationDialog() {
         // No location
-        if (!locationHelper.isCheckingPermission()) {
-            DialogFragment newFragment = new LocationDialog();
-            newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-            newFragment.setCancelable(false);
-            newFragment.show(getSupportFragmentManager(), "locationDialog");
-        }
-    }
-
-    private void startLocationTask() {
-        mySnackbar = Snackbar.make(mLayout, R.string.location_dialog, Snackbar.LENGTH_INDEFINITE);
-        mySnackbar.setAction(R.string.action_cancel, new MyCancelListener());
-        mySnackbar.show();
-        locationTask.start(true);
-    }
-
-    private class MyCancelListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (mySnackbar.isShown()) {
-                locationTask.stop();
-                mySnackbar.dismiss();
-            }
-        }
+        DialogFragment newFragment = new LocationDialog();
+        newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        newFragment.setCancelable(false);
+        newFragment.show(getSupportFragmentManager(), "locationDialog");
     }
 
     private void startCopyFileTask() {

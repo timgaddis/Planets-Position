@@ -86,6 +86,21 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_location);
 
+        latitudeText = findViewById(R.id.newLatText);
+        longitudeText = findViewById(R.id.newLongText);
+        elevationText = findViewById(R.id.newElevationText);
+        gmtOffsetText = findViewById(R.id.newGMTOffsetText);
+        editLocText = findViewById(R.id.locEditText);
+
+        gmtArray = Arrays.asList(getResources().getStringArray(
+                R.array.gmt_array));
+        gmtValues = Arrays.asList(getResources().getStringArray(
+                R.array.gmt_values));
+
+        settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        planetsDB = new PlanetsDatabase(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setTitle("User Location");
@@ -108,21 +123,6 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
 
         if (edit)
             editLocText.setVisibility(View.VISIBLE);
-
-        latitudeText = findViewById(R.id.newLatText);
-        longitudeText = findViewById(R.id.newLongText);
-        elevationText = findViewById(R.id.newElevationText);
-        gmtOffsetText = findViewById(R.id.newGMTOffsetText);
-        editLocText = findViewById(R.id.locEditText);
-
-        gmtArray = Arrays.asList(getResources().getStringArray(
-                R.array.gmt_array));
-        gmtValues = Arrays.asList(getResources().getStringArray(
-                R.array.gmt_values));
-
-        settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-        planetsDB = new PlanetsDatabase(this);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         if (startLoc)
             startGPS();

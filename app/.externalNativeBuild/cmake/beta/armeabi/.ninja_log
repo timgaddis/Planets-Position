@@ -29,3 +29,13 @@
 1	846	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o	75fb4ae1a3dc2a2f
 1	1034	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o	b68a08ac608e7bea
 1034	1054	0	../../../../build/intermediates/cmake/beta/obj/armeabi/libplanets_swiss.so	ee9b3a850baf3b53
+58	2943	0	CMakeFiles/planets_swiss.dir/src/main/jni/planets_swiss.c.o	b7a7d73db72d8221
+58	2962	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swejpl.c.o	b087d467f09224b0
+58	2981	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemplan.c.o	75e0a8ea252c037d
+58	2983	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swedate.c.o	8e8d848616ced64
+58	3008	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemmoon.c.o	639d32aae248322f
+58	3215	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swehouse.c.o	65a8dec7235ac5e0
+58	3355	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o	b6ce744537b656bc
+58	3578	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o	75fb4ae1a3dc2a2f
+58	3801	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o	b68a08ac608e7bea
+3801	4116	0	../../../../build/intermediates/cmake/beta/obj/armeabi/libplanets_swiss.so	ee9b3a850baf3b53

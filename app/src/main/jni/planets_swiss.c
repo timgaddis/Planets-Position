@@ -51,12 +51,12 @@ jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jobject this,
 
     char *outFormat = "_%i_%i_%i_%i_%i_%2.1f_";
     char output[30];
-    int i, y, mo, d, h, mi;
+    int y, mo, d, h, mi;
     double s;
 
     swe_jdut1_to_utc(juldate, SE_GREG_CAL, &y, &mo, &d, &h, &mi, &s);
 
-    i = sprintf(output, outFormat, y, mo, d, h, mi, s);
+    sprintf(output, outFormat, y, mo, d, h, mi, s);
     return (*env)->NewStringUTF(env, output);
 }
 
@@ -195,7 +195,7 @@ jdoubleArray Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobjec
                                                              jdouble attemp) {
 
     char serr[256];
-    double x2[3], az[3], g[3], attr[20], setT, riseT;
+    double x2[3], az[3], g[3], attr[20];
     int i, iflag = SEFLG_SWIEPH | SEFLG_EQUATORIAL | SEFLG_TOPOCTR;
     jboolean isCopy;
     jdoubleArray result;
@@ -538,7 +538,6 @@ jdoubleArray Java_planets_position_solar_SolarEclipseMap_solarMapPos(
 
     char serr[256];
     double attr[20], g[2];
-    int retval;
     jboolean isCopy;
     jdoubleArray result;
 

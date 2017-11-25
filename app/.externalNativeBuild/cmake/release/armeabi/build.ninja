@@ -54,63 +54,63 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 build CMakeFiles/planets_swiss.dir/src/main/jni/planets_swiss.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/planets_swiss.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/planets_swiss.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/planets_swiss.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swecl.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swecl.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swedate.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swedate.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swedate.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swedate.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swehouse.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swehouse.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swehouse.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swehouse.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swejpl.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swejpl.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swejpl.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swejpl.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemmoon.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swemmoon.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemmoon.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swemmoon.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemplan.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swemplan.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemplan.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swemplan.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/sweph.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/sweph.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
 build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o: C_COMPILER__planets_swiss ../../../../src/main/jni/swiss/swephlib.c
   DEFINES = -Dplanets_swiss_EXPORTS
   DEP_FILE = CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o.d
-  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC
+  FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC
   IN_ABS = /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swephlib.c
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   OBJECT_FILE_DIR = CMakeFiles/planets_swiss.dir/src/main/jni/swiss
@@ -123,9 +123,9 @@ build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o: C_COMPILER__
 # Link the shared library ../../../../build/intermediates/cmake/release/obj/armeabi/libplanets_swiss.so
 
 build ../../../../build/intermediates/cmake/release/obj/armeabi/libplanets_swiss.so: C_SHARED_LIBRARY_LINKER__planets_swiss CMakeFiles/planets_swiss.dir/src/main/jni/planets_swiss.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swedate.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swehouse.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swejpl.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemmoon.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemplan.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o | /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so
-  LANGUAGE_COMPILE_FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG
-  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a --sysroot /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
-  LINK_LIBRARIES = /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so -lm
+  LANGUAGE_COMPILE_FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Oz -DNDEBUG
+  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
+  LINK_LIBRARIES = /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so -latomic -lm
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   POST_BUILD = :
   PRE_LINK = :

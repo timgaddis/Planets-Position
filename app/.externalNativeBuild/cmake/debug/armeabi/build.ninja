@@ -124,8 +124,8 @@ build CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o: C_COMPILER__
 
 build ../../../../build/intermediates/cmake/debug/obj/armeabi/libplanets_swiss.so: C_SHARED_LIBRARY_LINKER__planets_swiss CMakeFiles/planets_swiss.dir/src/main/jni/planets_swiss.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swedate.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swehouse.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swejpl.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemmoon.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemplan.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o | /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so
   LANGUAGE_COMPILE_FLAGS = -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -O0 -fno-limit-debug-info
-  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a --sysroot /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
-  LINK_LIBRARIES = /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so -lm
+  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
+  LINK_LIBRARIES = /media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so -latomic -lm
   OBJECT_DIR = CMakeFiles/planets_swiss.dir
   POST_BUILD = :
   PRE_LINK = :

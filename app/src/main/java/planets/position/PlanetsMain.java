@@ -113,7 +113,6 @@ public class PlanetsMain extends AppCompatActivity
         }
 
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("ephPath", getFilesDir().getPath() + File.separator + "ephemeris");
         editor.putBoolean("hasCalendar", checkForCalendar());
         editor.apply();
     }

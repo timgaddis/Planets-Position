@@ -36,13 +36,14 @@ public class PlanetsDatabase {
             LocationTable.COLUMN_ELEVATION, LocationTable.COLUMN_OFFSET,
             LocationTable.COLUMN_IOFFSET};
     private final String[] whatsUpColumns = {PlanetsTable.COLUMN_ID,
-            PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_AZ,
-            PlanetsTable.COLUMN_ALT};
+            PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
+            PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME};
     private final String[] planetDataColumns = {PlanetsTable.COLUMN_ID,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_RA,
             PlanetsTable.COLUMN_DEC, PlanetsTable.COLUMN_AZ,
             PlanetsTable.COLUMN_ALT, PlanetsTable.COLUMN_DISTANCE,
-            PlanetsTable.COLUMN_MAGNITUDE, PlanetsTable.COLUMN_SET_TIME, PlanetsTable.COLUMN_TRANSIT};
+            PlanetsTable.COLUMN_MAGNITUDE, PlanetsTable.COLUMN_SET_TIME,
+            PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_TRANSIT};
     private final String[] solarEclipseColumns = {SolarEclipseTable.COLUMN_ID,
             SolarEclipseTable.COLUMN_GLOBAL_TYPE,
             SolarEclipseTable.COLUMN_ECLIPSE_DATE,
@@ -150,8 +151,18 @@ public class PlanetsDatabase {
         return out;
     }
 
-    public Cursor getPlanets() {
+    public Cursor getPlanetsSet() {
         return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, "alt > 0.0",
+                null, null, null, null);
+    }
+
+    public Cursor getPlanetsRise() {
+        return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, "alt <= 0.0",
+                null, null, null, null);
+    }
+
+    public Cursor getPlanetsAll() {
+        return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, null,
                 null, null, null, null);
     }
 
@@ -171,6 +182,7 @@ public class PlanetsDatabase {
         out.putDouble("distance", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_DISTANCE)));
         out.putDouble("mag", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_MAGNITUDE)));
         out.putLong("setTime", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_SET_TIME)));
+        out.putLong("riseTime", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME)));
         out.putLong("transit", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_TRANSIT)));
 
         c.close();

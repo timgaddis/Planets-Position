@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -37,7 +36,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
@@ -50,7 +48,6 @@ public class SolarEclipseTask extends DialogFragment {
     private double[] g;
     private ProgressBar pb;
     private RiseSet riseSet;
-    private SharedPreferences settings;
 
     // load c library
     static {
@@ -58,11 +55,9 @@ public class SolarEclipseTask extends DialogFragment {
     }
 
     // c function prototypes
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] solarDataLocal(String eph, double d2, double[] loc, int back);
+    public native double[] solarDataLocal(double d2, double[] loc, int back);
 
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] solarDataGlobal(String eph, double d2, int back);
+    public native double[] solarDataGlobal(double d2, int back);
 
     public void setData(ComputeEclipseTask task, double[] loc, double time,
                         double back) {
@@ -75,12 +70,10 @@ public class SolarEclipseTask extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         setRetainInstance(true);
         if (mTask != null)
             mTask.execute(startTime, backward);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -96,7 +89,6 @@ public class SolarEclipseTask extends DialogFragment {
         pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
         getDialog().setCanceledOnTouchOutside(false);
         riseSet = new RiseSet(g);
-        riseSet.setEphPath(settings.getString("ephPath", ""));
         return v;
     }
 
@@ -173,7 +165,7 @@ public class SolarEclipseTask extends DialogFragment {
             start = params[0];
 
             // compute first local eclipse
-            data2 = solarDataLocal(settings.getString("ephPath", ""), start, g, back);
+            data2 = solarDataLocal(start, g, back);
             if (data2 == null) {
                 Log.e("Solar Eclipse error", "solarDataLocal data2 error");
                 getTargetFragment().onActivityResult(
@@ -191,7 +183,7 @@ public class SolarEclipseTask extends DialogFragment {
                 values.clear();
 
                 // Global Eclipse Calculation
-                data1 = solarDataGlobal(settings.getString("ephPath", ""), start, back);
+                data1 = solarDataGlobal(start, back);
                 if (data1 == null) {
                     Log.e("Solar Eclipse error", "solarDataGlobal data1 error");
                     getTargetFragment().onActivityResult(
@@ -287,7 +279,7 @@ public class SolarEclipseTask extends DialogFragment {
                     else
                         start = data1[3];
 
-                    data2 = solarDataLocal(settings.getString("ephPath", ""), start, g, back);
+                    data2 = solarDataLocal(start, g, back);
                     if (data2 == null) {
                         Log.e("Solar Eclipse error",
                                 "computeEclipses data2a error");

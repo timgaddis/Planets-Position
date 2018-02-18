@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -40,7 +39,6 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
@@ -57,7 +55,6 @@ public class LunarOccultTask extends DialogFragment {
     private RiseSet riseSet;
     private ProgressBar pb;
     private TextView tv;
-    private SharedPreferences settings;
 
     // load c library
     static {
@@ -65,12 +62,10 @@ public class LunarOccultTask extends DialogFragment {
     }
 
     // c function prototypes
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] lunarOccultLocal(String eph, double d2, double[] loc,
+    public native double[] lunarOccultLocal(double d2, double[] loc,
                                             int planet, int back);
 
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] lunarOccultGlobal(String eph, double d2, int planet, int back);
+    public native double[] lunarOccultGlobal(double d2, int planet, int back);
 
     public void setData(ComputeOccultTask task, double[] loc, double time,
                         double back, int planet) {
@@ -86,7 +81,6 @@ public class LunarOccultTask extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         if (mTask != null)
             mTask.execute(startTime, backward);
     }
@@ -106,7 +100,6 @@ public class LunarOccultTask extends DialogFragment {
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
         riseSet = new RiseSet(g);
-        riseSet.setEphPath(settings.getString("ephPath", ""));
         getDialog().setCanceledOnTouchOutside(false);
         return v;
     }
@@ -198,7 +191,7 @@ public class LunarOccultTask extends DialogFragment {
                 publishProgress(0, planetNum, 1);
                 allPlanets = false;
                 // compute first local eclipse
-                data2 = lunarOccultLocal(settings.getString("ephPath", ""), start, g, planetNum, back);
+                data2 = lunarOccultLocal(start, g, planetNum, back);
                 if (data2 == null) {
                     Log.e("Lunar Occultation error",
                             "lunarOccultLocal data2 error");
@@ -217,7 +210,7 @@ public class LunarOccultTask extends DialogFragment {
                     values.clear();
 
                     // Global Occultation Calculation
-                    data1 = lunarOccultGlobal(settings.getString("ephPath", ""), start, planetNum, back);
+                    data1 = lunarOccultGlobal(start, planetNum, back);
                     if (data1 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultGlobal data1 error");
@@ -297,7 +290,7 @@ public class LunarOccultTask extends DialogFragment {
                         else
                             start = data1[1] - 2.0;
 
-                        data2 = lunarOccultLocal(settings.getString("ephPath", ""), start, g, planetNum, back);
+                        data2 = lunarOccultLocal(start, g, planetNum, back);
                         if (data2 == null) {
                             Log.e("Lunar Occultation error",
                                     "computeOccultations data2a error");
@@ -371,7 +364,7 @@ public class LunarOccultTask extends DialogFragment {
                     values.clear();
 
                     // Local Occultation Calculation
-                    data2 = lunarOccultLocal(settings.getString("ephPath", ""), start, g, i + 2, back);
+                    data2 = lunarOccultLocal(start, g, i + 2, back);
                     if (data2 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultLocal data2 error");
@@ -381,7 +374,7 @@ public class LunarOccultTask extends DialogFragment {
                     }
 
                     // Global Occultation Calculation
-                    data1 = lunarOccultGlobal(settings.getString("ephPath", ""), start, i + 2, back);
+                    data1 = lunarOccultGlobal(start, i + 2, back);
                     if (data1 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultGlobal data1 error");

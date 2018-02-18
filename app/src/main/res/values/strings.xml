@@ -41,7 +41,7 @@
     <string name="nav_lunar_eclipse">Lunar Eclipses</string>
     <string name="nav_lunar_occultion">Lunar Occultations</string>
     <string name="nav_sky_position">Sky Position</string>
-    <string name="nav_whats_up">What\'s Up Now</string>
+    <string name="nav_whats_up">Rise / Set</string>
     <string name="nav_location">Location</string>
     <!-- User Location -->
     <string name="loc_down">GPS</string>
@@ -66,6 +66,9 @@
     <string name="data_mag">Magnitude</string>
     <string name="data_set">Set Time</string>
     <string name="data_rise">Rise Time</string>
+    <string name="data_rising">Rising</string>
+    <string name="data_setting">Setting</string>
+    <string name="data_all">View All</string>
     <string name="data_transit">Meridian Transit</string>
     <string name="below_hor">Object below horizon</string>
     <string name="planet_select">Select a planet.</string>

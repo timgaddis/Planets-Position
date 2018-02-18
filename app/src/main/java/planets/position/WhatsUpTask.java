@@ -23,7 +23,6 @@ package planets.position;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -51,7 +50,6 @@ public class WhatsUpTask extends DialogFragment {
     private double offset;
     private double[] g;
     private JDUTC jdUTC;
-    private SharedPreferences settings;
     private ProgressBar pb;
     private TextView tv;
 
@@ -61,9 +59,7 @@ public class WhatsUpTask extends DialogFragment {
     }
 
     // c function prototypes
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] planetUpData(String eph, double d1, double d2, int p,
-                                        double[] loc, double press, double temp);
+    public native double[] planetUpData(double d1, double d2, int p, double[] loc);
 
     public void setData(ComputePlanetsTask task, double[] loc, double off) {
         mTask = task;
@@ -78,8 +74,6 @@ public class WhatsUpTask extends DialogFragment {
         jdUTC = new JDUTC();
         planetNames = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         setRetainInstance(true);
         if (mTask != null)
             mTask.execute();
@@ -137,7 +131,7 @@ public class WhatsUpTask extends DialogFragment {
 
         WhatsUpTask mFragment;
         double[] data = null, time;
-        double t, ra, transit;
+        double r, s, ra, transit;
         PlanetsDatabase planetsDB;
         private RiseSet riseSet;
         private ContentValues values;
@@ -151,8 +145,7 @@ public class WhatsUpTask extends DialogFragment {
             values = new ContentValues();
             time = jdUTC.getCurrentTime(offset);
             planetsDB = new PlanetsDatabase(mFragment.getActivity().getApplicationContext());
-            riseSet = new RiseSet(settings.getString("ephPath", ""));
-            riseSet.setLocation(g);
+            riseSet = new RiseSet(g);
         }
 
         protected void onProgressUpdate(Integer... values) {
@@ -170,17 +163,22 @@ public class WhatsUpTask extends DialogFragment {
                     break;
                 }
                 values.clear();
-                publishProgress(i + 1, i);
-                data = planetUpData(settings.getString("ephPath", ""), time[0], time[1], i, g, 0.0, 0.0);
+                data = planetUpData(time[0], time[1], i, g);
                 if (data == null) {
                     Log.e("Position error",
                             "WhatsUpTask - ComputePlanetsTask error");
                     getTargetFragment().onActivityResult(0, 100, null);
                     break;
                 }
-                t = riseSet.getSet(time[1], i);
-                if (t < 0) {
+                s = riseSet.getSet(time[1], i);
+                if (s < 0) {
                     Log.e("Position error", "ComputePlanetsTask set error");
+                    break;
+                }
+
+                r = riseSet.getRise(time[1], i);
+                if (r < 0) {
+                    Log.e("Position error", "ComputePlanetsTask rise error");
                     break;
                 }
 
@@ -201,10 +199,12 @@ public class WhatsUpTask extends DialogFragment {
                 values.put(PlanetsTable.COLUMN_ALT, data[4]);
                 values.put(PlanetsTable.COLUMN_DISTANCE, data[2]);
                 values.put(PlanetsTable.COLUMN_MAGNITUDE, data[5]);
-                values.put(PlanetsTable.COLUMN_SET_TIME, jdUTC.jdmills(t, offset));
+                values.put(PlanetsTable.COLUMN_SET_TIME, jdUTC.jdmills(s, offset));
+                values.put(PlanetsTable.COLUMN_RISE_TIME, jdUTC.jdmills(r, offset));
                 values.put(PlanetsTable.COLUMN_TRANSIT, jdUTC.jdmills(transit, offset));
 
                 planetsDB.addPlanet(values, i);
+                publishProgress(i + 1, i);
             }
             planetsDB.close();
             return null;

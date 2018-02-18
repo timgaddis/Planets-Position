@@ -22,7 +22,6 @@ package planets.position;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -40,7 +39,6 @@ public class LivePositionService extends Service {
     private int planetNum;
     private final Handler handler = new Handler();
     private Intent intent;
-    private SharedPreferences settings;
     private JDUTC jdUTC;
     private RiseSet riseSet;
 
@@ -50,17 +48,13 @@ public class LivePositionService extends Service {
     }
 
     // c function prototype
-    @SuppressWarnings("JniMissingFunction")
-    public native static double[] planetLiveData(String eph, double d2, int p,
-                                                 double[] loc, double press, double temp);
+    public native static double[] planetLiveData(double d2, int p, double[] loc);
 
     @Override
     public void onCreate() {
         super.onCreate();
-        settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         intent = new Intent(BROADCAST_ACTION);
         jdUTC = new JDUTC();
-        riseSet = new RiseSet(settings.getString("ephPath", ""));
     }
 
     @Override
@@ -70,7 +64,7 @@ public class LivePositionService extends Service {
         g[1] = intent.getDoubleExtra("latitude", 0);
         g[2] = intent.getDoubleExtra("elevation", 0);
         planetNum = intent.getIntExtra("planetNum", 0);
-        riseSet.setLocation(g);
+        riseSet = new RiseSet(g);
         handler.removeCallbacks(sendUpdatesToUI);
         handler.postDelayed(sendUpdatesToUI, 1000); // 1 second
         return super.onStartCommand(intent, flags, startId);
@@ -103,7 +97,7 @@ public class LivePositionService extends Service {
         // jdTT = d[0];
         // jdUT = d[1];
 
-        data = planetLiveData(settings.getString("ephPath", ""), d[1], planetNum, g, 0.0, 0.0);
+        data = planetLiveData(d[1], planetNum, g);
         if (data == null) {
             Log.e("UpdatePosition error", "planetLiveData error");
             return;

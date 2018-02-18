@@ -20,7 +20,6 @@
 
 package planets.position.solar;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -37,7 +36,6 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import planets.position.PlanetsMain;
 import planets.position.R;
 
 public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCallback {
@@ -47,7 +45,6 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
     private double latitude, longitude, start, end;
     private long eclDate;
     private String eclType;
-    private SharedPreferences settings;
 
     // load c library
     static {
@@ -55,8 +52,7 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
     }
 
     // c function prototypes
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] solarMapPos(String eph, double d2);
+    public native double[] solarMapPos(double d2);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +60,6 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_solar_eclipse_map);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         mDateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
 
         overlayTop = findViewById(R.id.overTop);
@@ -125,12 +120,12 @@ public class SolarEclipseMap extends AppCompatActivity implements OnMapReadyCall
         googleMap.addMarker(options);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
 
-        data = solarMapPos(settings.getString("ephPath", ""), start);
+        data = solarMapPos(start);
         pathStart = new LatLng(data[1], data[0]);
 
         path.add(pathStart);
         for (int x = 0; x < NUM; x++) {
-            data = solarMapPos(settings.getString("ephPath", ""), date);
+            data = solarMapPos(date);
             path.add(new LatLng(data[1], data[0]));
             date += interval;
         }

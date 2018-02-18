@@ -23,7 +23,6 @@ package planets.position.util;
 public class RiseSet {
 
     private double[] g = new double[3];
-    private String ephPath;
 
     // load c library
     static {
@@ -31,25 +30,16 @@ public class RiseSet {
     }
 
     // c function prototypes
-    @SuppressWarnings("JniMissingFunction")
-    public native static double planetRise(String eph, double dUT, int p, double[] loc, double press,
-                                           double temp);
+    public native static double planetRise(double dUT, int p, double[] loc);
 
-    @SuppressWarnings("JniMissingFunction")
-    public native static double planetSet(String eph, double dUT, int p, double[] loc, double press,
-                                          double temp);
+    public native static double planetSet(double dUT, int p, double[] loc);
 
-    @SuppressWarnings("JniMissingFunction")
-    public native static double planetTransit(String eph, double dUT, int p, double[] loc, double press,
-                                              double temp);
+    public native static double planetTransit(double dUT, int p, double[] loc);
 
     public RiseSet(double[] loc) {
         g = loc;
     }
 
-    public RiseSet(String eph) {
-        ephPath = eph;
-    }
 
     public void setLocation(double lat, double lng, double ele) {
         g[1] = lat;
@@ -57,23 +47,19 @@ public class RiseSet {
         g[2] = ele;
     }
 
-    public void setEphPath(String ephPath) {
-        this.ephPath = ephPath;
-    }
-
     public void setLocation(double[] loc) {
         g = loc;
     }
 
     public double getRise(double jdate, int planet) {
-        return planetRise(ephPath, jdate, planet, g, 0.0, 0.0);
+        return planetRise(jdate, planet, g);
     }
 
     public double getSet(double jdate, int planet) {
-        return planetSet(ephPath, jdate, planet, g, 0.0, 0.0);
+        return planetSet(jdate, planet, g);
     }
 
     public double getTransit(double jdate, int planet) {
-        return planetTransit(ephPath, jdate, planet, g, 0.0, 0.0);
+        return planetTransit(jdate, planet, g);
     }
 }

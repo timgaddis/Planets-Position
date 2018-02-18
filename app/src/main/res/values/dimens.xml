@@ -27,6 +27,7 @@
     <!-- User custom dimensions -->
     <dimen name="label_planets_text">16sp</dimen>
     <dimen name="data_card">8dp</dimen>
+    <dimen name="data_card2">12dp</dimen>
     <dimen name="data_card_pad">16dp</dimen>
     <dimen name="setting_pad">4dp</dimen>
     <dimen name="label_text">22sp</dimen>

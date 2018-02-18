@@ -20,13 +20,13 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="88dp"
+    android:layout_height="72dp"
     android:background="@color/main_back"
     android:paddingEnd="@dimen/data_card_pad"
     android:paddingLeft="@dimen/data_card"
     android:paddingRight="@dimen/data_card_pad"
     android:paddingStart="@dimen/data_card"
-    android:paddingTop="@dimen/data_card_pad">
+    android:paddingTop="@dimen/data_card2">
 
     <ImageView
         android:id="@+id/rowImage"
@@ -44,11 +44,12 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/rowImage"
         android:layout_toRightOf="@+id/rowImage"
+        android:paddingTop="@dimen/setting_pad"
         android:textColor="@color/text_color"
         android:textSize="16sp" />
 
     <LinearLayout
-        android:id="@+id/azRow"
+        android:id="@+id/riseSetRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/rowName"
@@ -56,45 +57,27 @@
         android:layout_below="@+id/rowName">
 
         <TextView
-            android:id="@+id/rowAZtext"
+            android:id="@+id/rowRiseSet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="@string/data_az"
+            android:layout_weight="1"
+            android:text="@string/data_rise"
             android:textColor="@color/alt_text_color"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/rowAZ"
+            android:id="@+id/rowRSDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:textColor="@color/alt_text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/altRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/rowName"
-        android:layout_alignStart="@+id/rowName"
-        android:layout_below="@+id/azRow">
-
-        <TextView
-            android:id="@+id/rowALTtext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="@string/data_alt"
+            android:layout_weight="1"
             android:textColor="@color/alt_text_color"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/rowALT"
+            android:id="@+id/rowRSTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:textColor="@color/alt_text_color"
             android:textSize="14sp" />
     </LinearLayout>

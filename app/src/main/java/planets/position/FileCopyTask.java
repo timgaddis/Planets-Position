@@ -56,9 +56,9 @@ public class FileCopyTask extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         // attach to PlanetsMain
-        if (!(context instanceof FragmentListener)) {
+        if (!(context instanceof FileCopyCallback)) {
             throw new IllegalStateException(
-                    "Activity must implement the FragmentListener interface.");
+                    "Activity must implement the FileCopyCallback interface.");
         }
         mCallbacks = (FileCopyCallback) context;
     }

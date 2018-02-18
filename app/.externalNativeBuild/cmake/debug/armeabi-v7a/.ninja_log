@@ -1,0 +1,11 @@
+# ninja log v5
+0	1333	0	CMakeFiles/planets_swiss.dir/src/main/jni/planets_swiss.c.o	f6a9a3b9da961764
+1	1365	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swedate.c.o	7722c09c4095f522
+1	1440	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swejpl.c.o	6c165a9ae5d53df7
+1	1454	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemmoon.c.o	4affdc3abbb4d0d
+1	1483	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swehouse.c.o	8459771b39d6ae96
+1	1539	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swemplan.c.o	9b6e2a49c24cb793
+0	1640	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swecl.c.o	8dbd9d2e0532b0e4
+1	1689	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/swephlib.c.o	2ac893101a62f712
+1	1792	0	CMakeFiles/planets_swiss.dir/src/main/jni/swiss/sweph.c.o	355573cff64ce561
+1792	1853	0	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libplanets_swiss.so	8c3b3666b1805e40

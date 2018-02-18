@@ -27,11 +27,11 @@ android {
         applicationId "planets.position"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 32
-        versionName "2.1.3"
+        versionCode 33
+        versionName "2.2"
 
         ndk {
-            abiFilters 'armeabi'
+            abiFilters 'armeabi-v7a'
         }
         externalNativeBuild {
             cmake {
@@ -70,6 +70,6 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:support-v13:26.1.0'
-    implementation 'com.google.android.gms:play-services-location:11.6.0'
-    implementation 'com.google.android.gms:play-services-maps:11.6.0'
+    implementation 'com.google.android.gms:play-services-location:11.8.0'
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
 }

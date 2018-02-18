@@ -32,11 +32,9 @@ public class JDUTC {
     }
 
     // c function prototypes
-    @SuppressWarnings("JniMissingFunction")
     public native static double[] utc2jd(int m, int d, int y, int hr, int min,
                                          double sec);
 
-    @SuppressWarnings("JniMissingFunction")
     public native static String jd2utc(double jdate);
 
     /**
@@ -122,11 +120,6 @@ public class JDUTC {
                 c.get(Calendar.MINUTE), c.get(Calendar.SECOND));
         if (time == null) {
             Log.e("JDUTC getCurrentTime", "utcjd error");
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return time;
     }

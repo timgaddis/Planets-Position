@@ -80,9 +80,7 @@ public class SkyPosition extends Fragment {
     }
 
     // c function prototype
-    @SuppressWarnings("JniMissingFunction")
-    public native double[] planetPosData(String eph, double d1, double d2, int p,
-                                         double[] loc, double press, double temp);
+    public native double[] planetPosData(double d1, double d2, int p, double[] loc);
 
     public SkyPosition() {
     }
@@ -117,8 +115,6 @@ public class SkyPosition extends Fragment {
 
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
-        riseSet = new RiseSet(settings.getString("ephPath", ""));
 
         nameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +154,7 @@ public class SkyPosition extends Fragment {
         g[0] = longitude;
         g[2] = elevation;
 
-        riseSet.setLocation(latitude, longitude, elevation);
+        riseSet = new RiseSet(g);
 
         if (savedInstanceState == null) {
             // get the current date, time
@@ -316,8 +312,7 @@ public class SkyPosition extends Fragment {
             // jdUT = data[1];
             d = data[1];
 
-            data = planetPosData(settings.getString("ephPath", ""), data[0], data[1],
-                    planetNum, g, 0.0, 0.0);
+            data = planetPosData(data[0], data[1], planetNum, g);
             if (data == null) {
                 Log.e("Position error", "planetPosData error");
                 return;

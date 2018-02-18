@@ -37,10 +37,10 @@ import planets.position.util.PositionFormat;
 
 public class WhatsUpData extends Fragment {
 
-    private TextView pRAText, pDecText, pMagText, pSetText, pAzText;
+    private TextView pRAText, pDecText, pMagText, pSetText, pAzText, pSet;
     private TextView pAltText, pDistText, pNameText, pDate, pTime, pTransitText;
     private long planetNum = 0, lastUpdate = 0;
-    private static DateFormat mDateFormat, mTimeFormat;
+    private DateFormat mDateFormat, mTimeFormat;
     private PlanetsDatabase planetsDB;
     private FragmentListener mCallbacks;
     private PositionFormat pf;
@@ -58,6 +58,7 @@ public class WhatsUpData extends Fragment {
         pDistText = v.findViewById(R.id.data_dis_text);
         pMagText = v.findViewById(R.id.data_mag_text);
         pSetText = v.findViewById(R.id.data_setTime_text);
+        pSet = v.findViewById(R.id.data_setTime);
         pDate = v.findViewById(R.id.data_date_text);
         pTime = v.findViewById(R.id.data_time_text);
         pTransitText = v.findViewById(R.id.data_transitTime_text);
@@ -71,7 +72,7 @@ public class WhatsUpData extends Fragment {
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         if (mCallbacks != null) {
-            mCallbacks.onToolbarTitleChange("What's Up Now", 6);
+            mCallbacks.onToolbarTitleChange("Rise / Set", 6);
         }
 
         if (savedInstanceState != null) {
@@ -125,6 +126,7 @@ public class WhatsUpData extends Fragment {
 
     private void loadPlanet() {
         Bundle b;
+        double alt;
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(lastUpdate);
         pDate.setText(mDateFormat.format(c.getTime()));
@@ -138,14 +140,21 @@ public class WhatsUpData extends Fragment {
         pRAText.setText(pf.formatRA(b.getDouble("ra")));
         pDecText.setText(pf.formatDec(b.getDouble("dec")));
         pAzText.setText(pf.formatAZ(b.getDouble("az")));
-        pAltText.setText(pf.formatALT(b.getDouble("alt")));
+        alt = b.getDouble("alt");
+        pAltText.setText(pf.formatALT(alt));
         if (planetNum == 1)
             pDistText.setText(String.format(Locale.getDefault(), "%.4f AU", b.getDouble("distance")));
         else
             pDistText.setText(String.format(Locale.getDefault(), "%.2f AU", b.getDouble("distance")));
         pMagText.setText(String.format(Locale.getDefault(), "%.2f", b.getDouble("mag")));
 
-        c.setTimeInMillis(b.getLong("setTime"));
+        if (alt > 0) {
+            c.setTimeInMillis(b.getLong("setTime"));
+            pSet.setText(R.string.data_set);
+        } else {
+            c.setTimeInMillis(b.getLong("riseTime"));
+            pSet.setText(R.string.data_rise);
+        }
         pSetText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));
 
         c.setTimeInMillis(b.getLong("transit"));

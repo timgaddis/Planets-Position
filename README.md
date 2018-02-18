@@ -32,7 +32,7 @@ The file should contain the following:
 
 ## License
 
-Copyright (C) 2016 Tim Gaddis
+Copyright (C) 2018 Tim Gaddis
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

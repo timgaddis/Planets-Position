@@ -40,17 +40,6 @@ public class RiseSet {
         g = loc;
     }
 
-
-    public void setLocation(double lat, double lng, double ele) {
-        g[1] = lat;
-        g[0] = lng;
-        g[2] = ele;
-    }
-
-    public void setLocation(double[] loc) {
-        g = loc;
-    }
-
     public double getRise(double jdate, int planet) {
         return planetRise(jdate, planet, g);
     }

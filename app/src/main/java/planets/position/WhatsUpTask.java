@@ -156,6 +156,7 @@ public class WhatsUpTask extends DialogFragment {
         @Override
         protected Void doInBackground(Void... params) {
             planetsDB.open();
+            planetsDB.eraseTable(PlanetsTable.TABLE_NAME);
             for (int i = 0; i < 10; i++) {
                 if (this.isCancelled()) {
                     getTargetFragment().onActivityResult(0,
@@ -170,6 +171,8 @@ public class WhatsUpTask extends DialogFragment {
                     getTargetFragment().onActivityResult(0, 100, null);
                     break;
                 }
+//                Log.d(PlanetsMain.TAG, "offset task:" + offset);
+//                Log.d(PlanetsMain.TAG, "data[1] task" + data[1]);
                 s = riseSet.getSet(time[1], i);
                 if (s < 0) {
                     Log.e("Position error", "ComputePlanetsTask set error");
@@ -193,17 +196,18 @@ public class WhatsUpTask extends DialogFragment {
                 ra = ra / 15;
 
                 values.put(PlanetsTable.COLUMN_NAME, planetNames.get(i));
+                values.put(PlanetsTable.COLUMN_NUMBER, i);
                 values.put(PlanetsTable.COLUMN_RA, ra);
                 values.put(PlanetsTable.COLUMN_DEC, data[1]);
                 values.put(PlanetsTable.COLUMN_AZ, data[3]);
                 values.put(PlanetsTable.COLUMN_ALT, data[4]);
                 values.put(PlanetsTable.COLUMN_DISTANCE, data[2]);
                 values.put(PlanetsTable.COLUMN_MAGNITUDE, data[5]);
-                values.put(PlanetsTable.COLUMN_SET_TIME, jdUTC.jdmills(s, offset));
-                values.put(PlanetsTable.COLUMN_RISE_TIME, jdUTC.jdmills(r, offset));
-                values.put(PlanetsTable.COLUMN_TRANSIT, jdUTC.jdmills(transit, offset));
+                values.put(PlanetsTable.COLUMN_SET_TIME, s);
+                values.put(PlanetsTable.COLUMN_RISE_TIME, r);
+                values.put(PlanetsTable.COLUMN_TRANSIT, transit);
 
-                planetsDB.addPlanet(values, i);
+                planetsDB.addPlanet(values);
                 publishProgress(i + 1, i);
             }
             planetsDB.close();

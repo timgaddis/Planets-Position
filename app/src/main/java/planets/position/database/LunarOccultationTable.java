@@ -25,7 +25,7 @@ import android.util.Log;
 
 public class LunarOccultationTable {
 
-    public static final String TABLE_LUNAR_OCCULT = "lunarOccult";
+    public static final String TABLE_NAME = "lunarOccult";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_LOCAL_TYPE = "localType";
     public static final String COLUMN_GLOBAL_TYPE = "globalType";
@@ -51,17 +51,10 @@ public class LunarOccultationTable {
     public static final String COLUMN_OCCULT_DATE = "occultDate";
     public static final String COLUMN_OCCULT_PLANET = "occultPlanet";
 
-    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s integer);", TABLE_LUNAR_OCCULT, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_MOONS_AZ, COLUMN_MOONS_ALT, COLUMN_MOONE_AZ, COLUMN_MOONE_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_OCCULT_DATE, COLUMN_OCCULT_PLANET);
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s integer);", TABLE_NAME, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_MOONS_AZ, COLUMN_MOONS_ALT, COLUMN_MOONE_AZ, COLUMN_MOONE_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_OCCULT_DATE, COLUMN_OCCULT_PLANET);
 
     public static void onCreate(SQLiteDatabase database) {
-        String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
-        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_LUNAR_OCCULT, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_MOONS_AZ, COLUMN_MOONS_ALT, COLUMN_MOONE_AZ, COLUMN_MOONE_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_OCCULT_DATE, COLUMN_OCCULT_PLANET);
-        ip2 = ",0,0,-1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,"
-                + "0.0,0.0,0.0,0.0,-1);";
-        for (int i = 0; i < 10; i++) {
-            database.execSQL(ip1 + i + ip2);
-        }
     }
 
     public static void onUpgrade(SQLiteDatabase database, int oldVersion,
@@ -69,7 +62,7 @@ public class LunarOccultationTable {
         Log.w(LunarOccultationTable.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_LUNAR_OCCULT);
+        database.execSQL(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));
         onCreate(database);
     }
 }

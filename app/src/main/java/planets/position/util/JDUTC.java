@@ -68,7 +68,7 @@ public class JDUTC {
      * Returns the given Julian date in milliseconds in local time.
      *
      * @param jdate  The given date in Jullian format.
-     * @param offset The UTC offset.
+     * @param offset The UTC offset in minutes.
      * @return Long containing the milliseconds.
      */
     public long jdmills(double jdate, double offset) {
@@ -81,7 +81,7 @@ public class JDUTC {
         utc.set(Calendar.MILLISECOND,
                 (int) (Double.parseDouble(dateArr[6]) * 1000));
         // convert utc to local time
-        utc.add(Calendar.MINUTE, (int) (offset * 60));
+        utc.add(Calendar.MINUTE, (int) (offset));
         return utc.getTimeInMillis();
     }
 
@@ -106,7 +106,7 @@ public class JDUTC {
     /**
      * Returns the the current time in UT1 and TT Jullian format.
      *
-     * @param offset The UTC offset.
+     * @param offset The UTC offset in minutes.
      * @return Double array containing the times with [0]=TT and [1]=UT1.
      */
     public double[] getCurrentTime(double offset) {
@@ -114,7 +114,7 @@ public class JDUTC {
         Calendar c;
         c = Calendar.getInstance();
         // convert local time to utc
-        c.add(Calendar.MINUTE, (int) (offset * -60));
+        c.add(Calendar.MINUTE, (int) (offset * -1));
         time = utcjd(c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH),
                 c.get(Calendar.YEAR), c.get(Calendar.HOUR_OF_DAY),
                 c.get(Calendar.MINUTE), c.get(Calendar.SECOND));

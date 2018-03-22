@@ -3,8 +3,6 @@
 #include <android/log.h>
 #include "swiss/swephexp.h"
 
-/*__android_log_print(ANDROID_LOG_INFO, "solarDataGlobal", "date: %f", d_ut);*/
-
 /*
  * Convert a calendar date ( year, month, day, hour, min, sec) to a Julian date.
  * Swiss Ephemeris function called:

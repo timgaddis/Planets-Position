@@ -34,10 +34,10 @@ public class PlanetsDatabase {
     private final String[] locationColumns = {LocationTable.COLUMN_ID,
             LocationTable.COLUMN_LATITUDE, LocationTable.COLUMN_LONGITUDE,
             LocationTable.COLUMN_ELEVATION, LocationTable.COLUMN_OFFSET,
-            LocationTable.COLUMN_IOFFSET};
-    private final String[] whatsUpColumns = {PlanetsTable.COLUMN_ID,
+            LocationTable.COLUMN_ZONE_ID, LocationTable.COLUMN_ZONE_NAME};
+    private final String[] whatsUpColumns = {PlanetsTable.COLUMN_NUMBER,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
-            PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME};
+            PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME, PlanetsTable.COLUMN_ID};
     private final String[] planetDataColumns = {PlanetsTable.COLUMN_ID,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_RA,
             PlanetsTable.COLUMN_DEC, PlanetsTable.COLUMN_AZ,
@@ -117,7 +117,7 @@ public class PlanetsDatabase {
             LunarOccultationTable.COLUMN_OCCULT_PLANET};
 
     public PlanetsDatabase(Context context) {
-        dbHelper = new PlanetsDatabaseHelper(context);
+        dbHelper = PlanetsDatabaseHelper.getInstance(context);
     }
 
     public void open() {
@@ -128,48 +128,51 @@ public class PlanetsDatabase {
         database.close();
     }
 
-    public int addLocation(ContentValues values) {
-        return database.update(LocationTable.TABLE_LOCATION, values,
-                LocationTable.COLUMN_ID + " = 0", null);
+    public void eraseTable(String table) {
+        database.delete(table, null, null);
+    }
+
+    public long addLocation(ContentValues values) {
+        return database.insert(LocationTable.TABLE_NAME, null, values);
     }
 
     public Bundle getLocation() {
-
-        Cursor c = database.query(LocationTable.TABLE_LOCATION, locationColumns,
+        Bundle out = new Bundle();
+        Cursor c = database.query(LocationTable.TABLE_NAME, locationColumns,
                 null, null, null, null, null);
         c.moveToFirst();
-
-        Bundle out = new Bundle();
-        out.putDouble("latitude", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_LATITUDE)));
-        out.putDouble("longitude", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_LONGITUDE)));
-        out.putDouble("elevation", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_ELEVATION)));
-        out.putDouble("offset", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_OFFSET)));
-        out.putInt("ioffset", c.getInt(c.getColumnIndex(LocationTable.COLUMN_IOFFSET)));
-
+        if (c.getCount() > 0) {
+            out.putDouble("latitude", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_LATITUDE)));
+            out.putDouble("longitude", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_LONGITUDE)));
+            out.putDouble("elevation", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_ELEVATION)));
+            out.putDouble("offset", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_OFFSET)));
+            out.putInt("zoneID", c.getInt(c.getColumnIndex(LocationTable.COLUMN_ZONE_ID)));
+            out.putString("zoneName", c.getString(c.getColumnIndex(LocationTable.COLUMN_ZONE_NAME)));
+        }
         c.close();
 
         return out;
     }
 
     public Cursor getPlanetsSet() {
-        return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, "alt > 0.0",
+        return database.query(PlanetsTable.TABLE_NAME, whatsUpColumns, "alt > 0.0",
                 null, null, null, null);
     }
 
     public Cursor getPlanetsRise() {
-        return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, "alt <= 0.0",
+        return database.query(PlanetsTable.TABLE_NAME, whatsUpColumns, "alt <= 0.0",
                 null, null, null, null);
     }
 
     public Cursor getPlanetsAll() {
-        return database.query(PlanetsTable.TABLE_PLANET, whatsUpColumns, null,
+        return database.query(PlanetsTable.TABLE_NAME, whatsUpColumns, null,
                 null, null, null, null);
     }
 
     public Bundle getPlanet(long planet) {
 
         Bundle out = new Bundle();
-        Cursor c = database.query(PlanetsTable.TABLE_PLANET, planetDataColumns,
+        Cursor c = database.query(PlanetsTable.TABLE_NAME, planetDataColumns,
                 PlanetsTable.COLUMN_ID + " = ?", new String[]{String.valueOf(planet)},
                 null, null, null);
         c.moveToFirst();
@@ -181,34 +184,33 @@ public class PlanetsDatabase {
         out.putDouble("alt", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_ALT)));
         out.putDouble("distance", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_DISTANCE)));
         out.putDouble("mag", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_MAGNITUDE)));
-        out.putLong("setTime", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_SET_TIME)));
-        out.putLong("riseTime", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME)));
-        out.putLong("transit", c.getLong(c.getColumnIndex(PlanetsTable.COLUMN_TRANSIT)));
+        out.putDouble("setTime", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_SET_TIME)));
+        out.putDouble("riseTime", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME)));
+        out.putDouble("transit", c.getDouble(c.getColumnIndex(PlanetsTable.COLUMN_TRANSIT)));
 
         c.close();
 
         return out;
     }
 
-    public void addPlanet(ContentValues values, int row) {
-        database.update(PlanetsTable.TABLE_PLANET, values, PlanetsTable.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(row)});
+    public void addPlanet(ContentValues values) {
+        database.insert(PlanetsTable.TABLE_NAME, null, values);
     }
 
     public Cursor getSolarEclipseList() {
-        return database.query(SolarEclipseTable.TABLE_SOLAR_ECLIPSE, solarEclipseColumns, null,
+        return database.query(SolarEclipseTable.TABLE_NAME, solarEclipseColumns, null,
                 null, null, null, SolarEclipseTable.COLUMN_GLOBAL_BEGIN);
     }
 
     public Bundle getSolarEclipse(long solar) {
 
         Bundle out = new Bundle();
-        Cursor c = database.query(SolarEclipseTable.TABLE_SOLAR_ECLIPSE, solarDataColumns,
+        Cursor c = database.query(SolarEclipseTable.TABLE_NAME, solarDataColumns,
                 SolarEclipseTable.COLUMN_ID + " = ?", new String[]{String.valueOf(solar)},
                 null, null, null);
         c.moveToFirst();
 
-        out.putLong(SolarEclipseTable.COLUMN_ECLIPSE_DATE, c.getLong(c.getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_DATE)));
+        out.putDouble(SolarEclipseTable.COLUMN_ECLIPSE_DATE, c.getDouble(c.getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_DATE)));
         out.putString(SolarEclipseTable.COLUMN_ECLIPSE_TYPE, c.getString(c.getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_TYPE)));
         out.putDouble(SolarEclipseTable.COLUMN_GLOBAL_CENTER_BEGIN, c.getDouble(c.getColumnIndex(SolarEclipseTable.COLUMN_GLOBAL_CENTER_BEGIN)));
         out.putDouble(SolarEclipseTable.COLUMN_GLOBAL_CENTER_END, c.getDouble(c.getColumnIndex(SolarEclipseTable.COLUMN_GLOBAL_CENTER_END)));
@@ -237,25 +239,23 @@ public class PlanetsDatabase {
         return out;
     }
 
-    public void addSolarEclipse(ContentValues values, int row) {
-        database.update(SolarEclipseTable.TABLE_SOLAR_ECLIPSE, values, SolarEclipseTable.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(row)});
+    public void addSolarEclipse(ContentValues values) {
+        database.insert(SolarEclipseTable.TABLE_NAME, null, values);
     }
 
     public Cursor getLunarEclipseList() {
-        return database.query(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, lunarEclipseColumns, null,
+        return database.query(LunarEclipseTable.TABLE_NAME, lunarEclipseColumns, null,
                 null, null, null, LunarEclipseTable.COLUMN_MAX_ECLIPSE);
     }
 
-    public void addLunarEclipse(ContentValues values, int row) {
-        database.update(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, values, LunarEclipseTable.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(row)});
+    public void addLunarEclipse(ContentValues values) {
+        database.insert(LunarEclipseTable.TABLE_NAME, null, values);
     }
 
     public Bundle getLunarEclipse(long lunar) {
 
         Bundle out = new Bundle();
-        Cursor c = database.query(LunarEclipseTable.TABLE_LUNAR_ECLIPSE, lunarDataColumns,
+        Cursor c = database.query(LunarEclipseTable.TABLE_NAME, lunarDataColumns,
                 LunarEclipseTable.COLUMN_ID + " = ?", new String[]{String.valueOf(lunar)},
                 null, null, null);
         c.moveToFirst();
@@ -284,21 +284,20 @@ public class PlanetsDatabase {
     }
 
     public Cursor getLunarOccultList() {
-        return database.query(LunarOccultationTable.TABLE_LUNAR_OCCULT,
-                lunarOccultColumns, LunarOccultationTable.COLUMN_OCCULT_PLANET + " > ?",
-                new String[]{String.valueOf(-1)}, null, null,
-                LunarOccultationTable.COLUMN_OCCULT_PLANET + "," + LunarOccultationTable.COLUMN_GLOBAL_MAX);
+        return database.query(LunarOccultationTable.TABLE_NAME, lunarOccultColumns, null,
+                null, null, null,
+                LunarOccultationTable.COLUMN_OCCULT_PLANET + "," +
+                        LunarOccultationTable.COLUMN_GLOBAL_MAX);
     }
 
-    public void addLunarOccult(ContentValues values, int row) {
-        database.update(LunarOccultationTable.TABLE_LUNAR_OCCULT, values, LunarOccultationTable.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(row)});
+    public void addLunarOccult(ContentValues values) {
+        database.insert(LunarOccultationTable.TABLE_NAME, null, values);
     }
 
     public Bundle getLunarOccult(long occult) {
 
         Bundle out = new Bundle();
-        Cursor c = database.query(LunarOccultationTable.TABLE_LUNAR_OCCULT, occultDataColumns,
+        Cursor c = database.query(LunarOccultationTable.TABLE_NAME, occultDataColumns,
                 LunarOccultationTable.COLUMN_ID + " = ?", new String[]{String.valueOf(occult)},
                 null, null, null);
         c.moveToFirst();
@@ -322,4 +321,5 @@ public class PlanetsDatabase {
         c.close();
         return out;
     }
+
 }

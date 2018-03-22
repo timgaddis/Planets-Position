@@ -53,6 +53,7 @@ import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
+import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
 
@@ -66,8 +67,10 @@ public class SolarEclipse extends Fragment {
     private FragmentManager mFM;
     private SolarEclipseTask taskFragment;
     private SolarEclipseData eclipseData;
+    private TimeZoneDB tzDB;
     private ListView solarList;
     private double offset, firstDate, lastDate;
+    private int zoneID;
     private final double[] g = new double[3];
     private double[] time;
     private boolean firstRun, newLoc;
@@ -91,7 +94,7 @@ public class SolarEclipse extends Fragment {
                 eclipseData = new SolarEclipseData();
                 Bundle args = new Bundle();
                 args.putLong("solarNum", id);
-                args.putDouble("offset", offset);
+                args.putInt("zoneID",zoneID);
                 args.putDouble("latitude", g[1]);
                 args.putDouble("longitude", g[0]);
                 eclipseData.setArguments(args);
@@ -105,10 +108,16 @@ public class SolarEclipse extends Fragment {
             mCallbacks.onToolbarTitleChange("Solar Eclipse", 1);
         }
 
+        if (savedInstanceState == null) {
+            loadLocation();
+        } else {
+            offset = savedInstanceState.getDouble("offset", 0);
+            zoneID = savedInstanceState.getInt("zoneID", 0);
+            newLoc = savedInstanceState.getBoolean("newLoc");
+        }
+
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         time = jdUTC.getCurrentTime(offset);
-
-        loadLocation();
 
         mFM = getFragmentManager();
         taskFragment = (SolarEclipseTask) mFM
@@ -133,14 +142,12 @@ public class SolarEclipse extends Fragment {
         super.onCreate(savedInstanceState);
 
         jdUTC = new JDUTC();
-
-        // Get date and time formats from system
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
+        tzDB=new TimeZoneDB(getActivity().getApplicationContext());
 
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
         // Restore preferences
         firstRun = settings.getBoolean("seFirstRun", true);
         firstDate = settings.getFloat("seFirstDate", 0);
@@ -148,6 +155,14 @@ public class SolarEclipse extends Fragment {
 
         setHasOptionsMenu(true);
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble("offset", offset);
+        outState.putInt("zoneID", zoneID);
+        outState.putBoolean("newLoc", newLoc);
     }
 
     @Override
@@ -188,7 +203,11 @@ public class SolarEclipse extends Fragment {
                     data.getIntExtra("month", 0),
                     data.getIntExtra("day", 0));
             // convert local time to utc
-            c.add(Calendar.MINUTE, (int) (offset * -60));
+            tzDB.open();
+            int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+            offset = off / 60.0;
+            tzDB.close();
+            c.add(Calendar.MINUTE, (int) (offset * -1));
             time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
                     c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
                     c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
@@ -275,6 +294,7 @@ public class SolarEclipse extends Fragment {
         g[0] = settings.getFloat("longitude", 0);
         g[2] = settings.getFloat("elevation", 0);
         offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
         newLoc = settings.getBoolean("newLocation", true);
     }
 

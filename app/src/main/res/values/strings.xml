@@ -49,14 +49,14 @@
     <string name="loc_lng">Longitude</string>
     <string name="loc_ele">Elevation</string>
     <string name="loc_gmt">GMT offset</string>
-    <string name="loc_north">North</string>
-    <string name="loc_south">South</string>
-    <string name="loc_east">East</string>
-    <string name="loc_west">West</string>
-    <string name="loc_edit">Select a field to edit.</string>
-    <string name="loc_edit_lat">Enter the latitude in degrees.</string>
-    <string name="loc_edit_long">Edit the longitude in degrees.</string>
-    <string name="loc_edit_ele">Enter the elevation in meters.</string>
+    <string name="loc_timezone">Timezone</string>
+    <string name="loc_user_city">Select a Country, State, and City.</string>
+    <string name="loc_country">Country</string>
+    <string name="loc_state">State / Province</string>
+    <string name="loc_city">City</string>
+    <string name="loc_tz_title">Select a timezone.</string>
+    <string name="loc_edit_fields">Edit Fields</string>
+    <string name="loc_select_city">Select City</string>
     <!-- Planet data -->
     <string name="data_ra">Right Ascension</string>
     <string name="data_dec">Declination</string>
@@ -79,6 +79,8 @@
     <string name="ecl_moonset">Moon Set</string>
     <string name="ecl_times">Eclipse Times</string>
     <string name="ecl_data">Eclipse Data</string>
+    <string name="ecl_local">(Local Time)</string>
+    <string name="ecl_universal">(Universal Time)</string>
     <string name="ecl_se_start">Eclipse Start</string>
     <string name="ecl_se_tstart">Totality Start</string>
     <string name="ecl_se_max">Max Eclipse</string>

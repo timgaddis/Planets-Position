@@ -1,6 +1,6 @@
-set(CMAKE_HOST_SYSTEM "Linux-4.15.3-2-ARCH")
+set(CMAKE_HOST_SYSTEM "Linux-4.15.8-1-ARCH")
 set(CMAKE_HOST_SYSTEM_NAME "Linux")
-set(CMAKE_HOST_SYSTEM_VERSION "4.15.3-2-ARCH")
+set(CMAKE_HOST_SYSTEM_VERSION "4.15.8-1-ARCH")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
 
 include("/media/Storage/Android/android-sdk-linux/ndk-bundle/build/cmake/android.toolchain.cmake")

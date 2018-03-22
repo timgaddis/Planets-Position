@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import planets.position.database.TimeZoneDB;
+
 public class FileCopyTask extends DialogFragment {
 
     private FileCopyCallback mCallbacks;
@@ -118,17 +120,6 @@ public class FileCopyTask extends DialogFragment {
         }
     }
 
-    /**
-     * Cancel the background task.
-     */
-    public void cancel() {
-        if (mRunning) {
-            mTask.cancel(false);
-            mTask = null;
-            mRunning = false;
-        }
-    }
-
     private void taskFinished() {
         if (isResumed())
             dismiss();
@@ -154,22 +145,17 @@ public class FileCopyTask extends DialogFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Log.d("CopyFilesTask", "in doInBackground");
-            // copy the ephermeris files from assets folder to the sd card.
             try {
-                // copyFile("seas_18.se1"); // 225440
-                copyFile("semo_18.se1"); // 1305686
-                copyFile("sepl_18.se1"); // 484065
+                copyFile(TimeZoneDB.DB_NAME);
             } catch (IOException e) {
-                // e.printStackTrace();
                 Log.e("CopyFile error", e.getMessage());
+                e.printStackTrace();
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
-            Log.d("CopyFilesTask", "in onPostExecute");
             if (mFragment == null)
                 return;
             mRunning = false;
@@ -177,23 +163,17 @@ public class FileCopyTask extends DialogFragment {
         }
     }
 
-    /**
-     * copies the given files from the assets folder to the ephermeris folder in
-     * internal storage
-     */
     private void copyFile(String filename) throws IOException {
         InputStream myInput;
         OutputStream myOutput;
 
         String p = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() +
-                File.separator + "ephemeris";
-        // /data/user/0/planets.position/files/ephemeris
+                File.separator + "databases";
 
-        // check if ephemeris dir is in internal storage, if not create dir
         File dir = new File(p);
         if (dir.mkdirs() || dir.isDirectory()) {
-            Log.d(PlanetsMain.TAG, "File: " + dir.getAbsolutePath() + File.separator + filename);
-            File f = new File(dir + File.separator + filename);
+//            Log.d(PlanetsMain.TAG, "File: " + dir.getAbsolutePath() + File.separator + filename);
+            File f = new File(dir.getAbsolutePath() + File.separator + filename);
             if (!f.exists()) {
                 myInput = getActivity().getAssets().open(filename);
                 myOutput = new FileOutputStream(f);

@@ -80,8 +80,7 @@ public class SolarEclipseTask extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView tv;
-        View v = inflater.inflate(R.layout.progress_dialog_hor, container,
-                false);
+        View v = inflater.inflate(R.layout.progress_dialog_hor, container, false);
         tv = v.findViewById(R.id.progress_text);
         pb = v.findViewById(R.id.progressBar);
         tv.setText(R.string.eclipse_dialog);
@@ -163,6 +162,7 @@ public class SolarEclipseTask extends DialogFragment {
             planetsDB.open();
             back = (int) Math.round(params[1]);
             start = params[0];
+            planetsDB.eraseTable(SolarEclipseTable.TABLE_NAME);
 
             // compute first local eclipse
             data2 = solarDataLocal(start, g, back);
@@ -236,10 +236,8 @@ public class SolarEclipseTask extends DialogFragment {
                     sunset = riseSet.getSet(data2[2], 0);
                     sunrise = riseSet.getRise(sunset - 1, 0);
 
-                    values.put(SolarEclipseTable.COLUMN_LOCAL_TYPE,
-                            (int) data2[0]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TYPE,
-                            (int) data1[0]);
+                    values.put(SolarEclipseTable.COLUMN_LOCAL_TYPE, (int) data2[0]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                     values.put(SolarEclipseTable.COLUMN_LOCAL, 1);
                     values.put(SolarEclipseTable.COLUMN_LOCAL_MAX, data2[1]);
                     values.put(SolarEclipseTable.COLUMN_LOCAL_FIRST, data2[2]);
@@ -249,28 +247,21 @@ public class SolarEclipseTask extends DialogFragment {
                     values.put(SolarEclipseTable.COLUMN_SUNRISE, sunrise);
                     values.put(SolarEclipseTable.COLUMN_SUNSET, sunset);
                     values.put(SolarEclipseTable.COLUMN_RATIO, data2[7]);
-                    values.put(SolarEclipseTable.COLUMN_FRACTION_COVERED,
-                            data2[8]);
+                    values.put(SolarEclipseTable.COLUMN_FRACTION_COVERED, data2[8]);
                     values.put(SolarEclipseTable.COLUMN_SUN_AZ, data2[10]);
                     values.put(SolarEclipseTable.COLUMN_SUN_ALT, data2[11]);
                     values.put(SolarEclipseTable.COLUMN_LOCAL_MAG, data2[14]);
-                    values.put(SolarEclipseTable.COLUMN_SAROS_NUM,
-                            (int) data2[15]);
-                    values.put(SolarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
-                            (int) data2[16]);
+                    values.put(SolarEclipseTable.COLUMN_SAROS_NUM, (int) data2[15]);
+                    values.put(SolarEclipseTable.COLUMN_SAROS_MEMBER_NUM, (int) data2[16]);
                     values.put(SolarEclipseTable.COLUMN_MOON_AZ, data2[17]);
                     values.put(SolarEclipseTable.COLUMN_MOON_ALT, data2[18]);
                     values.put(SolarEclipseTable.COLUMN_GLOBAL_MAX, data1[1]);
                     values.put(SolarEclipseTable.COLUMN_GLOBAL_BEGIN, data1[3]);
                     values.put(SolarEclipseTable.COLUMN_GLOBAL_END, data1[4]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_BEGIN,
-                            data1[5]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_END,
-                            data1[6]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_BEGIN,
-                            data1[7]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_END,
-                            data1[8]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_BEGIN, data1[5]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_END, data1[6]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_BEGIN, data1[7]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_END, data1[8]);
                     values.put(SolarEclipseTable.COLUMN_ECLIPSE_DATE, data2[1]);
                     values.put(SolarEclipseTable.COLUMN_ECLIPSE_TYPE, eclType);
 
@@ -290,8 +281,7 @@ public class SolarEclipseTask extends DialogFragment {
                 } else {
                     // Global Eclipse
                     values.put(SolarEclipseTable.COLUMN_LOCAL_TYPE, -1);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TYPE,
-                            (int) data1[0]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                     values.put(SolarEclipseTable.COLUMN_LOCAL, 0);
                     values.put(SolarEclipseTable.COLUMN_LOCAL_MAX, -1);
                     values.put(SolarEclipseTable.COLUMN_LOCAL_FIRST, -1);
@@ -312,14 +302,10 @@ public class SolarEclipseTask extends DialogFragment {
                     values.put(SolarEclipseTable.COLUMN_GLOBAL_MAX, data1[1]);
                     values.put(SolarEclipseTable.COLUMN_GLOBAL_BEGIN, data1[3]);
                     values.put(SolarEclipseTable.COLUMN_GLOBAL_END, data1[4]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_BEGIN,
-                            data1[5]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_END,
-                            data1[6]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_BEGIN,
-                            data1[7]);
-                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_END,
-                            data1[8]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_BEGIN, data1[5]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_TOTAL_END, data1[6]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_BEGIN, data1[7]);
+                    values.put(SolarEclipseTable.COLUMN_GLOBAL_CENTER_END, data1[8]);
                     values.put(SolarEclipseTable.COLUMN_ECLIPSE_DATE, data1[1]);
                     values.put(SolarEclipseTable.COLUMN_ECLIPSE_TYPE, eclType);
 
@@ -328,7 +314,7 @@ public class SolarEclipseTask extends DialogFragment {
                     else
                         start = data1[3];
                 }
-                planetsDB.addSolarEclipse(values, i);
+                planetsDB.addSolarEclipse(values);
                 publishProgress(i);
             }
             planetsDB.close();

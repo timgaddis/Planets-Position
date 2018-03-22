@@ -1,23 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Planet's Position
-  ~ A program to calculate the position of the planets in the night sky based
-  ~ on a given location on Earth.
-  ~ Copyright (c) 2018 Tim Gaddis
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -30,7 +11,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -52,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:paddingTop="@dimen/data_card_pad"
             android:text="@string/loc_lat"
             android:textColor="@color/alt_text_color"
             android:textSize="@dimen/label_text" />
@@ -61,10 +41,39 @@
             android:id="@+id/newLatText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
             android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card_pad"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text" />
+            android:textSize="@dimen/label_text"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/layoutLatEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/newLatEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="number|numberSigned|numberDecimal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                android:visibility="visible" />
+
+            <Spinner
+                android:id="@+id/spinnerLat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:entries="@array/edit_lat" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/newLong"
@@ -79,10 +88,37 @@
             android:id="@+id/newLongText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
             android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card_pad"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text" />
+
+        <LinearLayout
+            android:id="@+id/layoutLongEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/newLongEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="number|numberSigned|numberDecimal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text" />
+
+            <Spinner
+                android:id="@+id/spinnerLong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:entries="@array/edit_lng" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/newElevation"
@@ -97,10 +133,48 @@
             android:id="@+id/newElevationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
             android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card_pad"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text" />
+
+        <EditText
+            android:id="@+id/newElevationEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
+            android:gravity="center_horizontal"
+            android:inputType="number|numberSigned|numberDecimal"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/newTimezone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/loc_timezone"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text" />
+
+        <TextView
+            android:id="@+id/newTimezoneText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text" />
+
+        <EditText
+            android:id="@+id/newTimezoneEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/newGMTOffset"
@@ -115,18 +189,39 @@
             android:id="@+id/newGMTOffsetText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/data_card_pad"
             android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card_pad"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text" />
 
-        <TextView
-            android:id="@+id/locEditText"
+        <LinearLayout
+            android:id="@+id/layoutEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/loc_edit"
-            android:visibility="invisible" />
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <Button
+                android:id="@+id/buttonEdit"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/loc_edit_fields"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/buttonCity"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/loc_select_city"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

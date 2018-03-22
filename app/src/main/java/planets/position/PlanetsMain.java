@@ -43,6 +43,7 @@ import java.io.File;
 import java.util.List;
 
 import planets.position.database.PlanetsDatabase;
+import planets.position.database.TimeZoneDB;
 import planets.position.location.LocationDialog;
 import planets.position.location.UserLocation;
 import planets.position.lunar.LunarEclipse;
@@ -63,8 +64,7 @@ public class PlanetsMain extends AppCompatActivity
     private FileCopyTask copyTask;
     private PlanetsDatabase planetsDB;
     private int fragIndex;
-    private double latitude;
-    private double longitude;
+    private double latitude, longitude;
     private CharSequence actionTitle;
     private FragmentManager fm;
 
@@ -100,12 +100,11 @@ public class PlanetsMain extends AppCompatActivity
         fm = getSupportFragmentManager();
         copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
 
-        if ((checkFiles("semo_18.se1") && checkFiles("sepl_18.se1"))) {
-            if (latitude < -90) {
-                startLocationDialog();
-            }
-        } else {
+        if (!checkFiles(TimeZoneDB.DB_NAME))
             startCopyFileTask();
+
+        if (latitude < -90) {
+            startLocationDialog();
         }
 
         if (savedInstanceState == null) {
@@ -197,8 +196,13 @@ public class PlanetsMain extends AppCompatActivity
             planetsDB.open();
             Bundle loc = planetsDB.getLocation();
             planetsDB.close();
-            latitude = loc.getDouble("latitude");
-            longitude = loc.getDouble("longitude");
+            if (!loc.isEmpty()) {
+                latitude = loc.getDouble("latitude");
+                longitude = loc.getDouble("longitude");
+            } else {
+                latitude = -91.0;
+                longitude = 0.0;
+            }
         }
     }
 
@@ -356,7 +360,7 @@ public class PlanetsMain extends AppCompatActivity
      */
     private boolean checkFiles(String name) {
         String p = getApplicationContext().getFilesDir().getAbsolutePath() +
-                File.separator + "ephemeris" + File.separator + name;
+                File.separator + "databases" + File.separator + name;
         File f = new File(p);
         return f.exists();
     }

@@ -98,10 +98,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:padding="@dimen/data_card_pad"
+                android:paddingTop="@dimen/data_card_pad"
                 android:text="@string/ecl_times"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/se_local_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card"
+                android:textColor="@color/alt_text_color"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:id="@+id/se_times_layout1"

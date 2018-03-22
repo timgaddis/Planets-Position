@@ -48,6 +48,7 @@ import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
+import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
@@ -58,14 +59,14 @@ public class LunarOccultData extends Fragment {
             loMoonEAltText, loMoonRiseText, loMoonSetText;
     private LinearLayout loLocalLayout, loLocalVisible, loMoonLayout;
     private long occultNum = 0, eclStart, eclEnd;
-    private double offset;
-    private int local, planet;
+    private int local, planet, zoneID;
     private DateFormat mDateFormat, mTimeFormat;
     private List<String> planetArray;
     private PositionFormat pf;
     private PlanetsDatabase planetsDB;
     private SharedPreferences settings;
     private FragmentListener mCallbacks;
+    private TimeZoneDB tzDB;
     private JDUTC jdUTC;
 
     @Override
@@ -86,14 +87,8 @@ public class LunarOccultData extends Fragment {
         loMoonLayout = v.findViewById(R.id.lo_moon_layout);
         loLocalVisible = v.findViewById(R.id.lo_local_visible);
         loLocalLayout = v.findViewById(R.id.lo_data_layout1);
-        jdUTC = new JDUTC();
-        pf = new PositionFormat(getActivity());
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
-        mDateFormat = android.text.format.DateFormat
-                .getDateFormat(getActivity().getApplicationContext());
-        mTimeFormat = android.text.format.DateFormat
-                .getTimeFormat(getActivity().getApplicationContext());
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
@@ -105,13 +100,13 @@ public class LunarOccultData extends Fragment {
         if (savedInstanceState != null) {
             // load data from config change
             occultNum = savedInstanceState.getLong("occultNum");
-            offset = savedInstanceState.getDouble("offset");
+            zoneID = savedInstanceState.getInt("zoneID");
         } else {
             // load bundle from previous activity
             Bundle bundle = getArguments();
             if (bundle != null) {
                 occultNum = bundle.getLong("occultNum");
-                offset = bundle.getDouble("offset");
+                zoneID = bundle.getInt("zoneID");
             }
         }
         loadOccultation();
@@ -121,6 +116,13 @@ public class LunarOccultData extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        jdUTC = new JDUTC();
+        pf = new PositionFormat(getActivity());
+        mDateFormat = android.text.format.DateFormat
+                .getDateFormat(getActivity().getApplicationContext());
+        mTimeFormat = android.text.format.DateFormat
+                .getTimeFormat(getActivity().getApplicationContext());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
@@ -141,7 +143,7 @@ public class LunarOccultData extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong("occultNum", occultNum);
-        outState.putDouble("offset", offset);
+        outState.putInt("zoneID", zoneID);
         super.onSaveInstanceState(outState);
     }
 
@@ -192,7 +194,13 @@ public class LunarOccultData extends Fragment {
         planetsDB.close();
         planetColor = ContextCompat.getColor
                 (getActivity().getApplicationContext(), R.color.planet_set_color);
-        gc.setTimeInMillis(jdUTC.jdmills(b.getDouble(LunarOccultationTable.COLUMN_OCCULT_DATE)));
+
+        long max = jdUTC.jdmills(b.getDouble(LunarOccultationTable.COLUMN_OCCULT_DATE));
+        tzDB.open();
+        int off = tzDB.getZoneOffset(zoneID, max / 1000L);
+        double offset = off / 60.0;
+        tzDB.close();
+        gc.setTimeInMillis(max);
         loDateText.setText(mDateFormat.format(gc.getTime()));
         planet = b.getInt(LunarOccultationTable.COLUMN_OCCULT_PLANET, -1);
         if (planet >= 0)

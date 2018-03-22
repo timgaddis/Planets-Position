@@ -18,31 +18,38 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/main_back"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/nameButton"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
+    <!--<Button-->
+    <!--android:id="@+id/nameButton"-->
+    <!--style="?android:attr/buttonBarButtonStyle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/main_back"-->
+    <!--android:textColor="@color/button_text"-->
+    <!--android:textSize="@dimen/label_text" />-->
+    <Spinner
+        android:id="@+id/planetsSpinner"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/main_back"
-        android:textColor="@color/button_text"
-        android:textSize="@dimen/label_text" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/data_card_pad"
+        android:layout_marginTop="@dimen/data_card_pad" />
 
     <View
         android:id="@+id/view01"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/nameButton"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/divider_color" />
 
     <ListView
         android:id="@+id/occultList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view01"
+        android:layout_height="match_parent"
         android:background="@color/main_back" />
 
-</RelativeLayout>
+</LinearLayout>

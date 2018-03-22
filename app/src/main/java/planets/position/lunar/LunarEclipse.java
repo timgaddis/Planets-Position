@@ -53,6 +53,7 @@ import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarEclipseTable;
 import planets.position.database.PlanetsDatabase;
+import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
 
@@ -66,7 +67,9 @@ public class LunarEclipse extends Fragment {
     private FragmentManager mFM;
     private LunarEclipseTask taskFragment;
     private LunarEclipseData eclipseData;
+    private TimeZoneDB tzDB;
     private ListView lunarList;
+    private int zoneID;
     private double offset, firstDate, lastDate;
     private final double[] g = new double[3];
     private double[] time;
@@ -91,7 +94,7 @@ public class LunarEclipse extends Fragment {
                 eclipseData = new LunarEclipseData();
                 Bundle args = new Bundle();
                 args.putLong("lunarNum", id);
-                args.putDouble("offset", offset);
+                args.putInt("zoneID", zoneID);
                 eclipseData.setArguments(args);
                 ft.replace(R.id.content_frame, eclipseData, "eclipseData");
                 ft.addToBackStack(null);
@@ -104,7 +107,15 @@ public class LunarEclipse extends Fragment {
         }
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
-        loadLocation();
+
+        if (savedInstanceState == null) {
+            loadLocation();
+        } else {
+            offset = savedInstanceState.getDouble("offset", 0);
+            zoneID = savedInstanceState.getInt("zoneID", 0);
+            newLoc = savedInstanceState.getBoolean("newLoc");
+        }
+
         time = jdUTC.getCurrentTime(offset);
 
         mFM = getFragmentManager();
@@ -128,22 +139,25 @@ public class LunarEclipse extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         jdUTC = new JDUTC();
-
-        // Get date and time formats from system
+        tzDB=new TimeZoneDB(getActivity().getApplicationContext());
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
-
-        // Restore preferences
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
         firstRun = settings.getBoolean("leFirstRun", true);
         firstDate = settings.getFloat("leFirstDate", 0);
         lastDate = settings.getFloat("leLastDate", 0);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble("offset", offset);
+        outState.putInt("zoneID", zoneID);
+        outState.putBoolean("newLoc", newLoc);
     }
 
     @Override
@@ -184,7 +198,11 @@ public class LunarEclipse extends Fragment {
                     data.getIntExtra("month", 0),
                     data.getIntExtra("day", 0));
             // convert local time to utc
-            c.add(Calendar.MINUTE, (int) (offset * -60));
+            tzDB.open();
+            int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+            offset = off / 60.0;
+            tzDB.close();
+            c.add(Calendar.MINUTE, (int) (offset * -1));
             time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
                     c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
                     c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
@@ -275,6 +293,7 @@ public class LunarEclipse extends Fragment {
         g[2] = settings.getFloat("elevation", 0);
         offset = settings.getFloat("offset", 0);
         newLoc = settings.getBoolean("newLocation", true);
+        zoneID = settings.getInt("zoneID", 0);
     }
 
     private void launchTask(double time, double back) {

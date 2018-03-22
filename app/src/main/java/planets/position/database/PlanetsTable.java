@@ -25,9 +25,10 @@ import android.util.Log;
 
 public class PlanetsTable {
 
-    public static final String TABLE_PLANET = "planets";
+    public static final String TABLE_NAME = "planets";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_NUMBER = "number";
     public static final String COLUMN_RA = "ra";
     public static final String COLUMN_DEC = "dec";
     public static final String COLUMN_AZ = "az";
@@ -38,24 +39,18 @@ public class PlanetsTable {
     public static final String COLUMN_RISE_TIME = "riseT";
     public static final String COLUMN_TRANSIT = "transit";
 
-    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s text not null, %s real,%s real, %s real, %s real, %s real, %s real, %s integer, %s integer, %s integer);", TABLE_PLANET, COLUMN_ID, COLUMN_NAME, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_RISE_TIME, COLUMN_TRANSIT);
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s text not null, %s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real);", TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_NUMBER, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_RISE_TIME, COLUMN_TRANSIT);
 
     public static void onCreate(SQLiteDatabase database) {
-        String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
-        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_PLANET, COLUMN_ID, COLUMN_NAME, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_RISE_TIME, COLUMN_TRANSIT);
-        ip2 = ", 'P', 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0);";
-        for (int i = 0; i < 10; i++) {
-            database.execSQL(ip1 + i + ip2);
-        }
     }
 
-    public static void onUpgrade(SQLiteDatabase database, int oldVersion,
-                                 int newVersion) {
+    static void onUpgrade(SQLiteDatabase database, int oldVersion,
+                          int newVersion) {
         Log.w(PlanetsTable.class.getName(), "Upgrading database from version "
                 + oldVersion + " to " + newVersion
                 + ", which will destroy all old data");
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANET);
+        database.execSQL(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));
         onCreate(database);
     }
 }

@@ -117,14 +117,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card_pad"
                 android:paddingTop="@dimen/data_card"
                 android:text="@string/ecl_times"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
+            <TextView
+                android:id="@+id/se_local_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/data_card"
+                android:textColor="@color/alt_text_color"
+                android:textSize="12sp" />
+
             <LinearLayout
-                android:id="@+id/se_times_layout1"
+                android:id="@+id/se_times_layout1a"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
@@ -132,7 +140,7 @@
                 android:paddingBottom="@dimen/data_card">
 
                 <LinearLayout
-                    android:id="@+id/se_times_layout1a"
+                    android:id="@+id/se_times_layout1a1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -156,26 +164,10 @@
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
-                    <TextView
-                        android:id="@+id/se_tstart"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_se_tstart"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/se_tstart_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/se_times_layout1b"
+                    android:id="@+id/se_times_layout1a2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -199,6 +191,50 @@
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/se_times_layout1b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/data_card">
+
+                <LinearLayout
+                    android:id="@+id/se_times_layout1b1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/se_tstart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/ecl_se_tstart"
+                        android:textColor="@color/alt_text_color"
+                        android:textSize="@dimen/label_text" />
+
+                    <TextView
+                        android:id="@+id/se_tstart_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/label_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/se_times_layout1b2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/se_tend"
                         android:layout_width="match_parent"
@@ -216,7 +252,6 @@
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <TextView

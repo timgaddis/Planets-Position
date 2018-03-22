@@ -35,10 +35,6 @@ public class SettingsDialog extends DialogFragment {
 
     private int array, title, position;
 
-    public SettingsDialog() {
-        // Required empty public constructor
-    }
-
     public static SettingsDialog newInstance(int array, int title, int position) {
 
         Bundle args = new Bundle();

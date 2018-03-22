@@ -1,0 +1,89 @@
+
+{
+	"buildFiles" : 
+	[
+		"/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/CMakeLists.txt"
+	],
+	"cFileExtensions" : [ "c" ],
+	"cleanCommands" : 
+	[
+		"/media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake --build /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86 --target clean"
+	],
+	"libraries" : 
+	{
+		"planets_swiss-Release-x86" : 
+		{
+			"abi" : "x86",
+			"artifactName" : "planets_swiss",
+			"buildCommand" : "/media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake --build /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86 --target planets_swiss",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/planets_swiss.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swecl.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swedate.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swehouse.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swejpl.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swemmoon.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swemplan.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/sweph.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -Dplanets_swiss_EXPORTS  -isystem /media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=15 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/swiss/swephlib.c",
+					"workingDirectory" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86"
+				}
+			],
+			"output" : "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/build/intermediates/cmake/beta/obj/x86/libplanets_swiss.so",
+			"toolchain" : "12340934654855932441"
+		}
+	},
+	"toolchains" : 
+	{
+		"12340934654855932441" : 
+		{
+			"cCompilerExecutable" : "/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
+		}
+	}
+}

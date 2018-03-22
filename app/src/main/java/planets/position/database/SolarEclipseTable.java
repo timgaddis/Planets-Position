@@ -25,7 +25,7 @@ import android.util.Log;
 
 public class SolarEclipseTable {
 
-    public static final String TABLE_SOLAR_ECLIPSE = "solarEclipse";
+    public static final String TABLE_NAME = "solarEclipse";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_LOCAL_TYPE = "localType";
     public static final String COLUMN_GLOBAL_TYPE = "globalType";
@@ -56,25 +56,18 @@ public class SolarEclipseTable {
     public static final String COLUMN_ECLIPSE_DATE = "eclipseDate";
     public static final String COLUMN_ECLIPSE_TYPE = "eclipseType";
 
-    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s integer, %s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s text);", TABLE_SOLAR_ECLIPSE, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_SUNRISE, COLUMN_SUNSET, COLUMN_RATIO, COLUMN_FRACTION_COVERED, COLUMN_SUN_AZ, COLUMN_SUN_ALT, COLUMN_LOCAL_MAG, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s integer, %s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s text);", TABLE_NAME, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_SUNRISE, COLUMN_SUNSET, COLUMN_RATIO, COLUMN_FRACTION_COVERED, COLUMN_SUN_AZ, COLUMN_SUN_ALT, COLUMN_LOCAL_MAG, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
 
     public static void onCreate(SQLiteDatabase database) {
-        String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
-        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_SOLAR_ECLIPSE, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_LOCAL_MAX, COLUMN_LOCAL_FIRST, COLUMN_LOCAL_SECOND, COLUMN_LOCAL_THIRD, COLUMN_LOCAL_FOURTH, COLUMN_SUNRISE, COLUMN_SUNSET, COLUMN_RATIO, COLUMN_FRACTION_COVERED, COLUMN_SUN_AZ, COLUMN_SUN_ALT, COLUMN_LOCAL_MAG, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_GLOBAL_MAX, COLUMN_GLOBAL_BEGIN, COLUMN_GLOBAL_END, COLUMN_GLOBAL_TOTAL_BEGIN, COLUMN_GLOBAL_TOTAL_END, COLUMN_GLOBAL_CENTER_BEGIN, COLUMN_GLOBAL_CENTER_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
-        ip2 = ",0,0,-1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0.0,"
-                + "0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,'T');";
-        for (int i = 0; i < 10; i++) {
-            database.execSQL(ip1 + i + ip2);
-        }
     }
 
-    public static void onUpgrade(SQLiteDatabase database, int oldVersion,
+    static void onUpgrade(SQLiteDatabase database, int oldVersion,
                                  int newVersion) {
         Log.w(SolarEclipseTable.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SOLAR_ECLIPSE);
+        database.execSQL(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));
         onCreate(database);
     }
 }

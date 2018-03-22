@@ -50,9 +50,6 @@ public class Settings extends Fragment {
     private ArrayList<Setting> settingList;
     private CustomSettingsAdapter adapter;
 
-    public Settings() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

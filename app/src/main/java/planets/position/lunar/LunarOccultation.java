@@ -40,9 +40,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -52,11 +53,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetDialog;
 import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
+import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
 
@@ -70,17 +71,16 @@ public class LunarOccultation extends Fragment {
     private FragmentListener mCallbacks;
     private FragmentManager mFM;
     private MenuItem next, previous;
-    private Button nameButton;
     private ListView occultList;
     private List<String> planetArray;
     private LunarOccultTask taskFragment;
     private LunarOccultData occultData;
-    private PlanetDialog planetDialog;
+    private TimeZoneDB tzDB;
     private double offset, firstDate, lastDate;
     private final double[] g = new double[3];
     private double[] time;
     private boolean firstRun, allPlanets, newLoc;
-    private int planetNum = 1;
+    private int planetNum = 1, zoneID, spinnerPos = -1;
     private PlanetsDatabase planetsDB;
     private SharedPreferences settings;
     private DateFormat mDateFormat;
@@ -92,12 +92,13 @@ public class LunarOccultation extends Fragment {
         View v = inflater.inflate(R.layout.fragment_lunar_occult, container,
                 false);
 
-        nameButton = v.findViewById(R.id.nameButton);
+//        nameButton = v.findViewById(R.id.nameButton);
+        Spinner planetsSpinner = v.findViewById(R.id.planetsSpinner);
         occultList = v.findViewById(R.id.occultList);
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.occult_array));
 
-        nameButton.setText(planetArray.get(planetNum - 1));
+//        nameButton.setText(planetArray.get(planetNum - 1));
 
         occultList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -108,7 +109,8 @@ public class LunarOccultation extends Fragment {
                 occultData = new LunarOccultData();
                 Bundle args = new Bundle();
                 args.putLong("occultNum", id);
-                args.putDouble("offset", offset);
+                args.putInt("zoneID", zoneID);
+//                args.putDouble("offset", offset);
                 occultData.setArguments(args);
                 ft.replace(R.id.content_frame, occultData, "occultData");
                 ft.addToBackStack(null);
@@ -122,17 +124,52 @@ public class LunarOccultation extends Fragment {
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
-        nameButton.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.occult_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_drop_item);
+        planetsSpinner.setAdapter(adapter);
+
+        planetsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                planetDialog = PlanetDialog.newInstance(R.array.occult_array, R.string.planet_select);
-                planetDialog.setTargetFragment(LunarOccultation.this, PLANETS_DIALOG);
-                planetDialog.show(getActivity().getSupportFragmentManager(), "loPlanetDialog");
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (spinnerPos != position) {
+                    spinnerPos = position;
+                    planetNum = position + 1;
+                    Calendar c = Calendar.getInstance();
+                    tzDB.open();
+                    int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+                    offset = off / 60.0;
+                    tzDB.close();
+                    time = jdUTC.getCurrentTime(offset);
+                    occultList.setVisibility(View.INVISIBLE);
+                    launchTask(time[1], 0.0, planetNum);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
+//        nameButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                planetDialog = PlanetDialog.newInstance(R.array.occult_array, R.string.planet_select);
+//                planetDialog.setTargetFragment(LunarOccultation.this, PLANETS_DIALOG);
+//                planetDialog.show(getActivity().getSupportFragmentManager(), "loPlanetDialog");
+//            }
+//        });
+
+        if (savedInstanceState == null) {
+            loadLocation();
+        } else {
+            offset = savedInstanceState.getDouble("offset", 0);
+            zoneID = savedInstanceState.getInt("zoneID", 0);
+            newLoc = savedInstanceState.getBoolean("newLoc");
+            spinnerPos = savedInstanceState.getInt("spinnerPos", -1);
+        }
+
         time = jdUTC.getCurrentTime(offset);
-        loadLocation();
 
         mFM = getFragmentManager();
         taskFragment = (LunarOccultTask) mFM
@@ -160,11 +197,11 @@ public class LunarOccultation extends Fragment {
         // Get date and time formats from system
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
 
         // Restore preferences
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
         firstRun = settings.getBoolean("loFirstRun", true);
         firstDate = settings.getFloat("loFirstDate", 0);
         lastDate = settings.getFloat("loLastDate", 0);
@@ -172,6 +209,15 @@ public class LunarOccultation extends Fragment {
         planetNum = settings.getInt("loPlanetNum", 1);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble("offset", offset);
+        outState.putInt("zoneID", zoneID);
+        outState.putBoolean("newLoc", newLoc);
+        outState.putInt("spinnerPos", spinnerPos);
     }
 
     @Override
@@ -204,9 +250,11 @@ public class LunarOccultation extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Calendar c;
+        int off;
         switch (requestCode) {
             case PLANETS_DIALOG:
-                nameButton.setText(planetArray.get(resultCode));
+//                nameButton.setText(planetArray.get(resultCode));
                 planetNum = resultCode + 1;
                 if (resultCode == 0) {
                     next.setVisible(false);
@@ -215,19 +263,28 @@ public class LunarOccultation extends Fragment {
                     next.setVisible(true);
                     previous.setVisible(true);
                 }
+                c = Calendar.getInstance();
+                tzDB.open();
+                off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+                offset = off / 60.0;
+                tzDB.close();
                 time = jdUTC.getCurrentTime(offset);
                 occultList.setVisibility(View.INVISIBLE);
                 launchTask(time[1], 0.0, planetNum);
                 break;
             case DATE_FRAGMENT:
                 // Set Date
-                Calendar c = Calendar.getInstance();
+                c = Calendar.getInstance();
                 c.clear();
                 c.set(data.getIntExtra("year", 0),
                         data.getIntExtra("month", 0),
                         data.getIntExtra("day", 0));
                 // convert local time to utc
-                c.add(Calendar.MINUTE, (int) (offset * -60));
+                tzDB.open();
+                off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+                offset = off / 60.0;
+                tzDB.close();
+                c.add(Calendar.MINUTE, (int) (offset * -1));
                 time = jdUTC.utcjd(c.get(Calendar.MONTH) + 1,
                         c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.YEAR),
                         c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
@@ -359,15 +416,14 @@ public class LunarOccultation extends Fragment {
         g[2] = settings.getFloat("elevation", 0);
         offset = settings.getFloat("offset", 0);
         newLoc = settings.getBoolean("newLocation", true);
+        zoneID = settings.getInt("zoneID", 0);
     }
 
     private void launchTask(double time, double back, int planet) {
-        taskFragment = (LunarOccultTask) mFM
-                .findFragmentByTag(TASK_FRAGMENT_TAG);
+        taskFragment = (LunarOccultTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
         if (taskFragment == null) {
             taskFragment = new LunarOccultTask();
-            taskFragment.setData(taskFragment.new ComputeOccultTask(), g, time,
-                    back, planet);
+            taskFragment.setData(taskFragment.new ComputeOccultTask(), g, time, back, planet);
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
             taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             taskFragment.show(mFM, TASK_FRAGMENT_TAG);

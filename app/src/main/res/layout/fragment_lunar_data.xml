@@ -19,10 +19,10 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/le_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_back"
-    android:id="@+id/le_scroll">
+    android:background="@color/main_back">
 
     <RelativeLayout
         android:id="@+id/layout_main"
@@ -75,18 +75,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card_pad"
                 android:text="@string/ecl_times"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
+
+            <TextView
+                android:id="@+id/le_local_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/data_card"
+                android:gravity="center_horizontal"
+                android:textColor="@color/alt_text_color"
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:id="@+id/le_times_layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/data_card"
                 android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/data_card">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/le_times_layout1a"
@@ -108,8 +116,8 @@
                         android:id="@+id/le_start_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -126,8 +134,8 @@
                         android:id="@+id/le_pstart_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -169,8 +177,8 @@
                         android:id="@+id/le_end_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -187,8 +195,8 @@
                         android:id="@+id/le_pend_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -225,8 +233,8 @@
                 android:id="@+id/le_max_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/data_card"
                 android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
@@ -317,8 +325,8 @@
                 android:id="@+id/le_data_layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/data_card_pad"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/data_card_pad"
                 android:paddingLeft="@dimen/data_card_pad"
                 android:paddingRight="@dimen/data_card_pad">
 
@@ -419,8 +427,8 @@
                             android:id="@+id/le_pmag_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/data_card"
                             android:gravity="center_horizontal"
-                            android:paddingBottom="@dimen/data_card"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/label_text" />
 
@@ -462,8 +470,8 @@
                             android:id="@+id/le_umag_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/data_card"
                             android:gravity="center_horizontal"
-                            android:paddingBottom="@dimen/data_card"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/label_text" />
 

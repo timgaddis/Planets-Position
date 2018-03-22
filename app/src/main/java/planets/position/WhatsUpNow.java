@@ -31,6 +31,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +53,8 @@ import java.util.GregorianCalendar;
 
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.PlanetsTable;
+import planets.position.database.TimeZoneDB;
+import planets.position.util.JDUTC;
 
 public class WhatsUpNow extends Fragment {
 
@@ -64,13 +67,16 @@ public class WhatsUpNow extends Fragment {
     private WhatsUpTask taskFragment;
     private long lastUpdate = 0, now;
     private double offset;
-    private int viewIndex;
+    private int viewIndex, zoneID;
     private final double[] g = new double[3];
     private boolean newLoc;
     private SharedPreferences settings;
     private TextView updateText;
+    private AppCompatRadioButton riseRadio, setRadio, allRadio;
     private ListView planetsList;
     private DateFormat mDateFormat, mTimeFormat;
+    private TimeZoneDB tzDB;
+    private JDUTC jdUTC;
     private PlanetsDatabase planetsDB;
     private final int[] images = {R.drawable.ic_planet_sun,
             R.drawable.ic_planet_moon, R.drawable.ic_planet_mercury,
@@ -83,12 +89,12 @@ public class WhatsUpNow extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_whats_up, container, false);
-        RadioGroup rgLayout;
         updateText = v.findViewById(R.id.lastUpdateText);
         planetsList = v.findViewById(R.id.planetList);
-        rgLayout = v.findViewById(R.id.radioLayout);
-
-        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        RadioGroup rgLayout = v.findViewById(R.id.radioLayout);
+        riseRadio = v.findViewById(R.id.riseRadioButton);
+        setRadio = v.findViewById(R.id.setRadioButton);
+        allRadio = v.findViewById(R.id.allRadioButton);
 
         rgLayout.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -116,6 +122,7 @@ public class WhatsUpNow extends Fragment {
                 Bundle args = new Bundle();
                 args.putLong("planetNum", id);
                 args.putLong("dateTime", lastUpdate);
+                args.putInt("zoneID", zoneID);
                 data.setArguments(args);
                 ft.replace(R.id.content_frame, data);
                 ft.addToBackStack(null);
@@ -149,7 +156,7 @@ public class WhatsUpNow extends Fragment {
                 }
                 lastUpdate = now;
                 planetsList.setVisibility(View.INVISIBLE);
-                launchTask();
+                launchTask(offset);
             } else {
                 loadPlanets(viewIndex);
             }
@@ -161,14 +168,14 @@ public class WhatsUpNow extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Get date and time formats from system
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
+        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        jdUTC = new JDUTC();
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat
                 .getTimeFormat(getActivity().getApplicationContext());
 
-        // Restore preferences
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
@@ -201,7 +208,7 @@ public class WhatsUpNow extends Fragment {
             editor.apply();
             newLoc = false;
             planetsList.setVisibility(View.INVISIBLE);
-            launchTask();
+            launchTask(offset);
         } else if (lastUpdate > 0)
             loadPlanets(viewIndex);
         super.onResume();
@@ -244,15 +251,19 @@ public class WhatsUpNow extends Fragment {
             case R.id.action_refresh:
                 lastUpdate = Calendar.getInstance().getTimeInMillis();
                 now = lastUpdate;
+                tzDB.open();
+                int off = tzDB.getZoneOffset(zoneID, now / 1000L);
+                tzDB.close();
+                offset = off / 60.0;
                 planetsList.setVisibility(View.INVISIBLE);
-                launchTask();
+                launchTask(offset);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void launchTask() {
+    private void launchTask(double offset) {
         taskFragment = new WhatsUpTask();
         taskFragment.setData(taskFragment.new ComputePlanetsTask(), g,
                 offset);
@@ -266,8 +277,12 @@ public class WhatsUpNow extends Fragment {
         g[1] = settings.getFloat("latitude", 0);
         g[0] = settings.getFloat("longitude", 0);
         g[2] = settings.getFloat("elevation", 0);
-        offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
         newLoc = settings.getBoolean("newLocation", true);
+        tzDB.open();
+        int off = tzDB.getZoneOffset(zoneID, Calendar.getInstance().getTimeInMillis() / 1000L);
+        tzDB.close();
+        offset = off / 60.0;
     }
 
     private void loadPlanets(int index) {
@@ -281,16 +296,19 @@ public class WhatsUpNow extends Fragment {
             plCursor = planetsDB.getPlanetsRise();
             updateText.setText(String.format("What's rising on %s @ %s",
                     mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
+            riseRadio.setChecked(true);
         } else if (index == 1) {
             plCursor = planetsDB.getPlanetsSet();
             updateText.setText(String.format("What's setting on %s @ %s",
                     mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
+            setRadio.setChecked(true);
         } else {
             plCursor = planetsDB.getPlanetsAll();
             updateText.setText(String.format("All Planets on %s @ %s",
                     mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
+            allRadio.setChecked(true);
         }
-        String[] from = new String[]{PlanetsTable.COLUMN_ID,
+        String[] from = new String[]{PlanetsTable.COLUMN_NUMBER,
                 PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
                 PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME};
         int[] to = new int[]{R.id.rowImage, R.id.rowName, R.id.rowRiseSet,
@@ -298,18 +316,16 @@ public class WhatsUpNow extends Fragment {
         cursorAdapter = new SimpleCursorAdapter(getActivity()
                 .getApplicationContext(), R.layout.whats_up_row, plCursor,
                 from, to, 0);
-        // customize the az and alt fields
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int column) {
                 double alt = cursor.getDouble(cursor
                         .getColumnIndex(PlanetsTable.COLUMN_ALT));
                 Calendar c = Calendar.getInstance();
-                long time;
+                double time;
                 if (column == 0) {// image
                     ImageView iv = (ImageView) view;
-                    int i = cursor.getInt(cursor
-                            .getColumnIndex(PlanetsTable.COLUMN_ID));
+                    int i = cursor.getInt(cursor.getColumnIndex(PlanetsTable.COLUMN_NUMBER));
                     iv.setImageResource(images[i]);
                     return true;
                 }
@@ -317,7 +333,6 @@ public class WhatsUpNow extends Fragment {
                     TextView tv = (TextView) view;
                     String name = cursor.getString(cursor
                             .getColumnIndex(PlanetsTable.COLUMN_NAME));
-                    Log.d(PlanetsMain.TAG, "planet " + name + ": " + alt);
                     tv.setText(name);
                     return true;
                 }
@@ -332,24 +347,26 @@ public class WhatsUpNow extends Fragment {
                 if (column == 3) {// rise/set date
                     TextView tv = (TextView) view;
                     if (alt > 0) {
-                        time = cursor.getLong(cursor.getColumnIndex(PlanetsTable.COLUMN_SET_TIME));
+                        time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_SET_TIME));
                     } else {
-                        time = cursor.getLong(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
+                        time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
                     }
+//                    Log.d(PlanetsMain.TAG, "what's up date:" + time);
                     c.clear();
-                    c.setTimeInMillis(time);
+                    c.setTimeInMillis(jdUTC.jdmills(time, offset));
                     tv.setText(mDateFormat.format(c.getTime()));
                     return true;
                 }
                 if (column == 4) {// rise/set time
                     TextView tv = (TextView) view;
                     if (alt > 0) {
-                        time = cursor.getLong(cursor.getColumnIndex(PlanetsTable.COLUMN_SET_TIME));
+                        time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_SET_TIME));
                     } else {
-                        time = cursor.getLong(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
+                        time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
                     }
+//                    Log.d(PlanetsMain.TAG, "what's up time:" + time);
                     c.clear();
-                    c.setTimeInMillis(time);
+                    c.setTimeInMillis(jdUTC.jdmills(time, offset));
                     tv.setText(mTimeFormat.format(c.getTime()));
                     return true;
                 }
@@ -358,6 +375,5 @@ public class WhatsUpNow extends Fragment {
         });
         planetsList.setAdapter(cursorAdapter);
         planetsList.setVisibility(View.VISIBLE);
-        planetsDB.close();
     }
 }

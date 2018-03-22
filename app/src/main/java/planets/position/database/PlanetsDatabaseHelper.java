@@ -24,16 +24,22 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import planets.position.PlanetsMain;
-
 class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 213;
-    private final Context mContext;
+    private static final int DATABASE_VERSION = 214;
+    private static PlanetsDatabaseHelper sInstance;
+//    private final Context mContext;
 
-    public PlanetsDatabaseHelper(Context context) {
+    private PlanetsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
+//        mContext = context;
+    }
+
+    public static synchronized PlanetsDatabaseHelper getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new PlanetsDatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     @Override
@@ -49,8 +55,8 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, int oldVersion,
                           int newVersion) {
         // clear existing preferences
-        mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().apply();
-        LocationTable.onUpgrade(oldVersion, newVersion);
+//        mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().apply();
+        LocationTable.onUpgrade(database, oldVersion, newVersion);
         PlanetsTable.onUpgrade(database, oldVersion, newVersion);
         SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);
         LunarEclipseTable.onUpgrade(database, oldVersion, newVersion);

@@ -36,10 +36,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,35 +53,35 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import planets.position.BuildConfig;
 import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
+import planets.position.database.TimeZoneDB;
 
-public class UserLocation extends AppCompatActivity implements UserLocationDialog.LocationDialogListener {
+public class UserLocation extends AppCompatActivity implements UserTimezoneDialog.TimezoneDialogListener, UserCityDialog.CityDialogListener {
 
-    private final static int LATITUDE_REQUEST = 100;
-    private final static int LONGITUDE_REQUEST = 200;
-    private final static int ELEVATION_REQUEST = 300;
-    private final static int OFFSET_REQUEST = 400;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 500;
     private static final String TAG = "UserLocation";
 
-    private TextView latitudeText, longitudeText, elevationText, gmtOffsetText,
-            editLocText;
+    private TextView latitudeText, longitudeText, elevationText, timezoneText, gmtOffsetText;
+    private EditText latitudeEdit, longitudeEdit, elevationEdit, timezoneEdit;
+    private Spinner spinnerLat, spinnerLong;
+    private LinearLayout layoutEdit, layoutLong, layoutLat;
     private MenuItem editLoc, saveLoc;
-    private UserLocationDialog offsetDialog;
+    private UserTimezoneDialog timezoneDialog;
+    private UserCityDialog cityDialog;
+    private TimeZoneDB tzDB;
     private PlanetsDatabase planetsDB;
-    private int ioffset = -1;
+    private int zoneID;
     private double latitude, longitude, elevation, offset;
+    private String zoneName;
     private boolean edit = false, startLoc = false;
-    private List<String> gmtArray, gmtValues;
     private SharedPreferences settings;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
@@ -85,23 +90,34 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_location);
+        Button buttonCity, buttonEdit;
 
         latitudeText = findViewById(R.id.newLatText);
         longitudeText = findViewById(R.id.newLongText);
         elevationText = findViewById(R.id.newElevationText);
         gmtOffsetText = findViewById(R.id.newGMTOffsetText);
-        editLocText = findViewById(R.id.locEditText);
+        timezoneText = findViewById(R.id.newTimezoneText);
+        buttonCity = findViewById(R.id.buttonCity);
+        buttonEdit = findViewById(R.id.buttonEdit);
+        latitudeEdit = findViewById(R.id.newLatEdit);
+        longitudeEdit = findViewById(R.id.newLongEdit);
+        elevationEdit = findViewById(R.id.newElevationEdit);
+        timezoneEdit = findViewById(R.id.newTimezoneEdit);
+        spinnerLat = findViewById(R.id.spinnerLat);
+        spinnerLong = findViewById(R.id.spinnerLong);
+        layoutEdit = findViewById(R.id.layoutEdit);
+        layoutLat = findViewById(R.id.layoutLatEdit);
+        layoutLong = findViewById(R.id.layoutLongEdit);
 
-        gmtArray = Arrays.asList(getResources().getStringArray(
-                R.array.gmt_array));
-        gmtValues = Arrays.asList(getResources().getStringArray(
-                R.array.gmt_values));
+        timezoneEdit.setInputType(InputType.TYPE_NULL);
+        timezoneEdit.setFocusable(false);
 
         settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-        planetsDB = new PlanetsDatabase(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        tzDB = new TimeZoneDB(getApplicationContext());
+        planetsDB = new PlanetsDatabase(getApplicationContext());
 
-        Toolbar myToolbar = findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(myToolbar);
         myToolbar.setTitle("User Location");
 
@@ -122,54 +138,59 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
         }
 
         if (edit)
-            editLocText.setVisibility(View.VISIBLE);
+            layoutEdit.setVisibility(View.VISIBLE);
 
         if (startLoc)
             startGPS();
         else
             loadLocation();
 
-        latitudeText.setOnClickListener(new View.OnClickListener() {
+        timezoneEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edit) {
-                    offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_edit_lat, -1, 0, latitude, LATITUDE_REQUEST);
-                    offsetDialog.show(getSupportFragmentManager(), "latitudeDialog");
-                }
-            }
-        });
-        longitudeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edit) {
-                    offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_edit_long, -1, 1, longitude, LONGITUDE_REQUEST);
-                    offsetDialog.show(getSupportFragmentManager(), "longitudeDialog");
-                }
-            }
-        });
-        elevationText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edit) {
-                    offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_edit_ele, -1, 2, elevation, ELEVATION_REQUEST);
-                    offsetDialog.show(getSupportFragmentManager(), "elevationDialog");
-                }
-            }
-        });
-        gmtOffsetText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edit) {
-                    offsetDialog = UserLocationDialog.newInstance(
-                            R.string.loc_gmt, R.array.gmt_array, 3, -1.0, OFFSET_REQUEST);
-                    offsetDialog.show(getSupportFragmentManager(), "offsetDialog");
-                }
+                timezoneDialog = UserTimezoneDialog.newInstance();
+                timezoneDialog.show(getSupportFragmentManager(), "timezoneDialog");
             }
         });
 
+        buttonCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // launch UserCityDialog
+                cityDialog = UserCityDialog.newInstance();
+                cityDialog.show(getSupportFragmentManager(), "cityDialog");
+            }
+        });
+
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the EditTexts
+                latitudeText.setVisibility(View.GONE);
+                layoutLat.setVisibility(View.VISIBLE);
+                latitudeEdit.setText(String.valueOf(Math.abs(latitude)));
+                if (latitude >= 0)
+                    spinnerLat.setSelection(0);
+                else
+                    spinnerLat.setSelection(1);
+
+                longitudeText.setVisibility(View.GONE);
+                layoutLong.setVisibility(View.VISIBLE);
+                longitudeEdit.setText(String.valueOf(Math.abs(longitude)));
+                if (longitude >= 0)
+                    spinnerLong.setSelection(0);
+                else
+                    spinnerLong.setSelection(1);
+
+                elevationText.setVisibility(View.GONE);
+                elevationEdit.setVisibility(View.VISIBLE);
+                elevationEdit.setText(String.valueOf(elevation));
+
+                timezoneText.setVisibility(View.GONE);
+                timezoneEdit.setVisibility(View.VISIBLE);
+                timezoneEdit.setText(zoneName);
+            }
+        });
     }
 
     @Override
@@ -199,9 +220,36 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
         switch (item.getItemId()) {
             case R.id.action_save:
                 edit = false;
-                editLocText.setVisibility(View.GONE);
+                layoutEdit.setVisibility(View.GONE);
                 editLoc.setVisible(true);
                 saveLoc.setVisible(false);
+
+                latitude = Double.parseDouble(latitudeEdit.getText().toString());
+                if (spinnerLat.getSelectedItemPosition() == 1)
+                    latitude *= -1.0;
+                latitudeText.setVisibility(View.VISIBLE);
+                layoutLat.setVisibility(View.GONE);
+
+                longitude = Double.parseDouble(longitudeEdit.getText().toString());
+                if (spinnerLong.getSelectedItemPosition() == 1)
+                    longitude *= -1.0;
+                longitudeText.setVisibility(View.VISIBLE);
+                layoutLong.setVisibility(View.GONE);
+
+                elevation = Double.parseDouble(elevationEdit.getText().toString());
+                elevationText.setVisibility(View.VISIBLE);
+                elevationEdit.setVisibility(View.GONE);
+
+                // get timezone
+                Calendar c = Calendar.getInstance();
+                tzDB.open();
+                int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+                tzDB.close();
+                offset = off / 3600;
+
+                timezoneText.setVisibility(View.VISIBLE);
+                timezoneEdit.setVisibility(View.GONE);
+
                 if (saveLocation()) {
                     Toast.makeText(getApplicationContext(),
                             "Location saved.", Toast.LENGTH_SHORT).show();
@@ -213,7 +261,7 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
                 return true;
             case R.id.action_edit:
                 edit = true;
-                editLocText.setVisibility(View.VISIBLE);
+                layoutEdit.setVisibility(View.VISIBLE);
                 editLoc.setVisible(false);
                 saveLoc.setVisible(true);
                 return true;
@@ -240,8 +288,9 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
             latitude = settings.getFloat("latitude", 0);
             longitude = settings.getFloat("longitude", 0);
             elevation = settings.getFloat("elevation", 0);
+            zoneName = settings.getString("zoneName", "");
+            zoneID = settings.getInt("zoneID", 0);
             offset = settings.getFloat("offset", 0);
-            ioffset = settings.getInt("ioffset", 15);
         } else {
             // Read location from database
             planetsDB.open();
@@ -252,7 +301,8 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
             longitude = loc.getDouble("longitude");
             elevation = loc.getDouble("elevation");
             offset = loc.getDouble("offset");
-            ioffset = loc.getInt("ioffset");
+            zoneID = loc.getInt("zoneID");
+            zoneName = loc.getString("zoneName");
         }
         displayLocation();
     }
@@ -269,12 +319,11 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
             longitudeText.setText(String.format(Locale.getDefault(), "%.6f° W", Math.abs(longitude)));
         }
         elevationText.setText(String.format(Locale.getDefault(), "%.1f m", elevation));
-        if (ioffset >= 0) {
-            gmtOffsetText.setText(gmtArray.get(ioffset));
-        }
+
+        timezoneText.setText(zoneName);
+        gmtOffsetText.setText(String.valueOf(offset));
     }
 
-    // Save location to database and Shared Preferences
     private boolean saveLocation() {
 
         long date = Calendar.getInstance().getTimeInMillis();
@@ -285,14 +334,15 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
         editor.putFloat("longitude", (float) longitude);
         editor.putFloat("elevation", (float) elevation);
         editor.putFloat("offset", (float) offset);
-        editor.putInt("ioffset", ioffset);
+        editor.putString("zoneName", zoneName);
+        editor.putInt("zoneID", zoneID);
         editor.putLong("date", date);
         editor.putBoolean("newLocation", true);
         boolean out = editor.commit();
 
         // save to database
         ContentValues values = new ContentValues();
-        values.put(LocationTable.COLUMN_NAME, "Home");
+        values.put(LocationTable.COLUMN_NAME, "Default");
         values.put(LocationTable.COLUMN_LATITUDE, latitude);
         values.put(LocationTable.COLUMN_LONGITUDE, longitude);
         values.put(LocationTable.COLUMN_TEMP, 0.0);
@@ -300,34 +350,59 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
         values.put(LocationTable.COLUMN_ELEVATION, elevation);
         values.put(LocationTable.COLUMN_DATE, date);
         values.put(LocationTable.COLUMN_OFFSET, offset);
-        values.put(LocationTable.COLUMN_IOFFSET, ioffset);
+        values.put(LocationTable.COLUMN_ZONE_ID, zoneID);
+        values.put(LocationTable.COLUMN_ZONE_NAME, zoneName);
 
         planetsDB.open();
+        planetsDB.eraseTable(LocationTable.TABLE_NAME);
         long row = planetsDB.addLocation(values);
         planetsDB.close();
 
         return row > -1 && out;
     }
 
+    // UserTimezoneDialog
     @Override
-    public void onDialogPositiveClick(int id, double value, boolean hemisphere) {
-        switch (id) {
-            case LATITUDE_REQUEST:
-                latitude = value;
-                if (hemisphere)
-                    latitude *= -1.0;
-                break;
-            case LONGITUDE_REQUEST:
-                longitude = value;
-                if (hemisphere)
-                    longitude *= -1.0;
-                break;
-            case ELEVATION_REQUEST:
-                elevation = value;
-                break;
-            default:
-                break;
+    public void onZoneSelection(int id, String name) {
+        zoneID = id;
+        zoneName = name;
+
+        timezoneEdit.setText(zoneName);
+        Calendar c = Calendar.getInstance();
+        tzDB.open();
+        int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+        tzDB.close();
+        offset = off / 3600;
+
+        if (saveLocation()) {
+            Toast.makeText(getApplicationContext(),
+                    "Location saved.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Location not saved.", Toast.LENGTH_SHORT).show();
         }
+        displayLocation();
+    }
+
+    // UserCityDialog
+    @Override
+    public void onDialogPositiveClick(long id) {
+        edit = false;
+        layoutEdit.setVisibility(View.GONE);
+        editLoc.setVisible(true);
+        saveLoc.setVisible(false);
+        tzDB.open();
+        Bundle data = tzDB.getCityData(id);
+        Calendar c = Calendar.getInstance();
+        latitude = data.getDouble("lat", 0);
+        longitude = data.getDouble("lng", 0);
+        elevation = data.getDouble("alt", 0);
+        zoneName = data.getString("timezone", "");
+        zoneID = tzDB.getZoneID(zoneName);
+        int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+        offset = off / 3600;
+        tzDB.close();
+
         if (saveLocation()) {
             Toast.makeText(getApplicationContext(),
                     "Location saved.", Toast.LENGTH_SHORT).show();
@@ -340,24 +415,6 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
 
     @Override
     public void onDialogNegativeClick() {
-        displayLocation();
-    }
-
-    @Override
-    public void onDialogGMTClick(int off) {
-        ioffset = off;
-        if (ioffset >= 0) {
-            offset = Double.parseDouble(gmtValues.get(ioffset));
-        } else {
-            offset = -1.0;
-        }
-        if (saveLocation()) {
-            Toast.makeText(getApplicationContext(),
-                    "Location saved.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "Location not saved.", Toast.LENGTH_SHORT).show();
-        }
         displayLocation();
     }
 
@@ -399,9 +456,16 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
                             latitude = mLastLocation.getLatitude();
                             longitude = mLastLocation.getLongitude();
                             elevation = mLastLocation.getAltitude();
-                            offset = Calendar.getInstance().getTimeZone()
-                                    .getOffset(mLastLocation.getTime()) / 3600000.0;
-                            ioffset = gmtValues.indexOf(offset + "");
+
+                            Calendar c = Calendar.getInstance();
+                            TimeZone t = TimeZone.getDefault();
+                            zoneName = t.getID();
+                            tzDB.open();
+                            zoneID = tzDB.getZoneID(zoneName);
+                            int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+                            offset = off / 3600;
+                            tzDB.close();
+
                             startLoc = false;
                             if (saveLocation()) {
                                 Toast.makeText(getApplicationContext(),
@@ -497,4 +561,5 @@ public class UserLocation extends AppCompatActivity implements UserLocationDialo
             }
         }
     }
+
 }

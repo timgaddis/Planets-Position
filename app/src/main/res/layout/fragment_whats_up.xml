@@ -21,13 +21,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/main_back"
     android:layout_height="match_parent">
 
     <RadioGroup
         android:id="@+id/radioLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_back"
         android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatRadioButton
@@ -61,7 +61,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/radioLayout"
-        android:background="@color/main_back"
         android:gravity="center_horizontal"
         android:textColor="@color/alt_text_color"
         android:textSize="@dimen/label_up_text" />
@@ -71,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/lastUpdateText"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/divider_color" />
 
     <ListView
         android:id="@+id/planetList"

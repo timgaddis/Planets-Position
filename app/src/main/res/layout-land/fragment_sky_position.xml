@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:background="@color/main_back"
         android:orientation="vertical"
-        android:padding="@dimen/data_card">
+        android:padding="@dimen/data_card_pad">
 
         <LinearLayout
             android:id="@+id/pos_name_date"
@@ -40,30 +40,36 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/nameButton"
-                style="?android:attr/buttonBarButtonStyle"
+            <Spinner
+                android:id="@+id/planetsSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:textColor="@color/button_text"
-                android:textSize="@dimen/label_text" />
+                android:paddingTop="@dimen/data_card"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <!--<Button-->
+            <!--android:id="@+id/nameButton"-->
+            <!--style="?android:attr/buttonBarButtonStyle"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="0.3"-->
+            <!--android:textColor="@color/button_text"-->
+            <!--android:textSize="@dimen/label_text" />-->
 
             <Button
                 android:id="@+id/dateButton"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="1"
                 android:textColor="@color/button_text"
                 android:textSize="@dimen/label_text" />
 
             <Button
                 android:id="@+id/timeButton"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="1"
                 android:textColor="@color/button_text"
                 android:textSize="@dimen/label_text" />
 

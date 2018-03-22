@@ -163,6 +163,7 @@ public class LunarEclipseTask extends DialogFragment {
             planetsDB.open();
             back = (int) Math.round(params[1]);
             start = params[0];
+            planetsDB.eraseTable(LunarEclipseTable.TABLE_NAME);
 
             // compute first local eclipse
             data2 = lunarDataLocal(start, g, back);
@@ -221,29 +222,23 @@ public class LunarEclipseTask extends DialogFragment {
                     moonset = riseSet.getSet(data1[7], 1);
                     moonrise = riseSet.getRise(moonset - 1.0, 1);
 
-                    values.put(LunarEclipseTable.COLUMN_LOCAL_TYPE,
-                            (int) data2[0]);
-                    values.put(LunarEclipseTable.COLUMN_GLOBAL_TYPE,
-                            (int) data1[0]);
+                    values.put(LunarEclipseTable.COLUMN_LOCAL_TYPE, (int) data2[0]);
+                    values.put(LunarEclipseTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                     values.put(LunarEclipseTable.COLUMN_LOCAL, 1);
                     values.put(LunarEclipseTable.COLUMN_UMBRAL_MAG, data2[11]);
-                    values.put(LunarEclipseTable.COLUMN_PENUMBRAL_MAG,
-                            data2[12]);
+                    values.put(LunarEclipseTable.COLUMN_PENUMBRAL_MAG, data2[12]);
                     values.put(LunarEclipseTable.COLUMN_MOON_AZ, data2[15]);
                     values.put(LunarEclipseTable.COLUMN_MOON_ALT, data2[17]);
                     values.put(LunarEclipseTable.COLUMN_MOONRISE, moonrise);
                     values.put(LunarEclipseTable.COLUMN_MOONSET, moonset);
-                    values.put(LunarEclipseTable.COLUMN_SAROS_NUM,
-                            (int) data2[20]);
-                    values.put(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM,
-                            (int) data2[21]);
+                    values.put(LunarEclipseTable.COLUMN_SAROS_NUM, (int) data2[20]);
+                    values.put(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM, (int) data2[21]);
                     values.put(LunarEclipseTable.COLUMN_MAX_ECLIPSE, data1[1]);
                     values.put(LunarEclipseTable.COLUMN_PARTIAL_BEGIN, data1[3]);
                     values.put(LunarEclipseTable.COLUMN_PARTIAL_END, data1[4]);
                     values.put(LunarEclipseTable.COLUMN_TOTAL_BEGIN, data1[5]);
                     values.put(LunarEclipseTable.COLUMN_TOTAL_END, data1[6]);
-                    values.put(LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN,
-                            data1[7]);
+                    values.put(LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN, data1[7]);
                     values.put(LunarEclipseTable.COLUMN_PENUMBRAL_END, data1[8]);
                     values.put(LunarEclipseTable.COLUMN_ECLIPSE_DATE, data1[1]);
                     values.put(LunarEclipseTable.COLUMN_ECLIPSE_TYPE, eclType);
@@ -264,8 +259,7 @@ public class LunarEclipseTask extends DialogFragment {
                 } else {
                     // Global Eclipse
                     values.put(LunarEclipseTable.COLUMN_LOCAL_TYPE, -1);
-                    values.put(LunarEclipseTable.COLUMN_GLOBAL_TYPE,
-                            (int) data1[0]);
+                    values.put(LunarEclipseTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                     values.put(LunarEclipseTable.COLUMN_LOCAL, 0);
                     values.put(LunarEclipseTable.COLUMN_UMBRAL_MAG, -1);
                     values.put(LunarEclipseTable.COLUMN_PENUMBRAL_MAG, -1);
@@ -280,8 +274,7 @@ public class LunarEclipseTask extends DialogFragment {
                     values.put(LunarEclipseTable.COLUMN_PARTIAL_END, data1[4]);
                     values.put(LunarEclipseTable.COLUMN_TOTAL_BEGIN, data1[5]);
                     values.put(LunarEclipseTable.COLUMN_TOTAL_END, data1[6]);
-                    values.put(LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN,
-                            data1[7]);
+                    values.put(LunarEclipseTable.COLUMN_PENUMBRAL_BEGIN, data1[7]);
                     values.put(LunarEclipseTable.COLUMN_PENUMBRAL_END, data1[8]);
                     values.put(LunarEclipseTable.COLUMN_ECLIPSE_DATE, data1[1]);
                     values.put(LunarEclipseTable.COLUMN_ECLIPSE_TYPE, eclType);
@@ -291,7 +284,7 @@ public class LunarEclipseTask extends DialogFragment {
                     else
                         start = data1[7];
                 }
-                planetsDB.addLunarEclipse(values, i);
+                planetsDB.addLunarEclipse(values);
                 publishProgress(i);
             }
             planetsDB.close();

@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/data_card">
+        android:padding="@dimen/data_card_pad">
 
         <LinearLayout
             android:id="@+id/pos_name_date"
@@ -39,13 +39,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/nameButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
+            <!--<Button-->
+            <!--android:id="@+id/nameButton"-->
+            <!--style="?android:attr/buttonBarButtonStyle"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="@color/button_text"-->
+            <!--android:textSize="@dimen/label_text" />-->
+
+            <Spinner
+                android:id="@+id/planetsSpinner"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/button_text"
-                android:textSize="@dimen/label_text" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/data_card_pad" />
 
             <LinearLayout
                 android:id="@+id/pos_date_time"
@@ -55,7 +62,6 @@
 
                 <Button
                     android:id="@+id/dateButton"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -64,7 +70,6 @@
 
                 <Button
                     android:id="@+id/timeButton"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -78,22 +83,22 @@
             android:id="@+id/view02"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/data_card_pad"
+            android:layout_marginTop="@dimen/data_card_pad"
             android:background="@color/divider_color" />
 
         <LinearLayout
             android:id="@+id/pos_data_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/data_card">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/pos_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/data_card_pad">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/pos_layout1"
@@ -115,8 +120,8 @@
                         android:id="@+id/pos_ra_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -133,8 +138,8 @@
                         android:id="@+id/pos_az_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -151,8 +156,8 @@
                         android:id="@+id/pos_dis_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -169,8 +174,8 @@
                         android:id="@+id/pos_riseTime_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
                 </LinearLayout>
@@ -195,8 +200,8 @@
                         android:id="@+id/pos_dec_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -213,8 +218,8 @@
                         android:id="@+id/pos_alt_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -231,8 +236,8 @@
                         android:id="@+id/pos_mag_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
 
@@ -249,8 +254,8 @@
                         android:id="@+id/pos_setTime_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/data_card_pad"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card_pad"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text" />
                 </LinearLayout>
@@ -269,8 +274,8 @@
                 android:id="@+id/pos_transitTime_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/data_card_pad"
                 android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card_pad"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text" />
 
@@ -282,7 +287,7 @@
                 android:text="@string/below_hor"
                 android:textColor="@color/alert_color"
                 android:textSize="@dimen/label_text"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

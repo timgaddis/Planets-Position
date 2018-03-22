@@ -47,34 +47,35 @@ import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
+import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
 public class SolarEclipseData extends Fragment {
 
-    private TextView seDateText, seTypeText, seStartText, seTStartText,
-            seMaxText, seTEndText, seEndText, seAzText, seAltText, seLocalText, seLocalTypeText,
-            seCoverText, seMagText, seSarosText, seSarosMText, seSunRiseText, seSunSetText;
-    private LinearLayout seLocalVisible, seLocalLayout, seSunriseLayout;
+    private TextView seDateText, seTypeText, seStartText, seTStartText, seMaxText, seTEndText,
+            seEndText, seAzText, seAltText, seLocalText, seLocalTypeText, seCoverText, seMagText,
+            seSarosText, seSarosMText, seSunRiseText, seSunSetText, seLocalTime;
+    private LinearLayout seLocalVisible, seLocalLayout, seSunriseLayout, seTotalLayout;
     private String eclType, eclLocalType;
-    private int local;
+    private int local, zoneID;
     private long solarNum = 0, eclDate, eclStart, eclEnd;
-    private double offset, latitude, longitude, centerBegin, centerEnd, cover,
-            mag;
+    private double latitude, longitude, centerBegin, centerEnd, cover, mag;
     private DateFormat mDateFormat, mTimeFormat;
     private PositionFormat pf;
     private PlanetsDatabase planetsDB;
     private SharedPreferences settings;
     private FragmentListener mCallbacks;
+    private TimeZoneDB tzDB;
     private JDUTC jdUTC;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_solar_data, container,
-                false);
+        View v = inflater.inflate(R.layout.fragment_solar_data, container, false);
         seDateText = v.findViewById(R.id.se_date);
         seTypeText = v.findViewById(R.id.se_type);
+        seLocalTime = v.findViewById(R.id.se_local_time);
         seStartText = v.findViewById(R.id.se_start_text);
         seTStartText = v.findViewById(R.id.se_tstart_text);
         seMaxText = v.findViewById(R.id.se_max_text);
@@ -93,13 +94,7 @@ public class SolarEclipseData extends Fragment {
         seLocalVisible = v.findViewById(R.id.se_local_visible);
         seLocalLayout = v.findViewById(R.id.se_data_layout1);
         seSunriseLayout = v.findViewById(R.id.se_times_layout2);
-        jdUTC = new JDUTC();
-        pf = new PositionFormat(getActivity());
-
-        mDateFormat = android.text.format.DateFormat
-                .getDateFormat(getActivity().getApplicationContext());
-        mTimeFormat = android.text.format.DateFormat
-                .getTimeFormat(getActivity().getApplicationContext());
+        seTotalLayout = v.findViewById(R.id.se_times_layout1b);
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
@@ -111,7 +106,7 @@ public class SolarEclipseData extends Fragment {
         if (savedInstanceState != null) {
             // load data from config change
             solarNum = savedInstanceState.getLong("solarNum");
-            offset = savedInstanceState.getDouble("offset");
+            zoneID = savedInstanceState.getInt("zoneID");
             latitude = savedInstanceState.getDouble("latitude");
             longitude = savedInstanceState.getDouble("longitude");
         } else {
@@ -119,7 +114,7 @@ public class SolarEclipseData extends Fragment {
             Bundle bundle = getArguments();
             if (bundle != null) {
                 solarNum = bundle.getLong("solarNum");
-                offset = bundle.getDouble("offset", 0);
+                zoneID = bundle.getInt("zoneID");
                 latitude = bundle.getDouble("latitude", 0);
                 longitude = bundle.getDouble("longitude", 0);
             }
@@ -131,6 +126,13 @@ public class SolarEclipseData extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        jdUTC = new JDUTC();
+        pf = new PositionFormat(getActivity());
+        mDateFormat = android.text.format.DateFormat
+                .getDateFormat(getActivity().getApplicationContext());
+        mTimeFormat = android.text.format.DateFormat
+                .getTimeFormat(getActivity().getApplicationContext());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
@@ -151,7 +153,7 @@ public class SolarEclipseData extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong("solarNum", solarNum);
-        outState.putDouble("offset", offset);
+        outState.putInt("zoneID", zoneID);
         outState.putDouble("latitude", latitude);
         outState.putDouble("longitude", longitude);
         super.onSaveInstanceState(outState);
@@ -224,7 +226,12 @@ public class SolarEclipseData extends Fragment {
         planetColor = ContextCompat.getColor
                 (getActivity().getApplicationContext(), R.color.planet_set_color);
 
-        gc.setTimeInMillis(jdUTC.jdmills(b.getLong(SolarEclipseTable.COLUMN_ECLIPSE_DATE)));
+        long max = jdUTC.jdmills(b.getDouble(SolarEclipseTable.COLUMN_ECLIPSE_DATE));
+        tzDB.open();
+        int off = tzDB.getZoneOffset(zoneID, max / 1000L);
+        double offset = off / 60.0;
+        tzDB.close();
+        gc.setTimeInMillis(max);
         eclDate = gc.getTimeInMillis();
         seDateText.setText(mDateFormat.format(gc.getTime()));
 
@@ -253,6 +260,10 @@ public class SolarEclipseData extends Fragment {
         local = b.getInt(SolarEclipseTable.COLUMN_LOCAL, -1);
         if (local > 0) {
             // local eclipse
+            seLocalTime.setText(R.string.ecl_local);
+            if (!lTotal) {
+                seTotalLayout.setVisibility(View.GONE);
+            }
             sunrise = b.getDouble(SolarEclipseTable.COLUMN_SUNRISE, 0);
             if (sunrise > 0) {
                 gc.setTimeInMillis(jdUTC.jdmills(sunrise, offset));
@@ -346,6 +357,10 @@ public class SolarEclipseData extends Fragment {
             seSarosMText.setText(String.valueOf(b.getInt(SolarEclipseTable.COLUMN_SAROS_MEMBER_NUM, 0)));
         } else {
             // global eclipse
+            seLocalTime.setText(R.string.ecl_universal);
+            if (!gTotal) {
+                seTotalLayout.setVisibility(View.GONE);
+            }
             temp = b.getDouble(SolarEclipseTable.COLUMN_GLOBAL_BEGIN, 0);
             if (temp > 0) {
                 eclStart = jdUTC.jdmills(temp, offset);

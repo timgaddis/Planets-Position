@@ -185,6 +185,7 @@ public class LunarOccultTask extends DialogFragment {
             planetsDB.open();
             back = (int) Math.round(params[1]);
             start = params[0];
+            planetsDB.eraseTable(LunarOccultationTable.TABLE_NAME);
 
             if (planetNum > 1) {
                 // compute occultations for the given planet
@@ -237,53 +238,29 @@ public class LunarOccultTask extends DialogFragment {
                         moonset = riseSet.getSet(data1[3], 1);
                         moonrise = riseSet.getRise(moonset - 1.0, 1);
 
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_TYPE,
-                                (int) data2[0]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE,
-                                (int) data1[0]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_TYPE, (int) data2[0]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                         values.put(LunarOccultationTable.COLUMN_LOCAL, 1);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_MAX,
-                                data2[1]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_FIRST,
-                                data2[2]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND,
-                                data2[3]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_THIRD,
-                                data2[4]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH,
-                                data2[5]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_MAX, data2[1]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_FIRST, data2[2]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND, data2[3]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_THIRD, data2[4]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH, data2[5]);
                         values.put(LunarOccultationTable.COLUMN_MOONRISE, moonrise);
                         values.put(LunarOccultationTable.COLUMN_MOONSET, moonset);
-                        values.put(LunarOccultationTable.COLUMN_MOONS_AZ,
-                                data2[11]);
-                        values.put(LunarOccultationTable.COLUMN_MOONS_ALT,
-                                data2[12]);
-                        values.put(LunarOccultationTable.COLUMN_MOONE_AZ,
-                                data2[13]);
-                        values.put(LunarOccultationTable.COLUMN_MOONE_ALT,
-                                data2[14]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX,
-                                data1[1]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN,
-                                data1[3]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END,
-                                data1[4]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN,
-                                data1[5]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END,
-                                data1[6]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN,
-                                data1[7]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_END,
-                                data1[8]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE,
-                                data2[1]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET,
-                                planetNum);
+                        values.put(LunarOccultationTable.COLUMN_MOONS_AZ, data2[11]);
+                        values.put(LunarOccultationTable.COLUMN_MOONS_ALT, data2[12]);
+                        values.put(LunarOccultationTable.COLUMN_MOONE_AZ, data2[13]);
+                        values.put(LunarOccultationTable.COLUMN_MOONE_ALT, data2[14]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX, data1[1]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, data1[3]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END, data1[4]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN, data1[5]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END, data1[6]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN, data1[7]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_END, data1[8]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE, data2[1]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, planetNum);
 
                         if (back == 0)
                             start = data1[1] + 2.0;
@@ -301,51 +278,35 @@ public class LunarOccultTask extends DialogFragment {
                     } else {
                         // Global Occultation
                         values.put(LunarOccultationTable.COLUMN_LOCAL_TYPE, -1);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE,
-                                (int) data1[0]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                         values.put(LunarOccultationTable.COLUMN_LOCAL, 0);
                         values.put(LunarOccultationTable.COLUMN_LOCAL_MAX, -1);
                         values.put(LunarOccultationTable.COLUMN_LOCAL_FIRST, -1);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND,
-                                -1);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND, -1);
                         values.put(LunarOccultationTable.COLUMN_LOCAL_THIRD, -1);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH,
-                                -1);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONRISE, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONSET, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONS_AZ, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONS_ALT, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONE_AZ, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONE_ALT, -1);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX,
-                                data1[1]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN,
-                                data1[3]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END,
-                                data1[4]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN,
-                                data1[5]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END,
-                                data1[6]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN,
-                                data1[7]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_END,
-                                data1[8]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE,
-                                data1[1]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET,
-                                planetNum);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX, data1[1]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, data1[3]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END, data1[4]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN, data1[5]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END, data1[6]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN, data1[7]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_END, data1[8]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE, data1[1]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, planetNum);
 
                         if (back == 0)
                             start = data1[1] + 2.0;
                         else
                             start = data1[1] - 2.0;
                     }
-                    planetsDB.addLunarOccult(values, i);
+                    planetsDB.addLunarOccult(values);
                     publishProgress(i + 1, planetNum, 1);
                 }
             } else {
@@ -386,100 +347,63 @@ public class LunarOccultTask extends DialogFragment {
                     if (Math.abs(data2[1] - data1[1]) <= 1.0) {
                         // if local occultation time is within one day of the
                         // global time, then occultation is visible locally
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_TYPE,
-                                (int) data2[0]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE,
-                                (int) data1[0]);
+
+                        moonset = riseSet.getSet(data1[3], 1);
+                        moonrise = riseSet.getRise(moonset - 1.0, 1);
+
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_TYPE, (int) data2[0]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                         values.put(LunarOccultationTable.COLUMN_LOCAL, 1);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_MAX,
-                                data2[1]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_FIRST,
-                                data2[2]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND,
-                                data2[3]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_THIRD,
-                                data2[4]);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH,
-                                data2[5]);
-                        values.put(LunarOccultationTable.COLUMN_MOONS_AZ,
-                                data2[11]);
-                        values.put(LunarOccultationTable.COLUMN_MOONS_ALT,
-                                data2[12]);
-                        values.put(LunarOccultationTable.COLUMN_MOONE_AZ,
-                                data2[13]);
-                        values.put(LunarOccultationTable.COLUMN_MOONE_ALT,
-                                data2[14]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX,
-                                data1[1]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN,
-                                data1[3]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END,
-                                data1[4]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN,
-                                data1[5]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END,
-                                data1[6]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN,
-                                data1[7]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_END,
-                                data1[8]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE,
-                                data2[1]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET,
-                                i + 2);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_MAX, data2[1]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_FIRST, data2[2]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND, data2[3]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_THIRD, data2[4]);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH, data2[5]);
+                        values.put(LunarOccultationTable.COLUMN_MOONRISE, moonrise);
+                        values.put(LunarOccultationTable.COLUMN_MOONSET, moonset);
+                        values.put(LunarOccultationTable.COLUMN_MOONS_AZ, data2[11]);
+                        values.put(LunarOccultationTable.COLUMN_MOONS_ALT, data2[12]);
+                        values.put(LunarOccultationTable.COLUMN_MOONE_AZ, data2[13]);
+                        values.put(LunarOccultationTable.COLUMN_MOONE_ALT, data2[14]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX, data1[1]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, data1[3]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END, data1[4]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN, data1[5]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END, data1[6]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN, data1[7]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_END, data1[8]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE, data2[1]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, i + 2);
                     } else {
                         // Global Occultation
                         values.put(LunarOccultationTable.COLUMN_LOCAL_TYPE, -1);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE,
-                                (int) data1[0]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TYPE, (int) data1[0]);
                         values.put(LunarOccultationTable.COLUMN_LOCAL, 0);
                         values.put(LunarOccultationTable.COLUMN_LOCAL_MAX, -1);
                         values.put(LunarOccultationTable.COLUMN_LOCAL_FIRST, -1);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND,
-                                -1);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_SECOND, -1);
                         values.put(LunarOccultationTable.COLUMN_LOCAL_THIRD, -1);
-                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH,
-                                -1);
+                        values.put(LunarOccultationTable.COLUMN_LOCAL_FOURTH, -1);
+                        values.put(LunarOccultationTable.COLUMN_MOONRISE, -1);
+                        values.put(LunarOccultationTable.COLUMN_MOONSET, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONS_AZ, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONS_ALT, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONE_AZ, -1);
                         values.put(LunarOccultationTable.COLUMN_MOONE_ALT, -1);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX,
-                                data1[1]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN,
-                                data1[3]);
-                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END,
-                                data1[4]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN,
-                                data1[5]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END,
-                                data1[6]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN,
-                                data1[7]);
-                        values.put(
-                                LunarOccultationTable.COLUMN_GLOBAL_CENTER_END,
-                                data1[8]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE,
-                                data1[1]);
-                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET,
-                                i + 2);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_MAX, data1[1]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, data1[3]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_END, data1[4]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_BEGIN, data1[5]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_TOTAL_END, data1[6]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_BEGIN, data1[7]);
+                        values.put(LunarOccultationTable.COLUMN_GLOBAL_CENTER_END, data1[8]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_DATE, data1[1]);
+                        values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, i + 2);
                     }
-                    planetsDB.addLunarOccult(values, i + 2);
+                    planetsDB.addLunarOccult(values);
                     if (i + 1 < 8)
                         publishProgress(i + 1, i + 3, 0);
                 }
-                // clears values in database for sun and moon
-                values.clear();
-                values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, -1);
-                planetsDB.addLunarOccult(values, 0);
-                planetsDB.addLunarOccult(values, 1);
             }
             planetsDB.close();
             return null;

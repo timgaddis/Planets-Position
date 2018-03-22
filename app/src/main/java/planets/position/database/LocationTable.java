@@ -25,7 +25,7 @@ import android.util.Log;
 
 public class LocationTable {
 
-    public static final String TABLE_LOCATION = "location";
+    public static final String TABLE_NAME = "location";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_LATITUDE = "lat";
@@ -35,19 +35,23 @@ public class LocationTable {
     public static final String COLUMN_PRESSURE = "pressure";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_OFFSET = "offset";
-    public static final String COLUMN_IOFFSET = "ioffset";
+    public static final String COLUMN_ZONE_ID = "zone_id";
+    public static final String COLUMN_ZONE_NAME = "zone_name";
 
-    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s text not null, %s real,%s real, %s real, %s real, %s real, %s integer, %s real, %s integer);", TABLE_LOCATION, COLUMN_ID, COLUMN_NAME, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE, COLUMN_OFFSET, COLUMN_IOFFSET);
+    private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key" +
+                    " autoincrement, %s text not null, %s real,%s real, %s real, %s real, %s real," +
+                    " %s integer, %s real, %s integer, %s text);", TABLE_NAME, COLUMN_ID, COLUMN_NAME,
+            COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE,
+            COLUMN_OFFSET, COLUMN_ZONE_ID, COLUMN_ZONE_NAME);
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
-        database.execSQL(String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (0,\"default\",-91.0,0.0,0.0,0.0,0.0,0,0.0,15);", TABLE_LOCATION, COLUMN_ID, COLUMN_NAME, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE, COLUMN_OFFSET, COLUMN_IOFFSET));
     }
 
-    public static void onUpgrade(int oldVersion, int newVersion) {
+    static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
         Log.w(LocationTable.class.getName(), "Upgrading database from version "
                 + oldVersion + " to " + newVersion);
-//        database.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
-//        onCreate(database);
+        database.execSQL(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));
+        onCreate(database);
     }
 }

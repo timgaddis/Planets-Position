@@ -34,16 +34,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
+import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
 import planets.position.util.PlanetTimePicker;
@@ -52,22 +54,20 @@ import planets.position.util.RiseSet;
 
 public class SkyPosition extends Fragment {
 
-    private static final int PLANETS_DIALOG = 100;
     private static final int TIME_DIALOG = 200;
     private static final int DATE_DIALOG = 300;
 
-    private Button nameButton, timeButton, dateButton;
+    private Button timeButton, dateButton;
     private TextView pRAText, pDecText, pMagText, pRiseText, pSetText;
     private TextView pAzText, pAltText, pBelowText, pDistText, pTransitText;
-    private int mHour, mMinute, mDay, mMonth, mYear, planetNum = 0;
+    private int mHour, mMinute, mDay, mMonth, mYear, zoneID, planetNum = 0;
     private DateFormat mDateFormat, mTimeFormat;
     private double latitude, longitude, elevation;
     private double offset;
     private final double[] g = new double[3];
-    private List<String> planetsArray;
     private JDUTC jdUTC;
     private RiseSet riseSet;
-    private PlanetDialog planetDialog;
+    private TimeZoneDB tzDB;
     private PlanetDatePicker datePickerFragment;
     private PlanetTimePicker timePickerFragment;
     private SharedPreferences settings;
@@ -82,16 +82,13 @@ public class SkyPosition extends Fragment {
     // c function prototype
     public native double[] planetPosData(double d1, double d2, int p, double[] loc);
 
-    public SkyPosition() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_sky_position, container, false);
 
-        nameButton = v.findViewById(R.id.nameButton);
+        Spinner planetsSpinner = v.findViewById(R.id.planetsSpinner);
         timeButton = v.findViewById(R.id.timeButton);
         dateButton = v.findViewById(R.id.dateButton);
         pAzText = v.findViewById(R.id.pos_az_text);
@@ -106,22 +103,21 @@ public class SkyPosition extends Fragment {
         pTransitText = v.findViewById(R.id.pos_transitTime_text);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
-        planetsArray = Arrays.asList(getResources().getStringArray(R.array.planets_array));
 
-        mDateFormat = android.text.format.DateFormat
-                .getDateFormat(getActivity().getApplicationContext());
-        mTimeFormat = android.text.format.DateFormat
-                .getTimeFormat(getActivity().getApplicationContext());
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.planets_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_drop_item);
+        planetsSpinner.setAdapter(adapter);
 
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
-        nameButton.setOnClickListener(new View.OnClickListener() {
+        planetsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                planetDialog = PlanetDialog.newInstance(R.array.planets_array, R.string.planet_select);
-                planetDialog.setTargetFragment(SkyPosition.this, PLANETS_DIALOG);
-                planetDialog.show(getActivity().getSupportFragmentManager(), "planetDialog");
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                planetNum = position;
+                computeLocation();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -175,7 +171,6 @@ public class SkyPosition extends Fragment {
 
         updateDisplay();
         computeLocation();
-        nameButton.setText(planetsArray.get(planetNum));
 
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Sky Position", 5);
@@ -187,6 +182,13 @@ public class SkyPosition extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDateFormat = android.text.format.DateFormat
+                .getDateFormat(getActivity().getApplicationContext());
+        mTimeFormat = android.text.format.DateFormat
+                .getTimeFormat(getActivity().getApplicationContext());
+        settings = getActivity()
+                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
@@ -245,13 +247,7 @@ public class SkyPosition extends Fragment {
                 updateDisplay();
                 computeLocation();
                 break;
-            case PLANETS_DIALOG:
-                nameButton.setText(planetsArray.get(resultCode));
-                planetNum = resultCode;
-                computeLocation();
-                break;
             default:
-                // Cancel button
                 break;
         }
     }
@@ -278,6 +274,7 @@ public class SkyPosition extends Fragment {
         longitude = settings.getFloat("longitude", 0);
         elevation = settings.getFloat("elevation", 0);
         offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
     }
 
     // updates the date and time in the Buttons
@@ -296,7 +293,10 @@ public class SkyPosition extends Fragment {
             Calendar utc;
 
             utc = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute, 0);
-            m = (int) (offset * 60);
+            tzDB.open();
+            int off = tzDB.getZoneOffset(zoneID, utc.getTimeInMillis() / 1000L);
+            m = (off / 60);
+            tzDB.close();
             utc.add(Calendar.MINUTE, m * -1);
 
             data = jdUTC.utcjd(utc.get(Calendar.MONTH) + 1,

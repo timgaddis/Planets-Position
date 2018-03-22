@@ -33,6 +33,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import planets.position.database.PlanetsDatabase;
+import planets.position.database.TimeZoneDB;
+import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
 public class WhatsUpData extends Fragment {
@@ -40,10 +42,14 @@ public class WhatsUpData extends Fragment {
     private TextView pRAText, pDecText, pMagText, pSetText, pAzText, pSet;
     private TextView pAltText, pDistText, pNameText, pDate, pTime, pTransitText;
     private long planetNum = 0, lastUpdate = 0;
+    private int zoneID;
     private DateFormat mDateFormat, mTimeFormat;
     private PlanetsDatabase planetsDB;
     private FragmentListener mCallbacks;
     private PositionFormat pf;
+    private JDUTC jdUTC;
+    private TimeZoneDB tzDB;
+//    private Timezone tz;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,12 +68,6 @@ public class WhatsUpData extends Fragment {
         pDate = v.findViewById(R.id.data_date_text);
         pTime = v.findViewById(R.id.data_time_text);
         pTransitText = v.findViewById(R.id.data_transitTime_text);
-        pf = new PositionFormat(getActivity());
-
-        mDateFormat = android.text.format.DateFormat
-                .getDateFormat(getActivity().getApplicationContext());
-        mTimeFormat = android.text.format.DateFormat
-                .getTimeFormat(getActivity().getApplicationContext());
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
@@ -79,12 +79,14 @@ public class WhatsUpData extends Fragment {
             // load data from config change
             planetNum = savedInstanceState.getLong("planetNum");
             lastUpdate = savedInstanceState.getLong("dateTime");
+            zoneID = savedInstanceState.getInt("zoneID");
         } else {
             // load bundle from previous activity
             Bundle bundle = getArguments();
             if (bundle != null) {
                 planetNum = bundle.getLong("planetNum");
                 lastUpdate = bundle.getLong("dateTime");
+                zoneID = bundle.getInt("zoneID");
             }
         }
         loadPlanet();
@@ -94,6 +96,14 @@ public class WhatsUpData extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        jdUTC = new JDUTC();
+        pf = new PositionFormat(getActivity());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
+//        tz = new Timezone(getActivity().getApplicationContext());
+        mDateFormat = android.text.format.DateFormat
+                .getDateFormat(getActivity().getApplicationContext());
+        mTimeFormat = android.text.format.DateFormat
+                .getTimeFormat(getActivity().getApplicationContext());
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
@@ -115,6 +125,7 @@ public class WhatsUpData extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong("planetNum", planetNum);
         outState.putLong("dateTime", lastUpdate);
+        outState.putInt("zoneID", zoneID);
         super.onSaveInstanceState(outState);
     }
 
@@ -126,8 +137,10 @@ public class WhatsUpData extends Fragment {
 
     private void loadPlanet() {
         Bundle b;
-        double alt;
+        double alt, offset;
+        double time;
         Calendar c = Calendar.getInstance();
+        c.clear();
         c.setTimeInMillis(lastUpdate);
         pDate.setText(mDateFormat.format(c.getTime()));
         pTime.setText(mTimeFormat.format(c.getTime()));
@@ -143,21 +156,34 @@ public class WhatsUpData extends Fragment {
         alt = b.getDouble("alt");
         pAltText.setText(pf.formatALT(alt));
         if (planetNum == 1)
-            pDistText.setText(String.format(Locale.getDefault(), "%.4f AU", b.getDouble("distance")));
+            pDistText.setText(String.format(Locale.getDefault(), "%.4f AU",
+                    b.getDouble("distance")));
         else
-            pDistText.setText(String.format(Locale.getDefault(), "%.2f AU", b.getDouble("distance")));
-        pMagText.setText(String.format(Locale.getDefault(), "%.2f", b.getDouble("mag")));
+            pDistText.setText(String.format(Locale.getDefault(), "%.2f AU",
+                    b.getDouble("distance")));
+        pMagText.setText(String.format(Locale.getDefault(),
+                "%.2f", b.getDouble("mag")));
 
         if (alt > 0) {
-            c.setTimeInMillis(b.getLong("setTime"));
+            time = b.getDouble("setTime");
             pSet.setText(R.string.data_set);
         } else {
-            c.setTimeInMillis(b.getLong("riseTime"));
+            time = b.getDouble("riseTime");
             pSet.setText(R.string.data_rise);
         }
-        pSetText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));
+        tzDB.open();
+        int off = tzDB.getZoneOffset(zoneID, lastUpdate / 1000L);
+        tzDB.close();
+        offset = off / 60.0;
+        c.clear();
+        c.setTimeInMillis(jdUTC.jdmills(time, offset));
+        pSetText.setText(String.format("%s %s", mDateFormat.format(c.getTime()),
+                mTimeFormat.format(c.getTime())));
 
-        c.setTimeInMillis(b.getLong("transit"));
-        pTransitText.setText(String.format("%s %s", mDateFormat.format(c.getTime()), mTimeFormat.format(c.getTime())));
+        time = b.getDouble("transit");
+        c.clear();
+        c.setTimeInMillis(jdUTC.jdmills(time, offset));
+        pTransitText.setText(String.format("%s %s", mDateFormat.format(c.getTime()),
+                mTimeFormat.format(c.getTime())));
     }
 }

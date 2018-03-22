@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cityLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/data_card_pad">
+
+    <TextView
+        android:id="@+id/textCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loc_country"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text" />
+
+    <Spinner
+        android:id="@+id/spinnerCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/data_card_pad" />
+
+    <TextView
+        android:id="@+id/textState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loc_state"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text" />
+
+    <Spinner
+        android:id="@+id/spinnerState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/data_card_pad"
+        android:textColor="@color/text_color"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/textCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/loc_city"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text" />
+
+    <Spinner
+        android:id="@+id/spinnerCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/data_card_pad"
+        android:textColor="@color/text_color"
+        android:visibility="invisible" />
+
+</LinearLayout>

@@ -32,9 +32,6 @@ public class PlanetDialog extends DialogFragment {
 
     private int array, title;
 
-    public PlanetDialog() {
-    }
-
     public static PlanetDialog newInstance(int array, int title) {
         PlanetDialog frag = new PlanetDialog();
         Bundle args = new Bundle();

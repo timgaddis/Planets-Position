@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -34,7 +35,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -56,8 +56,8 @@ public class LunarOccultData extends Fragment {
 
     private TextView loDateText, loPlanetText, loStartText, loMaxText,
             loEndText, loMoonSAzText, loMoonSAltText, loMoonEAzText,
-            loMoonEAltText, loMoonRiseText, loMoonSetText;
-    private LinearLayout loLocalLayout, loLocalVisible, loMoonLayout;
+            loMoonEAltText, loMoonRiseText, loMoonSetText, loLocalVisible;
+    private ConstraintLayout loLocalLayout, loMoonLayout;
     private long occultNum = 0, eclStart, eclEnd;
     private int local, planet, zoneID;
     private DateFormat mDateFormat, mTimeFormat;
@@ -85,8 +85,8 @@ public class LunarOccultData extends Fragment {
         loMoonEAzText = v.findViewById(R.id.lo_moone_az_text);
         loMoonEAltText = v.findViewById(R.id.lo_moone_alt_text);
         loMoonLayout = v.findViewById(R.id.lo_moon_layout);
-        loLocalVisible = v.findViewById(R.id.lo_local_visible);
-        loLocalLayout = v.findViewById(R.id.lo_data_layout1);
+        loLocalVisible = v.findViewById(R.id.lo_no_visible);
+        loLocalLayout = v.findViewById(R.id.lo_data_layout);
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
 

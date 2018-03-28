@@ -55,7 +55,7 @@ public class PlanetsMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentListener,
         FileCopyTask.FileCopyCallback {
 
-    public static final String TAG = "PlanetsMain";
+//    public static final String TAG = "PlanetsMain";
     public static final String MAIN_PREFS = "MainPrefsFile";
 
     private ActionBarDrawerToggle toggle;

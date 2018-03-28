@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -34,7 +35,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -56,9 +56,9 @@ public class LunarEclipseData extends Fragment {
 
     private TextView leDateText, leTypeText, leStartText, leTStartText,
             lePStartText, leMaxText, leTEndText, lePEndText, leEndText, leMoonRise, leMoonSet,
-            leAzText, leAltText, lePMagText, leUMagText, leSarosText, leSarosMText, leLocalTime;
-    private TextView lePStart, lePEnd, leTStart, leTEnd;
-    private LinearLayout leLocalLayout, leLocalVisible, leMoonRiseLayout;
+            leAzText, leAltText, lePMagText, leUMag,leUMagText, leSarosText, leSarosMText, leLocalTime;
+    private TextView lePStart, lePEnd, leTStart, leTEnd, leLocalVisible;
+    private ConstraintLayout leLocalLayout, leMoonRiseLayout;
     private long lunarNum = 0, eclStart, eclEnd;
     private double mag;
     private int zoneID;
@@ -96,12 +96,13 @@ public class LunarEclipseData extends Fragment {
         leAzText = v.findViewById(R.id.le_moon_az_text);
         leAltText = v.findViewById(R.id.le_moon_alt_text);
         lePMagText = v.findViewById(R.id.le_pmag_text);
+        leUMag=v.findViewById(R.id.le_umag);
         leUMagText = v.findViewById(R.id.le_umag_text);
         leSarosText = v.findViewById(R.id.le_saros_text);
         leSarosMText = v.findViewById(R.id.le_sarosm_text);
-        leMoonRiseLayout = v.findViewById(R.id.le_moonrise_layout);
-        leLocalVisible = v.findViewById(R.id.le_local_visible);
-        leLocalLayout = v.findViewById(R.id.le_data_layout1);
+        leMoonRiseLayout = v.findViewById(R.id.le_moon_layout);
+        leLocalVisible = v.findViewById(R.id.le_no_visible);
+        leLocalLayout = v.findViewById(R.id.le_data_layout);
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
@@ -366,7 +367,9 @@ public class LunarEclipseData extends Fragment {
                 leUMagText.setText(String.format(Locale.getDefault(), "%.2f", temp));
             } else {
                 mag = 0;
-                leUMagText.setText("");
+                leUMag.setVisibility(View.GONE);
+                leUMagText.setVisibility(View.GONE);
+//                leUMagText.setText("");
             }
             leSarosText.setText(String.valueOf(b.getInt(LunarEclipseTable.COLUMN_SAROS_NUM, 0)));
             leSarosMText.setText(String.valueOf(b.getInt(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM, 0)));

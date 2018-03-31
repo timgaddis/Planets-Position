@@ -49,7 +49,6 @@ public class WhatsUpData extends Fragment {
     private PositionFormat pf;
     private JDUTC jdUTC;
     private TimeZoneDB tzDB;
-//    private Timezone tz;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +98,6 @@ public class WhatsUpData extends Fragment {
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
-//        tz = new Timezone(getActivity().getApplicationContext());
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat

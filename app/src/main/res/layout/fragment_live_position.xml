@@ -18,246 +18,289 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/live_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_back"
-    android:orientation="vertical"
-    android:padding="@dimen/data_card">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/live_name_date"
-        android:layout_width="match_parent"
+    <android.support.constraint.Guideline
+        android:id="@+id/live_guide1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/data_card">
+        app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/live_name_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/live_date_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <TextView
+        android:id="@+id/live_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toStartOf="@+id/live_guide1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_name_text" />
 
-            <TextView
-                android:id="@+id/live_date_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/live_time_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/live_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/live_guide1"
+        app:layout_constraintTop_toBottomOf="@+id/live_name_text" />
 
     <View
         android:id="@+id/view02"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:background="@color/divider_color" />
+        android:layout_marginTop="16dp"
+        android:background="@color/divider_color"
+        app:layout_constraintTop_toBottomOf="@+id/live_date_text" />
 
-    <LinearLayout
-        android:id="@+id/live_data"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/live_ra"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/data_card">
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_ra"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toStartOf="@+id/live_guide1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view02" />
 
-        <LinearLayout
-            android:id="@+id/live_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/data_card_pad">
+    <TextView
+        android:id="@+id/live_ra_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="@+id/live_ra"
+        app:layout_constraintStart_toStartOf="@+id/live_ra"
+        app:layout_constraintTop_toBottomOf="@+id/live_ra" />
 
-            <LinearLayout
-                android:id="@+id/live_layout1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
+    <TextView
+        android:id="@+id/live_dec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_dec"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/live_guide1"
+        app:layout_constraintTop_toBottomOf="@+id/view02" />
 
-                <TextView
-                    android:id="@+id/live_ra"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_ra"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_dec_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="@+id/live_dec"
+        app:layout_constraintStart_toStartOf="@+id/live_dec"
+        app:layout_constraintTop_toBottomOf="@+id/live_dec" />
 
-                <TextView
-                    android:id="@+id/live_ra_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_az"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_az"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toStartOf="@+id/live_guide1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_ra_text" />
 
-                <TextView
-                    android:id="@+id/live_az"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_az"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_az_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="@+id/live_az"
+        app:layout_constraintStart_toStartOf="@+id/live_az"
+        app:layout_constraintTop_toBottomOf="@+id/live_az" />
 
-                <TextView
-                    android:id="@+id/live_az_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_alt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_alt"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/live_guide1"
+        app:layout_constraintTop_toBottomOf="@+id/live_dec_text" />
 
-                <TextView
-                    android:id="@+id/live_dis"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_dis"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_alt_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="@+id/live_alt"
+        app:layout_constraintStart_toStartOf="@+id/live_alt"
+        app:layout_constraintTop_toBottomOf="@+id/live_alt" />
 
-                <TextView
-                    android:id="@+id/live_dis_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_dis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_dis"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toStartOf="@+id/live_guide1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_az_text" />
 
-            </LinearLayout>
+    <TextView
+        android:id="@+id/live_dis_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="@+id/live_dis"
+        app:layout_constraintStart_toStartOf="@+id/live_dis"
+        app:layout_constraintTop_toBottomOf="@+id/live_dis" />
 
-            <LinearLayout
-                android:id="@+id/live_layout2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
+    <TextView
+        android:id="@+id/live_mag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_mag"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/live_guide1"
+        app:layout_constraintTop_toBottomOf="@+id/live_alt_text" />
 
-                <TextView
-                    android:id="@+id/live_dec"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_dec"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_mag_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="@+id/live_mag"
+        app:layout_constraintStart_toStartOf="@+id/live_mag"
+        app:layout_constraintTop_toBottomOf="@+id/live_mag" />
 
-                <TextView
-                    android:id="@+id/live_dec_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_riseTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_set"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_dis_text" />
 
-                <TextView
-                    android:id="@+id/live_alt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_alt"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_riseTime_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_riseTime" />
 
-                <TextView
-                    android:id="@+id/live_alt_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="@dimen/data_card_pad"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_transitTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/data_transit"
+        android:textColor="@color/alt_text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_riseTime_text" />
 
-                <TextView
-                    android:id="@+id/live_mag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_mag"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
+    <TextView
+        android:id="@+id/live_transitTime_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_transitTime" />
 
-                <TextView
-                    android:id="@+id/live_mag_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-            </LinearLayout>
-        </LinearLayout>
+    <TextView
+        android:id="@+id/live_below_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/below_hor"
+        android:textColor="@color/alert_color"
+        android:textSize="@dimen/label_text"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/live_transitTime_text" />
 
-        <TextView
-            android:id="@+id/live_riseTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/data_set"
-            android:textColor="@color/alt_text_color"
-            android:textSize="@dimen/label_text" />
-
-        <TextView
-            android:id="@+id/live_riseTime_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card_pad"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text" />
-
-        <TextView
-            android:id="@+id/live_transitTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/data_transit"
-            android:textColor="@color/alt_text_color"
-            android:textSize="@dimen/label_text" />
-
-        <TextView
-            android:id="@+id/live_transitTime_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingBottom="@dimen/data_card_pad"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text" />
-
-        <TextView
-            android:id="@+id/live_below_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/below_hor"
-            android:textColor="@color/alert_color"
-            android:textSize="@dimen/label_text"
-            android:visibility="gone" />
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

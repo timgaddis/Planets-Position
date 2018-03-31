@@ -207,11 +207,11 @@ public class LivePosition extends Fragment {
             pBelowText.setVisibility(View.GONE);
             utc.setTimeInMillis(jdUTC.jdmills(setT, offset));
         }
-        pRiseText.setText(String.format("%s  %s", mDateFormat.format(utc.getTime()),
+        pRiseText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                 mTimeFormat.format(utc.getTime())));
 
         utc.setTimeInMillis(jdUTC.jdmills(transitT, offset));
-        pTransitText.setText(String.format("%s  %s", mDateFormat.format(utc.getTime()),
+        pTransitText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                 mTimeFormat.format(utc.getTime())));
     }
 }

@@ -151,15 +151,6 @@ public class LunarOccultation extends Fragment {
             }
         });
 
-//        nameButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                planetDialog = PlanetDialog.newInstance(R.array.occult_array, R.string.planet_select);
-//                planetDialog.setTargetFragment(LunarOccultation.this, PLANETS_DIALOG);
-//                planetDialog.show(getActivity().getSupportFragmentManager(), "loPlanetDialog");
-//            }
-//        });
-
         if (savedInstanceState == null) {
             loadLocation();
         } else {

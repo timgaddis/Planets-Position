@@ -19,303 +19,316 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/pos_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_back"
-    android:paddingBottom="@dimen/data_card">
+    android:background="@color/main_back">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/pos_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/main_back"
-        android:orientation="vertical"
-        android:padding="@dimen/data_card_pad">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/pos_name_date"
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="match_parent"
+        <android.support.constraint.Guideline
+            android:id="@+id/pos_guide2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33" />
 
-            <Spinner
-                android:id="@+id/planetsSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/data_card"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1" />
+        <android.support.constraint.Guideline
+            android:id="@+id/pos_guide3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66" />
 
-            <!--<Button-->
-            <!--android:id="@+id/nameButton"-->
-            <!--style="?android:attr/buttonBarButtonStyle"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="0.3"-->
-            <!--android:textColor="@color/button_text"-->
-            <!--android:textSize="@dimen/label_text" />-->
+        <Spinner
+            android:id="@+id/planetsSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:paddingTop="@dimen/data_card"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/dateButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/button_text"
-                android:textSize="@dimen/label_text" />
+        <Button
+            android:id="@+id/dateButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/button_text"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide3"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide2"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/timeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/button_text"
-                android:textSize="@dimen/label_text" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/timeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/button_text"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide3"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/view02"
+            android:id="@+id/pos_view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/divider_color" />
+            android:layout_marginTop="8dp"
+            android:background="@color/divider_color"
+            app:layout_constraintTop_toBottomOf="@+id/timeButton" />
 
-        <LinearLayout
-            android:id="@+id/pos_layout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/pos_ra"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/data_card"
-            android:paddingTop="@dimen/data_card">
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_ra"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pos_view2" />
 
-            <LinearLayout
-                android:id="@+id/pos_layout1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/pos_ra"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_ra"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/pos_ra_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <View
-                    android:id="@+id/view3"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_az"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_az"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/pos_az_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/pos_layout2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/pos_dec"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_dec"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/pos_dec_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <View
-                    android:id="@+id/view5"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_alt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_alt"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/pos_alt_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/pos_layout3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/pos_dis"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_dis"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/pos_dis_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <View
-                    android:id="@+id/view6"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/data_card" />
-
-                <TextView
-                    android:id="@+id/pos_mag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/data_mag"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/pos_mag_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/pos_rise_set1"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/pos_ra_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:text="- RA -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_ra"
+            app:layout_constraintStart_toStartOf="@+id/pos_ra"
+            app:layout_constraintTop_toBottomOf="@+id/pos_ra" />
 
-            <TextView
-                android:id="@+id/pos_riseTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/data_rise"
-                android:textColor="@color/alt_text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/pos_setTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/data_set"
-                android:textColor="@color/alt_text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/pos_transitTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@string/data_transit"
-                android:textColor="@color/alt_text_color"
-                android:textSize="@dimen/label_text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/pos_rise_set2"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/pos_dec"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/data_card">
+            android:layout_marginTop="8dp"
+            android:text="@string/data_dec"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide3"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide2"
+            app:layout_constraintTop_toBottomOf="@+id/pos_view2" />
 
-            <TextView
-                android:id="@+id/pos_riseTime_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
+        <TextView
+            android:id="@+id/pos_dec_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- DEC -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_dec"
+            app:layout_constraintStart_toStartOf="@+id/pos_dec"
+            app:layout_constraintTop_toBottomOf="@+id/pos_dec" />
 
-            <TextView
-                android:id="@+id/pos_setTime_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
+        <TextView
+            android:id="@+id/pos_dis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_dis"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide3"
+            app:layout_constraintTop_toBottomOf="@+id/pos_view2" />
 
-            <TextView
-                android:id="@+id/pos_transitTime_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/pos_dis_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- DISTANCE -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_dis"
+            app:layout_constraintStart_toStartOf="@+id/pos_dis"
+            app:layout_constraintTop_toBottomOf="@+id/pos_dis" />
+
+        <TextView
+            android:id="@+id/pos_az"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_az"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pos_ra_text" />
+
+        <TextView
+            android:id="@+id/pos_az_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- AZ -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_az"
+            app:layout_constraintStart_toStartOf="@+id/pos_az"
+            app:layout_constraintTop_toBottomOf="@+id/pos_az" />
+
+        <TextView
+            android:id="@+id/pos_alt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_alt"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide3"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide2"
+            app:layout_constraintTop_toBottomOf="@+id/pos_dec_text" />
+
+        <TextView
+            android:id="@+id/pos_alt_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:text="- ALT -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_alt"
+            app:layout_constraintStart_toStartOf="@+id/pos_alt"
+            app:layout_constraintTop_toBottomOf="@+id/pos_alt" />
+
+        <TextView
+            android:id="@+id/pos_mag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_mag"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide3"
+            app:layout_constraintTop_toBottomOf="@+id/pos_dis_text" />
+
+        <TextView
+            android:id="@+id/pos_mag_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- MAG -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_mag"
+            app:layout_constraintStart_toStartOf="@+id/pos_mag"
+            app:layout_constraintTop_toBottomOf="@+id/pos_mag" />
+
+        <TextView
+            android:id="@+id/pos_riseTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_rise"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pos_az_text" />
+
+        <TextView
+            android:id="@+id/pos_riseTime_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- RISE TIME -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_riseTime"
+            app:layout_constraintStart_toStartOf="@+id/pos_riseTime"
+            app:layout_constraintTop_toBottomOf="@+id/pos_riseTime" />
+
+        <TextView
+            android:id="@+id/pos_setTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_set"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/pos_guide3"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide2"
+            app:layout_constraintTop_toBottomOf="@+id/pos_alt_text" />
+
+        <TextView
+            android:id="@+id/pos_setTime_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- SET TIME -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_setTime"
+            app:layout_constraintStart_toStartOf="@+id/pos_setTime"
+            app:layout_constraintTop_toBottomOf="@+id/pos_setTime" />
+
+        <TextView
+            android:id="@+id/pos_transitTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/data_transit"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/pos_guide3"
+            app:layout_constraintTop_toBottomOf="@+id/pos_mag_text" />
+
+        <TextView
+            android:id="@+id/pos_transitTime_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- TRANSIT TIME -"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/pos_transitTime"
+            app:layout_constraintStart_toStartOf="@+id/pos_transitTime"
+            app:layout_constraintTop_toBottomOf="@+id/pos_transitTime" />
 
         <TextView
             android:id="@+id/pos_below_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/below_hor"
             android:textColor="@color/alert_color"
             android:textSize="@dimen/label_text"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pos_setTime_text" />
+
+    </android.support.constraint.ConstraintLayout>
+
 </ScrollView>

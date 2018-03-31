@@ -299,13 +299,11 @@
                 android:id="@+id/le_moonrise_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toStartOf="@+id/le_guide6"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/le_moonrise"
+                app:layout_constraintStart_toStartOf="@+id/le_moonrise"
                 app:layout_constraintTop_toBottomOf="@+id/le_moonrise" />
 
             <TextView
@@ -326,13 +324,11 @@
                 android:id="@+id/le_moonset_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:gravity="center_horizontal"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/le_guide6"
+                app:layout_constraintEnd_toEndOf="@+id/le_moonset"
+                app:layout_constraintStart_toStartOf="@+id/le_moonset"
                 app:layout_constraintTop_toBottomOf="@+id/le_moonset" />
         </android.support.constraint.ConstraintLayout>
 

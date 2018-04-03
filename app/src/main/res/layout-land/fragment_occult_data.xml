@@ -44,7 +44,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="9/8/18"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toStartOf="@+id/lo_guide4"
@@ -58,7 +57,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:text="Mercury"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,10 +64,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/view02"
+            android:id="@+id/lo_view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:background="@color/divider_color"
             app:layout_constraintTop_toBottomOf="@+id/lo_date" />
 
@@ -81,13 +79,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/lo_times"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view02" />
+            app:layout_constraintTop_toBottomOf="@+id/lo_view3" />
 
         <TextView
             android:id="@+id/lo_local_time"
@@ -95,7 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:text="(Universal Time)"
             android:textColor="@color/alt_text_color"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,6 +103,8 @@
             android:id="@+id/lo_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/lo_start"
             android:textColor="@color/alt_text_color"
@@ -124,7 +123,6 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:gravity="center_horizontal"
-            android:text="Start\nTime"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="@+id/lo_start"
@@ -153,7 +151,6 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:gravity="center_horizontal"
-            android:text="Max\nTime"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="@+id/lo_max"
@@ -164,6 +161,8 @@
             android:id="@+id/lo_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/lo_end"
             android:textColor="@color/alt_text_color"
@@ -182,7 +181,6 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:gravity="center_horizontal"
-            android:text="End\nTime"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="@+id/lo_end"
@@ -206,10 +204,8 @@
                 android:id="@+id/lo_moonrise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/ecl_moonrise"
                 android:textColor="@color/alt_text_color"
@@ -222,26 +218,19 @@
                 android:id="@+id/lo_moonrise_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
                 android:gravity="center_horizontal"
-                android:text="Rise\nTime"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toStartOf="@+id/lo_guide5"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moonrise"
+                app:layout_constraintStart_toStartOf="@+id/lo_moonrise"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moonrise" />
 
             <TextView
                 android:id="@+id/lo_moonset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/ecl_moonset"
                 android:textColor="@color/alt_text_color"
@@ -254,22 +243,17 @@
                 android:id="@+id/lo_moonset_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
                 android:gravity="center_horizontal"
-                android:text="Set\nTime"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/lo_guide5"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moonset"
+                app:layout_constraintStart_toStartOf="@+id/lo_moonset"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moonset" />
 
         </android.support.constraint.ConstraintLayout>
 
         <View
-            android:id="@+id/view03"
+            android:id="@+id/lo_view4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
@@ -290,12 +274,14 @@
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view03" />
+            app:layout_constraintTop_toBottomOf="@+id/lo_view4" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/lo_data_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lo_data">
 
             <android.support.constraint.Guideline
@@ -318,7 +304,8 @@
                 android:textColor="@color/alt_text_color"
                 android:textSize="@dimen/label_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/loStart"
@@ -368,11 +355,6 @@
                 android:id="@+id/lo_moons_az_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:text="263d 29m 20s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
                 app:layout_constraintEnd_toEndOf="@+id/lo_moons_az"
@@ -383,8 +365,6 @@
                 android:id="@+id/lo_moons_alt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/data_alt"
                 android:textColor="@color/alt_text_color"
@@ -398,11 +378,6 @@
                 android:id="@+id/lo_moons_alt_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:text="10d 31m 51s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
                 app:layout_constraintEnd_toEndOf="@+id/lo_moons_alt"
@@ -428,11 +403,6 @@
                 android:id="@+id/lo_moone_az_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:text="272d 39m 45s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
                 app:layout_constraintEnd_toEndOf="@+id/lo_moone_az"
@@ -458,11 +428,6 @@
                 android:id="@+id/lo_moone_alt_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:text="27d 28m 33s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
                 app:layout_constraintEnd_toEndOf="@+id/lo_moone_alt"
@@ -474,6 +439,7 @@
             android:id="@+id/lo_no_visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -483,9 +449,10 @@
             android:textColor="@color/alert_color"
             android:textSize="@dimen/label_up_text"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lo_data_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/lo_data" />
 
     </android.support.constraint.ConstraintLayout>
 

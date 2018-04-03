@@ -19,535 +19,518 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/se_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_back"
-    android:paddingBottom="@dimen/data_card">
+    android:background="@color/main_back">
 
-    <RelativeLayout
-        android:id="@+id/se_layout_main"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/se_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/se_date_type"
-            android:layout_width="match_parent"
+        <android.support.constraint.Guideline
+            android:id="@+id/se_guide1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
             android:orientation="vertical"
-            android:padding="@dimen/data_card_pad">
+            app:layout_constraintGuide_percent="0.5" />
 
-            <LinearLayout
-                android:id="@+id/se_date_type1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <TextView
+            android:id="@+id/se_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/se_guide1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/se_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
+        <TextView
+            android:id="@+id/se_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/se_guide1"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/se_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/se_date_type2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/data_card">
-
-                <TextView
-                    android:id="@+id/ecl_local"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="end"
-                    android:paddingEnd="4dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:text="@string/ecl_local_type"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <TextView
-                    android:id="@+id/ecl_local_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="start"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:paddingStart="4dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/label_text" />
-            </LinearLayout>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/se_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/se_date" />
 
         <View
-            android:id="@+id/view02"
-            android:layout_width="match_parent"
+            android:id="@+id/se_view1"
+            android:layout_width="wrap_content"
             android:layout_height="1dp"
-            android:layout_below="@id/se_date_type"
-            android:background="@color/divider_color" />
+            android:layout_marginTop="8dp"
+            android:background="@color/divider_color"
+            app:layout_constraintTop_toBottomOf="@+id/se_local" />
 
-        <LinearLayout
-            android:id="@+id/se_times_layout"
+        <TextView
+            android:id="@+id/eclTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/ecl_times"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/se_view1" />
+
+        <TextView
+            android:id="@+id/se_local_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/alt_text_color"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eclTimes" />
+
+        <TextView
+            android:id="@+id/se_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/ecl_se_start"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toStartOf="@+id/se_guide1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/se_local_time" />
+
+        <TextView
+            android:id="@+id/se_start_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/se_start"
+            app:layout_constraintStart_toStartOf="@+id/se_start"
+            app:layout_constraintTop_toBottomOf="@+id/se_start" />
+
+        <TextView
+            android:id="@+id/se_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/ecl_se_end"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/se_guide1"
+            app:layout_constraintTop_toBottomOf="@+id/se_local_time" />
+
+        <TextView
+            android:id="@+id/se_end_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/se_end"
+            app:layout_constraintStart_toStartOf="@+id/se_end"
+            app:layout_constraintTop_toBottomOf="@+id/se_end" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/se_total_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/view02"
-            android:orientation="vertical"
-            android:padding="@dimen/data_card">
+            app:layout_constraintTop_toBottomOf="@+id/se_start_text">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/se_guide4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
             <TextView
-                android:id="@+id/eclTimes"
-                android:layout_width="match_parent"
+                android:id="@+id/se_tstart"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingTop="@dimen/data_card"
-                android:text="@string/ecl_times"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/se_local_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_tstart"
                 android:textColor="@color/alt_text_color"
-                android:textSize="12sp" />
-
-            <LinearLayout
-                android:id="@+id/se_times_layout1a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/data_card">
-
-                <LinearLayout
-                    android:id="@+id/se_times_layout1a1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/se_start"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_se_start"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/se_start_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/se_times_layout1a2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/se_end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_se_end"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/se_end_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:paddingBottom="@dimen/data_card"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/se_times_layout1b"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/data_card">
-
-                <LinearLayout
-                    android:id="@+id/se_times_layout1b1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/se_tstart"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_se_tstart"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/se_tstart_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/se_times_layout1b2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/se_tend"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_se_tend"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
-
-                    <TextView
-                        android:id="@+id/se_tend_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
-            </LinearLayout>
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/se_guide4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/se_max"
-                android:layout_width="match_parent"
+                android:id="@+id/se_tstart_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/ecl_se_max"
-                android:textColor="@color/alt_text_color"
-                android:textSize="@dimen/label_text" />
-
-            <TextView
-                android:id="@+id/se_max_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingBottom="@dimen/data_card"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_tstart"
+                app:layout_constraintStart_toStartOf="@+id/se_tstart"
+                app:layout_constraintTop_toBottomOf="@+id/se_tstart" />
 
-            <LinearLayout
-                android:id="@+id/se_times_layout2"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/se_tend"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_tend"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/se_guide4"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/se_times_layout2a"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/se_tend_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_tend"
+                app:layout_constraintStart_toStartOf="@+id/se_tend"
+                app:layout_constraintTop_toBottomOf="@+id/se_tend" />
 
-                    <TextView
-                        android:id="@+id/se_sunrise"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_sunrise"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
+        </android.support.constraint.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/se_sunrise_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
+        <TextView
+            android:id="@+id/se_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/ecl_se_max"
+            android:textColor="@color/alt_text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/se_total_layout" />
 
-                <LinearLayout
-                    android:id="@+id/se_times_layout2b"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
+        <TextView
+            android:id="@+id/se_max_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="@+id/se_max"
+            app:layout_constraintStart_toStartOf="@+id/se_max"
+            app:layout_constraintTop_toBottomOf="@+id/se_max" />
 
-                    <TextView
-                        android:id="@+id/se_sunset"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ecl_sunset"
-                        android:textColor="@color/alt_text_color"
-                        android:textSize="@dimen/label_text" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/se_sun_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/se_max_text">
 
-                    <TextView
-                        android:id="@+id/se_sunset_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+            <android.support.constraint.Guideline
+                android:id="@+id/se_guide2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/se_sunrise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_sunrise"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/se_guide2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/se_sunrise_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_sunrise"
+                app:layout_constraintStart_toStartOf="@+id/se_sunrise"
+                app:layout_constraintTop_toBottomOf="@+id/se_sunrise" />
+
+            <TextView
+                android:id="@+id/se_sunset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_sunset"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/se_guide2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/se_sunset_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_sunset"
+                app:layout_constraintStart_toStartOf="@+id/se_sunset"
+                app:layout_constraintTop_toBottomOf="@+id/se_sunset" />
+        </android.support.constraint.ConstraintLayout>
 
         <View
-            android:id="@+id/view03"
+            android:id="@+id/se_view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/se_times_layout"
-            android:background="@color/divider_color" />
+            android:layout_marginTop="8dp"
+            android:background="@color/divider_color"
+            app:layout_constraintTop_toBottomOf="@+id/se_sun_layout" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/eclData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/ecl_data"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/label_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/se_view2" />
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/se_data_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/view03"
-            android:orientation="vertical">
+            app:layout_constraintTop_toBottomOf="@+id/eclData">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/se_guide3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
             <TextView
-                android:id="@+id/eclData"
-                android:layout_width="match_parent"
+                android:id="@+id/ecl_sun"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/data_card_pad"
-                android:text="@string/ecl_data"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_sun"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/se_sun_az"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/data_az"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/se_guide3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ecl_sun" />
+
+            <TextView
+                android:id="@+id/se_sun_az_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/label_text" />
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_sun_az"
+                app:layout_constraintStart_toStartOf="@+id/se_sun_az"
+                app:layout_constraintTop_toBottomOf="@+id/se_sun_az" />
 
-            <LinearLayout
-                android:id="@+id/se_data_layout1"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/se_sun_alt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/data_card_pad"
-                android:paddingLeft="@dimen/data_card"
-                android:paddingRight="@dimen/data_card">
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/data_alt"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/se_guide3"
+                app:layout_constraintTop_toBottomOf="@+id/ecl_sun" />
 
-                <TextView
-                    android:id="@+id/ecl_sun"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/ecl_se_sun"
-                    android:textColor="@color/alt_text_color"
-                    android:textSize="@dimen/label_text" />
-
-                <LinearLayout
-                    android:id="@+id/se_data_layout1a"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/data_card">
-
-                    <LinearLayout
-                        android:id="@+id/se_data_layout1a1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/se_sun_az"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/data_az"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_sun_az_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_text" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/se_data_layout1a2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/se_sun_alt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/data_alt"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_sun_alt_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_text" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/se_data_layout1b"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/se_data_layout1b1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/se_cover"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_cover"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_cover_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:paddingBottom="@dimen/data_card"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_saros"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_saros"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_saros_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_text" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/se_data_layout1b2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/se_mag"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/data_mag"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_mag_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:paddingBottom="@dimen/data_card"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_sarosm"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:text="@string/ecl_se_sarosm"
-                            android:textColor="@color/alt_text_color"
-                            android:textSize="@dimen/label_text" />
-
-                        <TextView
-                            android:id="@+id/se_sarosm_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/label_text" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/se_local_visible"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/se_sun_alt_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/data_card_pad"
-                android:paddingLeft="@dimen/data_card_pad"
-                android:paddingRight="@dimen/data_card_pad"
-                android:visibility="gone">
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_sun_alt"
+                app:layout_constraintStart_toStartOf="@+id/se_sun_alt"
+                app:layout_constraintTop_toBottomOf="@+id/se_sun_alt" />
 
-                <TextView
-                    android:id="@+id/se_no_visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/ecl_no"
-                    android:textColor="@color/alert_color"
-                    android:textSize="@dimen/label_text" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/se_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_cover"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/se_guide3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/se_sun_az_text" />
+
+            <TextView
+                android:id="@+id/se_cover_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_cover"
+                app:layout_constraintStart_toStartOf="@+id/se_cover"
+                app:layout_constraintTop_toBottomOf="@+id/se_cover" />
+
+            <TextView
+                android:id="@+id/se_mag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/data_mag"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/se_guide3"
+                app:layout_constraintTop_toBottomOf="@+id/se_sun_alt_text" />
+
+            <TextView
+                android:id="@+id/se_mag_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_mag"
+                app:layout_constraintStart_toStartOf="@+id/se_mag"
+                app:layout_constraintTop_toBottomOf="@+id/se_mag" />
+
+            <TextView
+                android:id="@+id/se_saros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_saros"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/se_guide3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/se_cover_text" />
+
+            <TextView
+                android:id="@+id/se_saros_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_saros"
+                app:layout_constraintStart_toStartOf="@+id/se_saros"
+                app:layout_constraintTop_toBottomOf="@+id/se_saros" />
+
+            <TextView
+                android:id="@+id/se_sarosm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_sarosm"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/se_guide3"
+                app:layout_constraintTop_toBottomOf="@+id/se_mag_text" />
+
+            <TextView
+                android:id="@+id/se_sarosm_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/se_sarosm"
+                app:layout_constraintStart_toStartOf="@+id/se_sarosm"
+                app:layout_constraintTop_toBottomOf="@+id/se_sarosm" />
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/se_no_visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/ecl_no"
+            android:textColor="@color/alert_color"
+            android:textSize="@dimen/label_text"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/se_data_layout" />
+
+    </android.support.constraint.ConstraintLayout>
+
 </ScrollView>

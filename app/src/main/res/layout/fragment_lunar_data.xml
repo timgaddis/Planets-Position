@@ -65,7 +65,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/view02"
+            android:id="@+id/le_view1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
@@ -84,7 +84,7 @@
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view02" />
+            app:layout_constraintTop_toBottomOf="@id/le_view1" />
 
         <TextView
             android:id="@+id/le_local_time"
@@ -148,105 +148,135 @@
             app:layout_constraintStart_toStartOf="@+id/le_end"
             app:layout_constraintTop_toBottomOf="@+id/le_end" />
 
-        <TextView
-            android:id="@+id/le_pstart"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/ecl_le_pstart"
-            android:textColor="@color/alt_text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toStartOf="@+id/le_guide1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/le_start_text" />
-
-        <TextView
-            android:id="@+id/le_pstart_text"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/le_partial_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="@+id/le_pstart"
-            app:layout_constraintStart_toStartOf="@+id/le_pstart"
-            app:layout_constraintTop_toBottomOf="@+id/le_pstart" />
+            app:layout_constraintTop_toBottomOf="@+id/le_start_text">
 
-        <TextView
-            android:id="@+id/le_pend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/ecl_le_pend"
-            android:textColor="@color/alt_text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/le_guide1"
-            app:layout_constraintTop_toBottomOf="@+id/le_end_text" />
+            <android.support.constraint.Guideline
+                android:id="@+id/le_guide6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/le_pend_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="@+id/le_pend"
-            app:layout_constraintStart_toStartOf="@+id/le_pend"
-            app:layout_constraintTop_toBottomOf="@id/le_pend" />
+            <TextView
+                android:id="@+id/le_pstart"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_le_pstart"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/le_guide6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/le_tstart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/ecl_se_tstart"
-            android:textColor="@color/alt_text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toStartOf="@+id/le_guide1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/le_pstart_text" />
+            <TextView
+                android:id="@+id/le_pstart_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/le_pstart"
+                app:layout_constraintStart_toStartOf="@+id/le_pstart"
+                app:layout_constraintTop_toBottomOf="@+id/le_pstart" />
 
-        <TextView
-            android:id="@+id/le_tstart_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="@+id/le_tstart"
-            app:layout_constraintStart_toStartOf="@+id/le_tstart"
-            app:layout_constraintTop_toBottomOf="@+id/le_tstart" />
+            <TextView
+                android:id="@+id/le_pend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_le_pend"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/le_guide6"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/le_tend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/ecl_se_tend"
-            android:textColor="@color/alt_text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/le_guide1"
-            app:layout_constraintTop_toBottomOf="@+id/le_pend_text" />
+            <TextView
+                android:id="@+id/le_pend_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/le_pend"
+                app:layout_constraintStart_toStartOf="@+id/le_pend"
+                app:layout_constraintTop_toBottomOf="@id/le_pend" />
 
-        <TextView
-            android:id="@+id/le_tend_text"
-            android:layout_width="wrap_content"
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/le_total_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="@+id/le_tend"
-            app:layout_constraintStart_toStartOf="@+id/le_tend"
-            app:layout_constraintTop_toBottomOf="@id/le_tend" />
+            app:layout_constraintTop_toBottomOf="@+id/le_partial_layout">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/le_guide7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/le_tstart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_tstart"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toStartOf="@+id/le_guide7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/le_tstart_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/le_tstart"
+                app:layout_constraintStart_toStartOf="@+id/le_tstart"
+                app:layout_constraintTop_toBottomOf="@+id/le_tstart" />
+
+            <TextView
+                android:id="@+id/le_tend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ecl_se_tend"
+                android:textColor="@color/alt_text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/le_guide7"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/le_tend_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/label_text"
+                app:layout_constraintEnd_toEndOf="@+id/le_tend"
+                app:layout_constraintStart_toStartOf="@+id/le_tend"
+                app:layout_constraintTop_toBottomOf="@id/le_tend" />
+
+        </android.support.constraint.ConstraintLayout>
 
         <TextView
             android:id="@+id/le_max"
@@ -260,7 +290,7 @@
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/le_tstart_text" />
+            app:layout_constraintTop_toBottomOf="@+id/le_total_layout" />
 
         <TextView
             android:id="@+id/le_max_text"
@@ -340,7 +370,7 @@
         </android.support.constraint.ConstraintLayout>
 
         <View
-            android:id="@+id/view03"
+            android:id="@+id/le_view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
@@ -359,7 +389,7 @@
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view03" />
+            app:layout_constraintTop_toTopOf="@+id/le_view2" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/le_data_layout"

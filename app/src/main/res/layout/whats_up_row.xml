@@ -18,67 +18,71 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rs_list_row"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    android:paddingEnd="@dimen/data_card_pad"
-    android:paddingLeft="@dimen/data_card"
-    android:paddingRight="@dimen/data_card_pad"
-    android:paddingStart="@dimen/data_card"
-    android:paddingTop="@dimen/data_card2">
+    android:background="@color/main_back">
 
     <ImageView
         android:id="@+id/rowImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/wup_desc"
-        android:paddingEnd="32dp"
-        android:paddingLeft="@dimen/data_card"
-        android:paddingRight="32dp"
-        android:paddingStart="@dimen/data_card" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/rowName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/rowImage"
-        android:layout_toRightOf="@+id/rowImage"
-        android:paddingTop="@dimen/setting_pad"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/rowImage"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/riseSetRow"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/rowRiseSet"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/rowName"
-        android:layout_alignStart="@+id/rowName"
-        android:layout_below="@+id/rowName">
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/data_rise"
+        android:textColor="@color/alt_text_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/rowImage"
+        app:layout_constraintTop_toBottomOf="@+id/rowName" />
 
-        <TextView
-            android:id="@+id/rowRiseSet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/data_rise"
-            android:textColor="@color/alt_text_color"
-            android:textSize="14sp" />
+    <TextView
+        android:id="@+id/rowRSDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/alt_text_color"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/rowRSTime"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/rowRiseSet"
+        app:layout_constraintTop_toTopOf="@+id/rowRiseSet" />
 
-        <TextView
-            android:id="@+id/rowRSDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/alt_text_color"
-            android:textSize="14sp" />
+    <TextView
+        android:id="@+id/rowRSTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/alt_text_color"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rowRSDate"
+        app:layout_constraintTop_toTopOf="@+id/rowRiseSet" />
 
-        <TextView
-            android:id="@+id/rowRSTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/alt_text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

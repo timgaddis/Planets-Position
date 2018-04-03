@@ -44,7 +44,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="9/8/18"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toStartOf="@+id/lo_guide1"
@@ -58,7 +57,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:text="Mercury"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +91,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:text="(Universal Time)"
             android:textColor="@color/alt_text_color"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,14 +116,11 @@
             android:id="@+id/lo_start_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
             android:gravity="center_horizontal"
-            android:text="Start\nTime"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toStartOf="@+id/lo_guide1"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/lo_start"
+            app:layout_constraintStart_toStartOf="@+id/lo_start"
             app:layout_constraintTop_toBottomOf="@+id/lo_start" />
 
         <TextView
@@ -148,14 +142,11 @@
             android:id="@+id/lo_end_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:gravity="center_horizontal"
-            android:text="End\nTime"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/lo_guide1"
+            app:layout_constraintEnd_toEndOf="@+id/lo_end"
+            app:layout_constraintStart_toStartOf="@+id/lo_end"
             app:layout_constraintTop_toBottomOf="@+id/lo_end" />
 
         <TextView
@@ -176,14 +167,11 @@
             android:id="@+id/lo_max_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
             android:gravity="center_horizontal"
-            android:text="Max\nTime"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/lo_max"
+            app:layout_constraintStart_toStartOf="@+id/lo_max"
             app:layout_constraintTop_toBottomOf="@+id/lo_max" />
 
         <android.support.constraint.ConstraintLayout
@@ -219,14 +207,11 @@
                 android:id="@+id/lo_moonrise_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
                 android:gravity="center_horizontal"
-                android:text="Moon\nRise"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toStartOf="@+id/lo_guide2"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moonrise"
+                app:layout_constraintStart_toStartOf="@+id/lo_moonrise"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moonrise" />
 
             <TextView
@@ -247,14 +232,11 @@
                 android:id="@+id/lo_moonset_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:gravity="center_horizontal"
-                android:text="Moon\nSet"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/lo_guide2"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moonset"
+                app:layout_constraintStart_toStartOf="@+id/lo_moonset"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moonset" />
 
         </android.support.constraint.ConstraintLayout>
@@ -342,13 +324,10 @@
                 android:id="@+id/lo_moons_az_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="263d 29m 20s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toStartOf="@+id/lo_guide3"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moons_az"
+                app:layout_constraintStart_toStartOf="@+id/lo_moons_az"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moons_az" />
 
             <TextView
@@ -369,13 +348,10 @@
                 android:id="@+id/lo_moons_alt_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="10d 31m 51s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/lo_guide3"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moons_alt"
+                app:layout_constraintStart_toStartOf="@+id/lo_moons_alt"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moons_alt" />
 
             <TextView
@@ -412,13 +388,10 @@
                 android:id="@+id/lo_moone_az_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="272d 39m 45s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toStartOf="@+id/lo_guide3"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moone_az"
+                app:layout_constraintStart_toStartOf="@+id/lo_moone_az"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moone_az" />
 
             <TextView
@@ -439,13 +412,10 @@
                 android:id="@+id/lo_moone_alt_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="17d 28m 17s"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/label_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/lo_guide3"
+                app:layout_constraintEnd_toEndOf="@+id/lo_moone_alt"
+                app:layout_constraintStart_toStartOf="@+id/lo_moone_alt"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moone_alt" />
 
         </android.support.constraint.ConstraintLayout>

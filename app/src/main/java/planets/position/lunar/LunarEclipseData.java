@@ -54,11 +54,10 @@ import planets.position.util.PositionFormat;
 
 public class LunarEclipseData extends Fragment {
 
-    private TextView leDateText, leTypeText, leStartText, leTStartText,
+    private TextView leDateText, leTypeText, leStartText, leTStartText, leLocalVisible,
             lePStartText, leMaxText, leTEndText, lePEndText, leEndText, leMoonRise, leMoonSet,
-            leAzText, leAltText, lePMagText, leUMag,leUMagText, leSarosText, leSarosMText, leLocalTime;
-    private TextView lePStart, lePEnd, leTStart, leTEnd, leLocalVisible;
-    private ConstraintLayout leLocalLayout, leMoonRiseLayout;
+            leAzText, leAltText, lePMagText, leUMag, leUMagText, leSarosText, leSarosMText, leLocalTime;
+    private ConstraintLayout leLocalLayout, leMoonLayout, lePartialLayout, leTotalLayout;
     private long lunarNum = 0, eclStart, eclEnd;
     private double mag;
     private int zoneID;
@@ -82,27 +81,25 @@ public class LunarEclipseData extends Fragment {
         leLocalTime = v.findViewById(R.id.le_local_time);
         leStartText = v.findViewById(R.id.le_start_text);
         lePStartText = v.findViewById(R.id.le_pstart_text);
-        lePStart = v.findViewById(R.id.le_pstart);
         leTStartText = v.findViewById(R.id.le_tstart_text);
-        leTStart = v.findViewById(R.id.le_tstart);
         leMaxText = v.findViewById(R.id.le_max_text);
         leTEndText = v.findViewById(R.id.le_tend_text);
-        leTEnd = v.findViewById(R.id.le_tend);
         lePEndText = v.findViewById(R.id.le_pend_text);
-        lePEnd = v.findViewById(R.id.le_pend);
         leEndText = v.findViewById(R.id.le_end_text);
         leMoonRise = v.findViewById(R.id.le_moonrise_text);
         leMoonSet = v.findViewById(R.id.le_moonset_text);
         leAzText = v.findViewById(R.id.le_moon_az_text);
         leAltText = v.findViewById(R.id.le_moon_alt_text);
         lePMagText = v.findViewById(R.id.le_pmag_text);
-        leUMag=v.findViewById(R.id.le_umag);
+        leUMag = v.findViewById(R.id.le_umag);
         leUMagText = v.findViewById(R.id.le_umag_text);
         leSarosText = v.findViewById(R.id.le_saros_text);
         leSarosMText = v.findViewById(R.id.le_sarosm_text);
-        leMoonRiseLayout = v.findViewById(R.id.le_moon_layout);
         leLocalVisible = v.findViewById(R.id.le_no_visible);
+        leMoonLayout = v.findViewById(R.id.le_moon_layout);
         leLocalLayout = v.findViewById(R.id.le_data_layout);
+        lePartialLayout = v.findViewById(R.id.le_partial_layout);
+        leTotalLayout = v.findViewById(R.id.le_total_layout);
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
@@ -259,7 +256,7 @@ public class LunarEclipseData extends Fragment {
             leStartText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_PARTIAL_BEGIN, 0);
-        if (temp > 0 && partial) {
+        if (temp > 0) {
             gc.setTimeInMillis(jdUTC.jdmills(temp, offset));
             lePStartText.setText(String.format("%s\n%s", mDateFormat.format(gc.getTime()),
                     mTimeFormat.format(gc.getTime())));
@@ -267,12 +264,9 @@ public class LunarEclipseData extends Fragment {
                 if (temp < moonRise || temp > moonSet) {
                     lePStartText.setTextColor(planetColor);
                 }
-        } else {
-            lePStart.setVisibility(View.GONE);
-            lePStartText.setVisibility(View.GONE);
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_TOTAL_BEGIN, 0);
-        if (temp > 0 && total) {
+        if (temp > 0) {
             gc.setTimeInMillis(jdUTC.jdmills(temp, offset));
             leTStartText.setText(String.format("%s\n%s", mDateFormat.format(gc.getTime()),
                     mTimeFormat.format(gc.getTime())));
@@ -280,9 +274,6 @@ public class LunarEclipseData extends Fragment {
                 if (temp < moonRise || temp > moonSet) {
                     leTStartText.setTextColor(planetColor);
                 }
-        } else {
-            leTStart.setVisibility(View.GONE);
-            leTStartText.setVisibility(View.GONE);
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_MAX_ECLIPSE, 0);
         if (temp > 0) {
@@ -297,7 +288,7 @@ public class LunarEclipseData extends Fragment {
             leMaxText.setText(" \n ");
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_TOTAL_END, 0);
-        if (temp > 0 && total) {
+        if (temp > 0) {
             gc.setTimeInMillis(jdUTC.jdmills(temp, offset));
             leTEndText.setText(String.format("%s\n%s", mDateFormat.format(gc.getTime()),
                     mTimeFormat.format(gc.getTime())));
@@ -305,12 +296,9 @@ public class LunarEclipseData extends Fragment {
                 if (temp < moonRise || temp > moonSet) {
                     leTEndText.setTextColor(planetColor);
                 }
-        } else {
-            leTEnd.setVisibility(View.GONE);
-            leTEndText.setVisibility(View.GONE);
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_PARTIAL_END, 0);
-        if (temp > 0 && partial) {
+        if (temp > 0) {
             gc.setTimeInMillis(jdUTC.jdmills(temp, offset));
             lePEndText.setText(String.format("%s\n%s", mDateFormat.format(gc.getTime()),
                     mTimeFormat.format(gc.getTime())));
@@ -318,9 +306,6 @@ public class LunarEclipseData extends Fragment {
                 if (temp < moonRise || temp > moonSet) {
                     lePEndText.setTextColor(planetColor);
                 }
-        } else {
-            lePEnd.setVisibility(View.GONE);
-            lePEndText.setVisibility(View.GONE);
         }
         temp = b.getDouble(LunarEclipseTable.COLUMN_PENUMBRAL_END, 0);
         if (temp > 0) {
@@ -335,6 +320,12 @@ public class LunarEclipseData extends Fragment {
         } else {
             leEndText.setText(" \n ");
         }
+
+        if (!partial)
+            lePartialLayout.setVisibility(View.GONE);
+
+        if (!total)
+            leTotalLayout.setVisibility(View.GONE);
 
         if (local) {
             // local eclipse
@@ -369,7 +360,6 @@ public class LunarEclipseData extends Fragment {
                 mag = 0;
                 leUMag.setVisibility(View.GONE);
                 leUMagText.setVisibility(View.GONE);
-//                leUMagText.setText("");
             }
             leSarosText.setText(String.valueOf(b.getInt(LunarEclipseTable.COLUMN_SAROS_NUM, 0)));
             leSarosMText.setText(String.valueOf(b.getInt(LunarEclipseTable.COLUMN_SAROS_MEMBER_NUM, 0)));
@@ -377,7 +367,7 @@ public class LunarEclipseData extends Fragment {
             // global eclipse
             leLocalTime.setText(R.string.ecl_universal);
             leLocalLayout.setVisibility(View.GONE);
-            leMoonRiseLayout.setVisibility(View.GONE);
+            leMoonLayout.setVisibility(View.GONE);
             leLocalVisible.setVisibility(View.VISIBLE);
         }
     }

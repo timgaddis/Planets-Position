@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -34,7 +35,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -54,9 +54,9 @@ import planets.position.util.PositionFormat;
 public class SolarEclipseData extends Fragment {
 
     private TextView seDateText, seTypeText, seStartText, seTStartText, seMaxText, seTEndText,
-            seEndText, seAzText, seAltText, seLocalText, seLocalTypeText, seCoverText, seMagText,
-            seSarosText, seSarosMText, seSunRiseText, seSunSetText, seLocalTime;
-    private LinearLayout seLocalVisible, seLocalLayout, seSunriseLayout, seTotalLayout;
+            seEndText, seAzText, seAltText, seLocalTypeText, seCoverText, seMagText,
+            seSarosText, seSarosMText, seSunRiseText, seSunSetText, seLocalTime, seLocalVisible;
+    private ConstraintLayout seLocalLayout, seSunriseLayout, seTotalLayout;
     private String eclType, eclLocalType;
     private int local, zoneID;
     private long solarNum = 0, eclDate, eclStart, eclEnd;
@@ -85,16 +85,15 @@ public class SolarEclipseData extends Fragment {
         seSunSetText = v.findViewById(R.id.se_sunset_text);
         seAzText = v.findViewById(R.id.se_sun_az_text);
         seAltText = v.findViewById(R.id.se_sun_alt_text);
-        seLocalText = v.findViewById(R.id.ecl_local);
-        seLocalTypeText = v.findViewById(R.id.ecl_local_type);
+        seLocalTypeText = v.findViewById(R.id.se_local);
         seCoverText = v.findViewById(R.id.se_cover_text);
         seMagText = v.findViewById(R.id.se_mag_text);
         seSarosText = v.findViewById(R.id.se_saros_text);
         seSarosMText = v.findViewById(R.id.se_sarosm_text);
-        seLocalVisible = v.findViewById(R.id.se_local_visible);
-        seLocalLayout = v.findViewById(R.id.se_data_layout1);
-        seSunriseLayout = v.findViewById(R.id.se_times_layout2);
-        seTotalLayout = v.findViewById(R.id.se_times_layout1b);
+        seLocalVisible = v.findViewById(R.id.se_no_visible);
+        seLocalLayout = v.findViewById(R.id.se_data_layout);
+        seSunriseLayout = v.findViewById(R.id.se_sun_layout);
+        seTotalLayout = v.findViewById(R.id.se_total_layout);
 
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
@@ -241,8 +240,9 @@ public class SolarEclipseData extends Fragment {
             lTotal = type.split("\\|")[1].equals("Total");
             eclType = type.split("\\|")[0];
             eclLocalType = type.split("\\|")[1];
-            seTypeText.setText(type.split("\\|")[0]);
-            seLocalTypeText.setText(type.split("\\|")[1]);
+            seTypeText.setText(eclType);
+            seLocalTypeText.setText(String.format("%s %s", getResources().getString(R.string.ecl_local_type),
+                    eclLocalType));
         } else {
             gTotal = type.equals("Total");
             lTotal = false;
@@ -399,7 +399,6 @@ public class SolarEclipseData extends Fragment {
                 seEndText.setText("");
             }
             seLocalTypeText.setVisibility(View.GONE);
-            seLocalText.setVisibility(View.GONE);
             seLocalLayout.setVisibility(View.GONE);
             seSunriseLayout.setVisibility(View.GONE);
             seLocalVisible.setVisibility(View.VISIBLE);

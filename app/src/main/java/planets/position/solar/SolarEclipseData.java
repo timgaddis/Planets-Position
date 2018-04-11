@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -70,7 +71,7 @@ public class SolarEclipseData extends Fragment {
     private JDUTC jdUTC;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_solar_data, container, false);
         seDateText = v.findViewById(R.id.se_date);
@@ -150,7 +151,7 @@ public class SolarEclipseData extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putLong("solarNum", solarNum);
         outState.putInt("zoneID", zoneID);
         outState.putDouble("latitude", latitude);

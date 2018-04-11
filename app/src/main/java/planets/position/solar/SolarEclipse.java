@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -80,7 +81,7 @@ public class SolarEclipse extends Fragment {
     private JDUTC jdUTC;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_eclipse, container, false);
         solarList = v.findViewById(R.id.eclipseList);
@@ -89,18 +90,22 @@ public class SolarEclipse extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 // display eclipse data
-                FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
+                FragmentTransaction ft = null;
+                if (getFragmentManager() != null) {
+                    ft = getFragmentManager().beginTransaction();
+                }
                 eclipseData = new SolarEclipseData();
                 Bundle args = new Bundle();
                 args.putLong("solarNum", id);
-                args.putInt("zoneID",zoneID);
+                args.putInt("zoneID", zoneID);
                 args.putDouble("latitude", g[1]);
                 args.putDouble("longitude", g[0]);
                 eclipseData.setArguments(args);
-                ft.replace(R.id.content_frame, eclipseData, "eclipseData");
-                ft.addToBackStack(null);
-                ft.commit();
+                if (ft != null) {
+                    ft.replace(R.id.content_frame, eclipseData, "eclipseData");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
         });
 
@@ -120,8 +125,9 @@ public class SolarEclipse extends Fragment {
         time = jdUTC.getCurrentTime(offset);
 
         mFM = getFragmentManager();
-        taskFragment = (SolarEclipseTask) mFM
-                .findFragmentByTag(TASK_FRAGMENT_TAG);
+        if (mFM != null) {
+            taskFragment = (SolarEclipseTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
+        }
 
         if (taskFragment != null) {
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
@@ -144,7 +150,7 @@ public class SolarEclipse extends Fragment {
         jdUTC = new JDUTC();
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
-        tzDB=new TimeZoneDB(getActivity().getApplicationContext());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
 
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
@@ -158,7 +164,7 @@ public class SolarEclipse extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putDouble("offset", offset);
         outState.putInt("zoneID", zoneID);
@@ -281,7 +287,9 @@ public class SolarEclipse extends Fragment {
                 PlanetDatePicker datePickerFragment = new PlanetDatePicker();
                 datePickerFragment.setTargetFragment(this, DATE_FRAGMENT);
                 datePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                if (getFragmentManager() != null) {
+                    datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -299,12 +307,15 @@ public class SolarEclipse extends Fragment {
     }
 
     private void launchTask(double time, double back) {
-        taskFragment = new SolarEclipseTask();
-        taskFragment.setData(taskFragment.new ComputeEclipseTask(), g, time,
-                back);
-        taskFragment.setTargetFragment(this, TASK_FRAGMENT);
-        taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        taskFragment.show(mFM, TASK_FRAGMENT_TAG);
+        taskFragment = (SolarEclipseTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
+        if (taskFragment == null) {
+            taskFragment = new SolarEclipseTask();
+            taskFragment.setData(taskFragment.new ComputeEclipseTask(), g, time,
+                    back);
+            taskFragment.setTargetFragment(this, TASK_FRAGMENT);
+            taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            taskFragment.show(mFM, TASK_FRAGMENT_TAG);
+        }
     }
 
     private void loadEclipses() {
@@ -317,53 +328,57 @@ public class SolarEclipse extends Fragment {
                 SolarEclipseTable.COLUMN_LOCAL};
         int[] to = new int[]{R.id.rowEclImage, R.id.rowEclDate,
                 R.id.rowEclType, R.id.rowEclLocal};
-        cursorAdapter = new SimpleCursorAdapter(getActivity()
-                .getApplicationContext(), R.layout.eclipse_list_row, seCursor,
-                from, to, 0);
+        cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
+                R.layout.eclipse_list_row, seCursor, from, to, 0);
         // customize the fields
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int column) {
-                if (column == 1) {// type image
-                    ImageView iv = (ImageView) view;
-                    int val = cursor.getInt(cursor
-                            .getColumnIndex(SolarEclipseTable.COLUMN_GLOBAL_TYPE));
-                    if ((val & 4) == 4) // SE_ECL_TOTAL
-                        iv.setImageResource(R.drawable.ic_solar_total);
-                    else if ((val & 8) == 8 || (val & 32) == 32) // SE_ECL_ANNULAR
-                        iv.setImageResource(R.drawable.ic_solar_annular);
-                    else if ((val & 16) == 16) // SE_ECL_PARTIAL
-                        iv.setImageResource(R.drawable.ic_solar_partial);
-                    else
-                        iv.setImageResource(R.drawable.ic_planet_sun);
-                    return true;
-                } else if (column == 2) {// date
-                    TextView tv = (TextView) view;
-                    double date = cursor.getDouble(cursor
-                            .getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_DATE));
-                    Calendar gc = new GregorianCalendar();
-                    gc.setTimeInMillis(jdUTC.jdmills(date));
-                    tv.setText(mDateFormat.format(gc.getTime()));
-                    return true;
-                } else if (column == 3) {// type
-                    TextView tv = (TextView) view;
-                    String type = cursor.getString(cursor
-                            .getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_TYPE));
-                    if (type.contains("|")) {
-                        tv.setText(type.split("\\|")[0]);
-                    } else {
-                        tv.setText(type);
+                switch (column) {
+                    case 1: {// type image
+                        ImageView iv = (ImageView) view;
+                        int val = cursor.getInt(cursor
+                                .getColumnIndex(SolarEclipseTable.COLUMN_GLOBAL_TYPE));
+                        if ((val & 4) == 4) // SE_ECL_TOTAL
+                            iv.setImageResource(R.drawable.ic_solar_total);
+                        else if ((val & 8) == 8 || (val & 32) == 32) // SE_ECL_ANNULAR
+                            iv.setImageResource(R.drawable.ic_solar_annular);
+                        else if ((val & 16) == 16) // SE_ECL_PARTIAL
+                            iv.setImageResource(R.drawable.ic_solar_partial);
+                        else
+                            iv.setImageResource(R.drawable.ic_planet_sun);
+                        return true;
                     }
-                    return true;
-                } else if (column == 4) {// local
-                    ImageView iv = (ImageView) view;
-                    int l = cursor.getInt(cursor
-                            .getColumnIndex(SolarEclipseTable.COLUMN_LOCAL));
-                    if (l > 0)
-                        iv.setVisibility(View.VISIBLE);
-                    else
-                        iv.setVisibility(View.INVISIBLE);
-                    return true;
+                    case 2: {// date
+                        TextView tv = (TextView) view;
+                        double date = cursor.getDouble(cursor
+                                .getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_DATE));
+                        Calendar gc = new GregorianCalendar();
+                        gc.setTimeInMillis(jdUTC.jdmills(date));
+                        tv.setText(mDateFormat.format(gc.getTime()));
+                        return true;
+                    }
+                    case 3: {// type
+                        TextView tv = (TextView) view;
+                        String type = cursor.getString(cursor
+                                .getColumnIndex(SolarEclipseTable.COLUMN_ECLIPSE_TYPE));
+                        if (type.contains("|")) {
+                            tv.setText(type.split("\\|")[0]);
+                        } else {
+                            tv.setText(type);
+                        }
+                        return true;
+                    }
+                    case 4: {// local
+                        ImageView iv = (ImageView) view;
+                        int l = cursor.getInt(cursor
+                                .getColumnIndex(SolarEclipseTable.COLUMN_LOCAL));
+                        if (l > 0)
+                            iv.setVisibility(View.VISIBLE);
+                        else
+                            iv.setVisibility(View.INVISIBLE);
+                        return true;
+                    }
                 }
                 return false;
             }

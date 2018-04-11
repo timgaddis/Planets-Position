@@ -22,6 +22,7 @@ package planets.position;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,7 @@ public class WhatsUpData extends Fragment {
     private TimeZoneDB tzDB;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_planet_data, container,
                 false);
@@ -120,7 +121,7 @@ public class WhatsUpData extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putLong("planetNum", planetNum);
         outState.putLong("dateTime", lastUpdate);
         outState.putInt("zoneID", zoneID);

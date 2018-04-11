@@ -28,11 +28,9 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
     private static final int DATABASE_VERSION = 214;
     private static PlanetsDatabaseHelper sInstance;
-//    private final Context mContext;
 
     private PlanetsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-//        mContext = context;
     }
 
     public static synchronized PlanetsDatabaseHelper getInstance(Context context) {
@@ -54,8 +52,6 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion,
                           int newVersion) {
-        // clear existing preferences
-//        mContext.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0).edit().clear().apply();
         LocationTable.onUpgrade(database, oldVersion, newVersion);
         PlanetsTable.onUpgrade(database, oldVersion, newVersion);
         SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);

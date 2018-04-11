@@ -70,7 +70,9 @@ public class PlanetTimePicker extends DialogFragment implements TimePickerDialog
         b.putInt("hour", hourOfDay);
         b.putInt("minute", minute);
         data.putExtras(b);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), 0, data);
+        if (getTargetFragment() != null) {
+            getTargetFragment().onActivityResult(getTargetRequestCode(), 0, data);
+        }
     }
 
 }

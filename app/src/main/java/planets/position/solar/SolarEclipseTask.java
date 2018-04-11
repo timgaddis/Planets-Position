@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,7 +78,7 @@ public class SolarEclipseTask extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView tv;
         View v = inflater.inflate(R.layout.progress_dialog_hor, container, false);
@@ -168,16 +169,20 @@ public class SolarEclipseTask extends DialogFragment {
             data2 = solarDataLocal(start, g, back);
             if (data2 == null) {
                 Log.e("Solar Eclipse error", "solarDataLocal data2 error");
-                getTargetFragment().onActivityResult(
-                        SolarEclipse.TASK_FRAGMENT, 100, null);
+                if (getTargetFragment() != null) {
+                    getTargetFragment().onActivityResult(
+                            SolarEclipse.TASK_FRAGMENT, 100, null);
+                }
                 return null;
             }
 
             for (i = 0; i < 10; i++) {
                 if (this.isCancelled()) {
-                    getTargetFragment().onActivityResult(
-                            SolarEclipse.TASK_FRAGMENT,
-                            Activity.RESULT_CANCELED, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(
+                                SolarEclipse.TASK_FRAGMENT,
+                                Activity.RESULT_CANCELED, null);
+                    }
                     break;
                 }
                 values.clear();
@@ -186,8 +191,10 @@ public class SolarEclipseTask extends DialogFragment {
                 data1 = solarDataGlobal(start, back);
                 if (data1 == null) {
                     Log.e("Solar Eclipse error", "solarDataGlobal data1 error");
-                    getTargetFragment().onActivityResult(
-                            SolarEclipse.TASK_FRAGMENT, 200, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(
+                                SolarEclipse.TASK_FRAGMENT, 200, null);
+                    }
                     break;
                 }
                 // create type string use data1[0] (global type)
@@ -274,8 +281,10 @@ public class SolarEclipseTask extends DialogFragment {
                     if (data2 == null) {
                         Log.e("Solar Eclipse error",
                                 "computeEclipses data2a error");
-                        getTargetFragment().onActivityResult(
-                                SolarEclipse.TASK_FRAGMENT, 300, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    SolarEclipse.TASK_FRAGMENT, 300, null);
+                        }
                         break;
                     }
                 } else {

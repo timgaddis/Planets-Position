@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -79,7 +80,7 @@ public class LunarOccultation extends Fragment {
     private double offset, firstDate, lastDate;
     private final double[] g = new double[3];
     private double[] time;
-    private boolean firstRun, allPlanets, newLoc;
+    private boolean allPlanets, newLoc;
     private int planetNum = 1, zoneID, spinnerPos = -1;
     private PlanetsDatabase planetsDB;
     private SharedPreferences settings;
@@ -87,34 +88,34 @@ public class LunarOccultation extends Fragment {
     private JDUTC jdUTC;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lunar_occult, container,
                 false);
 
-//        nameButton = v.findViewById(R.id.nameButton);
         Spinner planetsSpinner = v.findViewById(R.id.planetsSpinner);
         occultList = v.findViewById(R.id.occultList);
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.occult_array));
 
-//        nameButton.setText(planetArray.get(planetNum - 1));
-
         occultList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 // display occultation data
-                FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
+                FragmentTransaction ft = null;
+                if (getFragmentManager() != null) {
+                    ft = getFragmentManager().beginTransaction();
+                }
                 occultData = new LunarOccultData();
                 Bundle args = new Bundle();
                 args.putLong("occultNum", id);
                 args.putInt("zoneID", zoneID);
-//                args.putDouble("offset", offset);
                 occultData.setArguments(args);
-                ft.replace(R.id.content_frame, occultData, "occultData");
-                ft.addToBackStack(null);
-                ft.commit();
+                if (ft != null) {
+                    ft.replace(R.id.content_frame, occultData, "occultData");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
         });
 
@@ -163,18 +164,17 @@ public class LunarOccultation extends Fragment {
         time = jdUTC.getCurrentTime(offset);
 
         mFM = getFragmentManager();
-        taskFragment = (LunarOccultTask) mFM
-                .findFragmentByTag(TASK_FRAGMENT_TAG);
+        if (mFM != null) {
+            taskFragment = (LunarOccultTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
+        }
         if (taskFragment != null) {
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
         } else {
-            if (firstRun) {
-                occultList.setVisibility(View.INVISIBLE);
-                launchTask(time[1], 0.0, planetNum);
-            } else {
-                loadOccults();
-            }
+            loadOccults();
         }
+
+        if (firstDate == 0)
+            firstDate = time[1];
 
         return v;
     }
@@ -193,7 +193,6 @@ public class LunarOccultation extends Fragment {
         // Restore preferences
         settings = getActivity()
                 .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-        firstRun = settings.getBoolean("loFirstRun", true);
         firstDate = settings.getFloat("loFirstDate", 0);
         lastDate = settings.getFloat("loLastDate", 0);
         allPlanets = settings.getBoolean("loAllPlanets", true);
@@ -203,7 +202,7 @@ public class LunarOccultation extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putDouble("offset", offset);
         outState.putInt("zoneID", zoneID);
@@ -245,7 +244,6 @@ public class LunarOccultation extends Fragment {
         int off;
         switch (requestCode) {
             case PLANETS_DIALOG:
-//                nameButton.setText(planetArray.get(resultCode));
                 planetNum = resultCode + 1;
                 if (resultCode == 0) {
                     next.setVisible(false);
@@ -298,7 +296,6 @@ public class LunarOccultation extends Fragment {
                         editor.putBoolean("loAllPlanets", allPlanets);
                         editor.putInt("loPlanetNum", planetNum);
                         editor.apply();
-                        firstRun = false;
                         loadOccults();
                         break;
                     case Activity.RESULT_CANCELED:
@@ -393,7 +390,9 @@ public class LunarOccultation extends Fragment {
                 PlanetDatePicker datePickerFragment = new PlanetDatePicker();
                 datePickerFragment.setTargetFragment(this, DATE_FRAGMENT);
                 datePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                if (getFragmentManager() != null) {
+                    datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -431,36 +430,38 @@ public class LunarOccultation extends Fragment {
                 LunarOccultationTable.COLUMN_LOCAL};
         int[] to = new int[]{R.id.rowOccDate,
                 R.id.rowOccPlanet, R.id.rowOccLocal};
-        cursorAdapter = new SimpleCursorAdapter(getActivity()
-                .getApplicationContext(), R.layout.occult_list_row, loCursor,
-                from, to, 0);
+        cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
+                R.layout.occult_list_row, loCursor, from, to, 0);
         // customize the fields
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int column) {
-                if (column == 1) {// date
-                    TextView tv = (TextView) view;
-                    double date = cursor.getDouble(cursor
-                            .getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_DATE));
-                    Calendar gc = new GregorianCalendar();
-                    gc.setTimeInMillis(jdUTC.jdmills(date));
-                    tv.setText(mDateFormat.format(gc.getTime()));
-                    return true;
-                } else if (column == 2) {// planet
-                    TextView tv = (TextView) view;
-                    int i = cursor.getInt(cursor
-                            .getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_PLANET));
-                    tv.setText(planetArray.get(i - 1));
-                    return true;
-                } else if (column == 3) {// local
-                    ImageView iv = (ImageView) view;
-                    int l = cursor.getInt(cursor
-                            .getColumnIndex(LunarOccultationTable.COLUMN_LOCAL));
-                    if (l > 0)
-                        iv.setVisibility(View.VISIBLE);
-                    else
-                        iv.setVisibility(View.INVISIBLE);
-                    return true;
+                switch (column) {
+                    case 1: {// date
+                        TextView tv = (TextView) view;
+                        double date = cursor.getDouble(cursor
+                                .getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_DATE));
+                        Calendar gc = new GregorianCalendar();
+                        gc.setTimeInMillis(jdUTC.jdmills(date));
+                        tv.setText(mDateFormat.format(gc.getTime()));
+                        return true;
+                    }
+                    case 2: {// planet
+                        TextView tv = (TextView) view;
+                        int i = cursor.getInt(cursor
+                                .getColumnIndex(LunarOccultationTable.COLUMN_OCCULT_PLANET));
+                        tv.setText(planetArray.get(i - 1));
+                        return true;
+                    }
+                    case 3: // local
+                        ImageView iv = (ImageView) view;
+                        int l = cursor.getInt(cursor
+                                .getColumnIndex(LunarOccultationTable.COLUMN_LOCAL));
+                        if (l > 0)
+                            iv.setVisibility(View.VISIBLE);
+                        else
+                            iv.setVisibility(View.INVISIBLE);
+                        return true;
                 }
                 return false;
             }

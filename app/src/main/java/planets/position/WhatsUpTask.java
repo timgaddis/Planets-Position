@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,7 +81,7 @@ public class WhatsUpTask extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.progress_dialog_hor, container,
                 false);
@@ -159,8 +160,10 @@ public class WhatsUpTask extends DialogFragment {
             planetsDB.eraseTable(PlanetsTable.TABLE_NAME);
             for (int i = 0; i < 10; i++) {
                 if (this.isCancelled()) {
-                    getTargetFragment().onActivityResult(0,
-                            Activity.RESULT_CANCELED, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(0,
+                                Activity.RESULT_CANCELED, null);
+                    }
                     break;
                 }
                 values.clear();
@@ -168,11 +171,12 @@ public class WhatsUpTask extends DialogFragment {
                 if (data == null) {
                     Log.e("Position error",
                             "WhatsUpTask - ComputePlanetsTask error");
-                    getTargetFragment().onActivityResult(0, 100, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(0, 100, null);
+                    }
                     break;
                 }
-//                Log.d(PlanetsMain.TAG, "offset task:" + offset);
-//                Log.d(PlanetsMain.TAG, "data[1] task" + data[1]);
+
                 s = riseSet.getSet(time[1], i);
                 if (s < 0) {
                     Log.e("Position error", "ComputePlanetsTask set error");

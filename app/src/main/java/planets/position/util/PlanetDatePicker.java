@@ -70,7 +70,9 @@ public class PlanetDatePicker extends DialogFragment implements DatePickerDialog
         b.putInt("month", monthOfYear);
         b.putInt("day", dayOfMonth);
         data.putExtras(b);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), 0, data);
+        if (getTargetFragment() != null) {
+            getTargetFragment().onActivityResult(getTargetRequestCode(), 0, data);
+        }
     }
 
 }

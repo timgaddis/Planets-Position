@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,7 +78,7 @@ public class LunarEclipseTask extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView tv;
         View v = inflater.inflate(R.layout.progress_dialog_hor, container,
@@ -169,16 +170,20 @@ public class LunarEclipseTask extends DialogFragment {
             data2 = lunarDataLocal(start, g, back);
             if (data2 == null) {
                 Log.e("Lunar Eclipse error", "lunarDataLocal data2 error");
-                getTargetFragment().onActivityResult(
-                        LunarEclipse.TASK_FRAGMENT, 100, null);
+                if (getTargetFragment() != null) {
+                    getTargetFragment().onActivityResult(
+                            LunarEclipse.TASK_FRAGMENT, 100, null);
+                }
                 return null;
             }
 
             for (i = 0; i < 10; i++) {
                 if (this.isCancelled()) {
-                    getTargetFragment().onActivityResult(
-                            LunarEclipse.TASK_FRAGMENT,
-                            Activity.RESULT_CANCELED, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(
+                                LunarEclipse.TASK_FRAGMENT,
+                                Activity.RESULT_CANCELED, null);
+                    }
                     break;
                 }
                 values.clear();
@@ -187,8 +192,10 @@ public class LunarEclipseTask extends DialogFragment {
                 data1 = lunarDataGlobal(start, back);
                 if (data1 == null) {
                     Log.e("Lunar Eclipse error", "lunarDataGlobal data1 error");
-                    getTargetFragment().onActivityResult(
-                            LunarEclipse.TASK_FRAGMENT, 200, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(
+                                LunarEclipse.TASK_FRAGMENT, 200, null);
+                    }
                     break;
                 }
                 // save the beginning time of the eclipse
@@ -252,8 +259,10 @@ public class LunarEclipseTask extends DialogFragment {
                     if (data2 == null) {
                         Log.e("Lunar Eclipse error",
                                 "computeEclipses data2a error");
-                        getTargetFragment().onActivityResult(
-                                LunarEclipse.TASK_FRAGMENT, 300, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    LunarEclipse.TASK_FRAGMENT, 300, null);
+                        }
                         break;
                     }
                 } else {

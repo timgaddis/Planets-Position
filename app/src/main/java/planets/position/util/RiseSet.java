@@ -22,7 +22,7 @@ package planets.position.util;
 
 public class RiseSet {
 
-    private double[] g = new double[3];
+    private double[] g;
 
     // load c library
     static {

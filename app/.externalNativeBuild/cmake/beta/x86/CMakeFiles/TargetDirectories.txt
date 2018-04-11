@@ -1,3 +1,0 @@
-/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86/CMakeFiles/edit_cache.dir
-/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86/CMakeFiles/rebuild_cache.dir
-/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/beta/x86/CMakeFiles/planets_swiss.dir

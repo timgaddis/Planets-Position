@@ -22,6 +22,7 @@ package planets.position;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class Navigation extends Fragment {
     private FragmentListener mCallbacks;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Button seButton, skyButton, whatsupButton, leButton, loButton;
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.content_planets_main,

@@ -69,9 +69,11 @@ public class SettingsDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            array = getArguments().getInt("array");
-            title = getArguments().getInt("title");
-            position = getArguments().getInt("pos");
+            if (getArguments() != null) {
+                array = getArguments().getInt("array");
+                title = getArguments().getInt("title");
+                position = getArguments().getInt("pos");
+            }
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.LocDialogTheme);
         builder.setTitle(title);

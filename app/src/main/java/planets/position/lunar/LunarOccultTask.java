@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,7 +87,7 @@ public class LunarOccultTask extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.progress_dialog_hor, container,
                 false);
@@ -122,10 +123,6 @@ public class LunarOccultTask extends DialogFragment {
             mTask.cancel(false);
         }
     }
-
-//    public Status getStatus() {
-//        return mTask.getStatus();
-//    }
 
     @Override
     public void onResume() {
@@ -196,16 +193,20 @@ public class LunarOccultTask extends DialogFragment {
                 if (data2 == null) {
                     Log.e("Lunar Occultation error",
                             "lunarOccultLocal data2 error");
-                    getTargetFragment().onActivityResult(
-                            LunarOccultation.TASK_FRAGMENT, 100, null);
+                    if (getTargetFragment() != null) {
+                        getTargetFragment().onActivityResult(
+                                LunarOccultation.TASK_FRAGMENT, 100, null);
+                    }
                     return null;
                 }
 
                 for (i = 0; i < 10; i++) {
                     if (this.isCancelled()) {
-                        getTargetFragment().onActivityResult(
-                                LunarOccultation.TASK_FRAGMENT,
-                                Activity.RESULT_CANCELED, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    LunarOccultation.TASK_FRAGMENT,
+                                    Activity.RESULT_CANCELED, null);
+                        }
                         break;
                     }
                     values.clear();
@@ -215,8 +216,10 @@ public class LunarOccultTask extends DialogFragment {
                     if (data1 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultGlobal data1 error");
-                        getTargetFragment().onActivityResult(
-                                LunarOccultation.TASK_FRAGMENT, 200, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    LunarOccultation.TASK_FRAGMENT, 200, null);
+                        }
                         break;
                     }
                     // save the beginning time of the occultation
@@ -271,8 +274,10 @@ public class LunarOccultTask extends DialogFragment {
                         if (data2 == null) {
                             Log.e("Lunar Occultation error",
                                     "computeOccultations data2a error");
-                            getTargetFragment().onActivityResult(
-                                    LunarOccultation.TASK_FRAGMENT, 300, null);
+                            if (getTargetFragment() != null) {
+                                getTargetFragment().onActivityResult(
+                                        LunarOccultation.TASK_FRAGMENT, 300, null);
+                            }
                             break;
                         }
                     } else {
@@ -317,9 +322,11 @@ public class LunarOccultTask extends DialogFragment {
                 publishProgress(0, 2, 0);
                 for (i = 0; i < 8; i++) {
                     if (this.isCancelled()) {
-                        getTargetFragment().onActivityResult(
-                                LunarOccultation.TASK_FRAGMENT,
-                                Activity.RESULT_CANCELED, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    LunarOccultation.TASK_FRAGMENT,
+                                    Activity.RESULT_CANCELED, null);
+                        }
                         break;
                     }
                     values.clear();
@@ -329,8 +336,10 @@ public class LunarOccultTask extends DialogFragment {
                     if (data2 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultLocal data2 error");
-                        getTargetFragment().onActivityResult(
-                                LunarOccultation.TASK_FRAGMENT, 400, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    LunarOccultation.TASK_FRAGMENT, 400, null);
+                        }
                         break;
                     }
 
@@ -339,8 +348,10 @@ public class LunarOccultTask extends DialogFragment {
                     if (data1 == null) {
                         Log.e("Lunar Occultation error",
                                 "lunarOccultGlobal data1 error");
-                        getTargetFragment().onActivityResult(
-                                LunarOccultation.TASK_FRAGMENT, 500, null);
+                        if (getTargetFragment() != null) {
+                            getTargetFragment().onActivityResult(
+                                    LunarOccultation.TASK_FRAGMENT, 500, null);
+                        }
                         break;
                     }
 

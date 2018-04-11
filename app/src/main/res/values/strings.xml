@@ -71,7 +71,6 @@
     <string name="data_all">View All</string>
     <string name="data_transit">Meridian Transit</string>
     <string name="below_hor">Object below horizon</string>
-    <string name="planet_select">Select a planet.</string>
     <!-- Solar/Lunar Eclipse -->
     <string name="ecl_sunrise">Sunrise</string>
     <string name="ecl_sunset">Sunset</string>

@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -86,7 +87,7 @@ public class WhatsUpNow extends Fragment {
             R.drawable.ic_planet_pluto};
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_whats_up, container, false);
         updateText = v.findViewById(R.id.lastUpdateText);
@@ -99,12 +100,16 @@ public class WhatsUpNow extends Fragment {
         rgLayout.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.riseRadioButton) {
-                    viewIndex = 0;
-                } else if (checkedId == R.id.setRadioButton) {
-                    viewIndex = 1;
-                } else if (checkedId == R.id.allRadioButton) {
-                    viewIndex = 2;
+                switch (checkedId) {
+                    case R.id.riseRadioButton:
+                        viewIndex = 0;
+                        break;
+                    case R.id.setRadioButton:
+                        viewIndex = 1;
+                        break;
+                    case R.id.allRadioButton:
+                        viewIndex = 2;
+                        break;
                 }
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("viewIndex", viewIndex);
@@ -116,8 +121,7 @@ public class WhatsUpNow extends Fragment {
         planetsList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
                 WhatsUpData data = new WhatsUpData();
                 Bundle args = new Bundle();
                 args.putLong("planetNum", id);
@@ -135,6 +139,7 @@ public class WhatsUpNow extends Fragment {
         }
 
         mFM = getFragmentManager();
+        assert mFM != null;
         taskFragment = (WhatsUpTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
 
         loadLocation();
@@ -292,30 +297,33 @@ public class WhatsUpNow extends Fragment {
         gc.clear();
         gc.setTimeInMillis(lastUpdate);
         planetsDB.open();
-        if (index == 0) {
-            plCursor = planetsDB.getPlanetsRise();
-            updateText.setText(String.format("What's rising on %s @ %s",
-                    mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
-            riseRadio.setChecked(true);
-        } else if (index == 1) {
-            plCursor = planetsDB.getPlanetsSet();
-            updateText.setText(String.format("What's setting on %s @ %s",
-                    mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
-            setRadio.setChecked(true);
-        } else {
-            plCursor = planetsDB.getPlanetsAll();
-            updateText.setText(String.format("All Planets on %s @ %s",
-                    mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
-            allRadio.setChecked(true);
+        switch (index) {
+            case 0:
+                plCursor = planetsDB.getPlanetsRise();
+                updateText.setText(String.format("What's rising on %s @ %s",
+                        mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
+                riseRadio.setChecked(true);
+                break;
+            case 1:
+                plCursor = planetsDB.getPlanetsSet();
+                updateText.setText(String.format("What's setting on %s @ %s",
+                        mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
+                setRadio.setChecked(true);
+                break;
+            default:
+                plCursor = planetsDB.getPlanetsAll();
+                updateText.setText(String.format("All Planets on %s @ %s",
+                        mDateFormat.format(gc.getTime()), mTimeFormat.format(gc.getTime())));
+                allRadio.setChecked(true);
+                break;
         }
         String[] from = new String[]{PlanetsTable.COLUMN_NUMBER,
                 PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
                 PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME};
         int[] to = new int[]{R.id.rowImage, R.id.rowName, R.id.rowRiseSet,
                 R.id.rowRSDate, R.id.rowRSTime};
-        cursorAdapter = new SimpleCursorAdapter(getActivity()
-                .getApplicationContext(), R.layout.whats_up_row, plCursor,
-                from, to, 0);
+        cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
+                R.layout.whats_up_row, plCursor, from, to, 0);
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int column) {
@@ -351,7 +359,6 @@ public class WhatsUpNow extends Fragment {
                     } else {
                         time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
                     }
-//                    Log.d(PlanetsMain.TAG, "what's up date:" + time);
                     c.clear();
                     c.setTimeInMillis(jdUTC.jdmills(time, offset));
                     tv.setText(mDateFormat.format(c.getTime()));
@@ -364,7 +371,6 @@ public class WhatsUpNow extends Fragment {
                     } else {
                         time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
                     }
-//                    Log.d(PlanetsMain.TAG, "what's up time:" + time);
                     c.clear();
                     c.setTimeInMillis(jdUTC.jdmills(time, offset));
                     tv.setText(mTimeFormat.format(c.getTime()));

@@ -22,6 +22,7 @@ package planets.position;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
@@ -95,6 +96,25 @@ public class PlanetsMain extends AppCompatActivity
 
         settings = getSharedPreferences(MAIN_PREFS, 0);
 
+        PackageInfo packageInfo = null;
+        int versionNumber;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (packageInfo != null) {
+            versionNumber = packageInfo.versionCode;
+        } else {
+            versionNumber = -1;
+        }
+        if (!settings.contains("appVersion")) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.clear();
+            editor.putInt("appVerion", versionNumber);
+            editor.apply();
+        }
+
         loadLocation();
 
         fm = getSupportFragmentManager();
@@ -162,22 +182,31 @@ public class PlanetsMain extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_solar_ecl) {
-            selectItem(1, false, false);
-        } else if (id == R.id.nav_lunar_ecl) {
-            selectItem(3, false, false);
-        } else if (id == R.id.nav_lunar_occ) {
-            selectItem(4, false, false);
-        } else if (id == R.id.nav_sky_pos) {
-            selectItem(5, false, false);
-        } else if (id == R.id.nav_whats_up) {
-            selectItem(6, false, false);
-        } else if (id == R.id.nav_location) {
-            selectItem(7, false, false);
-        } else if (id == R.id.nav_settings) {
-            selectItem(8, false, false);
-        } else if (id == R.id.nav_about) {
-            selectItem(9, false, false);
+        switch (id) {
+            case R.id.nav_solar_ecl:
+                selectItem(1, false, false);
+                break;
+            case R.id.nav_lunar_ecl:
+                selectItem(3, false, false);
+                break;
+            case R.id.nav_lunar_occ:
+                selectItem(4, false, false);
+                break;
+            case R.id.nav_sky_pos:
+                selectItem(5, false, false);
+                break;
+            case R.id.nav_whats_up:
+                selectItem(6, false, false);
+                break;
+            case R.id.nav_location:
+                selectItem(7, false, false);
+                break;
+            case R.id.nav_settings:
+                selectItem(8, false, false);
+                break;
+            case R.id.nav_about:
+                selectItem(9, false, false);
+                break;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

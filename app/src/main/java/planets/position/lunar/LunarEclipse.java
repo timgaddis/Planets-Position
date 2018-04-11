@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -80,7 +81,7 @@ public class LunarEclipse extends Fragment {
     private JDUTC jdUTC;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_eclipse, container, false);
         lunarList = v.findViewById(R.id.eclipseList);
@@ -89,16 +90,20 @@ public class LunarEclipse extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 // display eclipse data
-                FragmentTransaction ft = getFragmentManager()
-                        .beginTransaction();
+                FragmentTransaction ft = null;
+                if (getFragmentManager() != null) {
+                    ft = getFragmentManager().beginTransaction();
+                }
                 eclipseData = new LunarEclipseData();
                 Bundle args = new Bundle();
                 args.putLong("lunarNum", id);
                 args.putInt("zoneID", zoneID);
                 eclipseData.setArguments(args);
-                ft.replace(R.id.content_frame, eclipseData, "eclipseData");
-                ft.addToBackStack(null);
-                ft.commit();
+                if (ft != null) {
+                    ft.replace(R.id.content_frame, eclipseData, "eclipseData");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
         });
 
@@ -119,8 +124,9 @@ public class LunarEclipse extends Fragment {
         time = jdUTC.getCurrentTime(offset);
 
         mFM = getFragmentManager();
-        taskFragment = (LunarEclipseTask) mFM
-                .findFragmentByTag(TASK_FRAGMENT_TAG);
+        if (mFM != null) {
+            taskFragment = (LunarEclipseTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
+        }
 
         if (taskFragment != null) {
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
@@ -140,7 +146,7 @@ public class LunarEclipse extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         jdUTC = new JDUTC();
-        tzDB=new TimeZoneDB(getActivity().getApplicationContext());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         settings = getActivity()
@@ -153,7 +159,7 @@ public class LunarEclipse extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putDouble("offset", offset);
         outState.putInt("zoneID", zoneID);
@@ -279,7 +285,9 @@ public class LunarEclipse extends Fragment {
                 datePickerFragment = new PlanetDatePicker();
                 datePickerFragment.setTargetFragment(this, DATE_FRAGMENT);
                 datePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                if (getFragmentManager() != null) {
+                    datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -297,12 +305,15 @@ public class LunarEclipse extends Fragment {
     }
 
     private void launchTask(double time, double back) {
-        taskFragment = new LunarEclipseTask();
-        taskFragment.setData(taskFragment.new ComputeEclipseTask(), g, time,
-                back);
-        taskFragment.setTargetFragment(this, TASK_FRAGMENT);
-        taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        taskFragment.show(mFM, TASK_FRAGMENT_TAG);
+        taskFragment = (LunarEclipseTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
+        if (taskFragment == null) {
+            taskFragment = new LunarEclipseTask();
+            taskFragment.setData(taskFragment.new ComputeEclipseTask(), g, time,
+                    back);
+            taskFragment.setTargetFragment(this, TASK_FRAGMENT);
+            taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            taskFragment.show(mFM, TASK_FRAGMENT_TAG);
+        }
     }
 
     private void loadEclipses() {
@@ -322,42 +333,47 @@ public class LunarEclipse extends Fragment {
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int column) {
-                if (column == 1) {// type image
-                    ImageView iv = (ImageView) view;
-                    int val = cursor.getInt(cursor
-                            .getColumnIndex(LunarEclipseTable.COLUMN_GLOBAL_TYPE));
-                    if ((val & 4) == 4) // LE_ECL_TOTAL
-                        iv.setImageResource(R.drawable.ic_lunar_total);
-                    else if ((val & 64) == 64) // LE_ECL_PENUMBRAL
-                        iv.setImageResource(R.drawable.ic_lunar_penumbral);
-                    else if ((val & 16) == 16) // LE_ECL_PARTIAL
-                        iv.setImageResource(R.drawable.ic_lunar_partial);
-                    else
-                        iv.setImageResource(R.drawable.ic_planet_moon);
-                    return true;
-                } else if (column == 2) {// date
-                    TextView tv = (TextView) view;
-                    double date = cursor.getDouble(cursor
-                            .getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_DATE));
-                    Calendar gc = new GregorianCalendar();
-                    gc.setTimeInMillis(jdUTC.jdmills(date));
-                    tv.setText(mDateFormat.format(gc.getTime()));
-                    return true;
-                } else if (column == 3) {// type
-                    TextView tv = (TextView) view;
-                    String type = cursor.getString(cursor
-                            .getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_TYPE));
-                    tv.setText(type);
-                    return true;
-                } else if (column == 4) {// local
-                    ImageView iv = (ImageView) view;
-                    int l = cursor.getInt(cursor
-                            .getColumnIndex(LunarEclipseTable.COLUMN_LOCAL));
-                    if (l > 0)
-                        iv.setVisibility(View.VISIBLE);
-                    else
-                        iv.setVisibility(View.INVISIBLE);
-                    return true;
+                switch (column) {
+                    case 1: {// type image
+                        ImageView iv = (ImageView) view;
+                        int val = cursor.getInt(cursor
+                                .getColumnIndex(LunarEclipseTable.COLUMN_GLOBAL_TYPE));
+                        if ((val & 4) == 4) // LE_ECL_TOTAL
+                            iv.setImageResource(R.drawable.ic_lunar_total);
+                        else if ((val & 64) == 64) // LE_ECL_PENUMBRAL
+                            iv.setImageResource(R.drawable.ic_lunar_penumbral);
+                        else if ((val & 16) == 16) // LE_ECL_PARTIAL
+                            iv.setImageResource(R.drawable.ic_lunar_partial);
+                        else
+                            iv.setImageResource(R.drawable.ic_planet_moon);
+                        return true;
+                    }
+                    case 2: {// date
+                        TextView tv = (TextView) view;
+                        double date = cursor.getDouble(cursor
+                                .getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_DATE));
+                        Calendar gc = new GregorianCalendar();
+                        gc.setTimeInMillis(jdUTC.jdmills(date));
+                        tv.setText(mDateFormat.format(gc.getTime()));
+                        return true;
+                    }
+                    case 3: {// type
+                        TextView tv = (TextView) view;
+                        String type = cursor.getString(cursor
+                                .getColumnIndex(LunarEclipseTable.COLUMN_ECLIPSE_TYPE));
+                        tv.setText(type);
+                        return true;
+                    }
+                    case 4: {// local
+                        ImageView iv = (ImageView) view;
+                        int l = cursor.getInt(cursor
+                                .getColumnIndex(LunarEclipseTable.COLUMN_LOCAL));
+                        if (l > 0)
+                            iv.setVisibility(View.VISIBLE);
+                        else
+                            iv.setVisibility(View.INVISIBLE);
+                        return true;
+                    }
                 }
                 return false;
             }

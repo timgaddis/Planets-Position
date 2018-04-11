@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -83,7 +84,7 @@ public class SkyPosition extends Fragment {
     public native double[] planetPosData(double d1, double d2, int p, double[] loc);
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_sky_position, container, false);
@@ -128,7 +129,9 @@ public class SkyPosition extends Fragment {
                 timePickerFragment.setData(mHour, mMinute);
                 timePickerFragment.setTargetFragment(SkyPosition.this, TIME_DIALOG);
                 timePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                timePickerFragment.show(getFragmentManager(), "timePickerDialog");
+                if (getFragmentManager() != null) {
+                    timePickerFragment.show(getFragmentManager(), "timePickerDialog");
+                }
 
             }
         });
@@ -140,7 +143,9 @@ public class SkyPosition extends Fragment {
                 datePickerFragment.setData(mYear, mMonth, mDay);
                 datePickerFragment.setTargetFragment(SkyPosition.this, DATE_DIALOG);
                 datePickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
-                datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                if (getFragmentManager() != null) {
+                    datePickerFragment.show(getFragmentManager(), "datePickerDialog");
+                }
 
             }
         });
@@ -204,14 +209,19 @@ public class SkyPosition extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_live_position:
                 // launch live position activity
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = null;
+                if (getFragmentManager() != null) {
+                    ft = getFragmentManager().beginTransaction();
+                }
                 LivePosition livePos = new LivePosition();
                 Bundle args = new Bundle();
                 args.putInt("planetNum", planetNum);
                 livePos.setArguments(args);
-                ft.replace(R.id.content_frame, livePos, "livePosition");
-                ft.addToBackStack(null);
-                ft.commit();
+                if (ft != null) {
+                    ft.replace(R.id.content_frame, livePos, "livePosition");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -219,7 +229,7 @@ public class SkyPosition extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("hour", mHour);
         outState.putInt("minute", mMinute);
         outState.putInt("day", mDay);

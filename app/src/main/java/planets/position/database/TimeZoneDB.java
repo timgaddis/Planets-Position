@@ -38,7 +38,7 @@ public class TimeZoneDB extends SQLiteOpenHelper {
     private final Context myContext;
     private SQLiteDatabase timezoneDatabase;
 
-    private String[] timezoneColumns = {"gmt_offset", "dst"};
+    private final String[] timezoneColumns = {"gmt_offset", "dst"};
 
     public TimeZoneDB(Context context) {
         super(context, DB_NAME, null, 1);

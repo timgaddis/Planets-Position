@@ -316,8 +316,8 @@ public class LunarOccultTask extends DialogFragment {
                 }
             } else {
                 // compute occultations for all planets
-                firstEcl = -1;
-                lastEcl = -1;
+                firstEcl = start;
+                lastEcl = start;
                 allPlanets = true;
                 publishProgress(0, 2, 0);
                 for (i = 0; i < 8; i++) {

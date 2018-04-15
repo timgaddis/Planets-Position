@@ -22,7 +22,6 @@ package planets.position;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -46,6 +45,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import planets.position.database.PlanetsDatabase;
 import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
@@ -63,7 +63,6 @@ public class SkyPosition extends Fragment {
     private TextView pAzText, pAltText, pBelowText, pDistText, pTransitText;
     private int mHour, mMinute, mDay, mMonth, mYear, zoneID, planetNum = 0;
     private DateFormat mDateFormat, mTimeFormat;
-    private double latitude, longitude, elevation;
     private double offset;
     private final double[] g = new double[3];
     private JDUTC jdUTC;
@@ -71,8 +70,8 @@ public class SkyPosition extends Fragment {
     private TimeZoneDB tzDB;
     private PlanetDatePicker datePickerFragment;
     private PlanetTimePicker timePickerFragment;
-    private SharedPreferences settings;
     private FragmentListener mCallbacks;
+    private PlanetsDatabase planetsDB;
     private PositionFormat pf;
 
     // load c library
@@ -151,10 +150,6 @@ public class SkyPosition extends Fragment {
         });
 
         loadLocation();
-        g[1] = latitude;
-        g[0] = longitude;
-        g[2] = elevation;
-
         riseSet = new RiseSet(g);
 
         if (savedInstanceState == null) {
@@ -191,8 +186,7 @@ public class SkyPosition extends Fragment {
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat
                 .getTimeFormat(getActivity().getApplicationContext());
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         setHasOptionsMenu(true);
         setRetainInstance(true);
@@ -275,16 +269,16 @@ public class SkyPosition extends Fragment {
         }
     }
 
-    /**
-     * Get location from Shared Preferences
-     */
     private void loadLocation() {
-        // read location from Shared Preferences
-        latitude = settings.getFloat("latitude", 0);
-        longitude = settings.getFloat("longitude", 0);
-        elevation = settings.getFloat("elevation", 0);
-        offset = settings.getFloat("offset", 0);
-        zoneID = settings.getInt("zoneID", 0);
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        g[1] = loc.getDouble("latitude");
+        g[0] = loc.getDouble("longitude");
+        g[2] = loc.getDouble("elevation");
+        offset = loc.getDouble("offset");
+        zoneID = loc.getInt("zoneID");
     }
 
     // updates the date and time in the Buttons

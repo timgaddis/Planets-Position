@@ -36,7 +36,6 @@ public class UserTimezoneDialog extends DialogFragment {
 
     private TimezoneDialogListener mListener;
     private TimeZoneDB timeZoneDB;
-//    private static final String TAG = "UserTimezoneDialog";
 
     public interface TimezoneDialogListener {
         void onZoneSelection(int id, String name);
@@ -73,11 +72,9 @@ public class UserTimezoneDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        Log.d(TAG, "onCreateDialog");
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.LocDialogTheme);
         alert.setTitle(R.string.loc_tz_title);
         timeZoneDB.open();
-//        Log.d(TAG, "db open");
         final Cursor c = timeZoneDB.getZoneList();
         c.moveToFirst();
         alert.setCursor(c, new DialogInterface.OnClickListener() {
@@ -90,7 +87,6 @@ public class UserTimezoneDialog extends DialogFragment {
             }
         }, "zone_name");
         timeZoneDB.close();
-//        Log.d(TAG, "db closed");
         return alert.create();
     }
 }

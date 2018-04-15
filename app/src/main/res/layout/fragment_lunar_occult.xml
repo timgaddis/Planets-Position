@@ -24,14 +24,6 @@
     android:background="@color/main_back"
     android:orientation="vertical">
 
-    <!--<Button-->
-    <!--android:id="@+id/nameButton"-->
-    <!--style="?android:attr/buttonBarButtonStyle"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/main_back"-->
-    <!--android:textColor="@color/button_text"-->
-    <!--android:textSize="@dimen/label_text" />-->
     <Spinner
         android:id="@+id/planetsSpinner"
         android:layout_width="wrap_content"

@@ -61,7 +61,6 @@ public class PlanetsMain extends AppCompatActivity
 
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private SharedPreferences settings;
     private FileCopyTask copyTask;
     private PlanetsDatabase planetsDB;
     private int fragIndex;
@@ -94,7 +93,7 @@ public class PlanetsMain extends AppCompatActivity
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
-        settings = getSharedPreferences(MAIN_PREFS, 0);
+        SharedPreferences settings = getSharedPreferences(MAIN_PREFS, 0);
 
         PackageInfo packageInfo = null;
         int versionNumber;
@@ -216,22 +215,16 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     private void loadLocation() {
-        if (settings.contains("latitude")) {
-            // read location from Shared Preferences
-            latitude = settings.getFloat("latitude", 0);
-            longitude = settings.getFloat("longitude", 0);
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        if (!loc.isEmpty()) {
+            latitude = loc.getDouble("latitude");
+            longitude = loc.getDouble("longitude");
         } else {
-            // Read location from database
-            planetsDB.open();
-            Bundle loc = planetsDB.getLocation();
-            planetsDB.close();
-            if (!loc.isEmpty()) {
-                latitude = loc.getDouble("latitude");
-                longitude = loc.getDouble("longitude");
-            } else {
-                latitude = -91.0;
-                longitude = 0.0;
-            }
+            latitude = -91.0;
+            longitude = 0.0;
         }
     }
 
@@ -271,7 +264,7 @@ public class PlanetsMain extends AppCompatActivity
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
-            case 6: // What's Up Now
+            case 6: // Rise / Set
                 if (longitude == 0)
                     loadLocation();
                 ft.replace(R.id.content_frame, new WhatsUpNow());
@@ -330,7 +323,7 @@ public class PlanetsMain extends AppCompatActivity
             case 5: // Sky Position
                 navigationView.getMenu().findItem(R.id.nav_sky_pos).setChecked(true);
                 break;
-            case 6: // What's Up Now
+            case 6: // Rise / Set
                 navigationView.getMenu().findItem(R.id.nav_whats_up).setChecked(true);
                 break;
             case 7: // User Location

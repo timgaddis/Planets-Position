@@ -173,7 +173,6 @@ public class FileCopyTask extends DialogFragment {
 
         File dir = new File(p);
         if (dir.mkdirs() || dir.isDirectory()) {
-//            Log.d(PlanetsMain.TAG, "File: " + dir.getAbsolutePath() + File.separator + filename);
             File f = new File(dir.getAbsolutePath() + File.separator + filename);
             if (!f.exists()) {
                 myInput = getActivity().getAssets().open(filename);

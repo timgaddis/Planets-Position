@@ -121,7 +121,6 @@ public class SolarEclipse extends Fragment {
             newLoc = savedInstanceState.getBoolean("newLoc");
         }
 
-        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
         time = jdUTC.getCurrentTime(offset);
 
         mFM = getFragmentManager();
@@ -151,9 +150,8 @@ public class SolarEclipse extends Fragment {
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
-
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         // Restore preferences
         firstRun = settings.getBoolean("seFirstRun", true);
         firstDate = settings.getFloat("seFirstDate", 0);
@@ -297,13 +295,16 @@ public class SolarEclipse extends Fragment {
     }
 
     private void loadLocation() {
-        // read location from Shared Preferences
-        g[1] = settings.getFloat("latitude", 0);
-        g[0] = settings.getFloat("longitude", 0);
-        g[2] = settings.getFloat("elevation", 0);
-        offset = settings.getFloat("offset", 0);
-        zoneID = settings.getInt("zoneID", 0);
-        newLoc = settings.getBoolean("newLocation", true);
+        newLoc = true;
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        g[1] = loc.getDouble("latitude");
+        g[0] = loc.getDouble("longitude");
+        g[2] = loc.getDouble("elevation");
+        offset = loc.getDouble("offset");
+        zoneID = loc.getInt("zoneID");
     }
 
     private void launchTask(double time, double back) {

@@ -35,7 +35,7 @@ class CustomSettingsAdapter extends BaseAdapter {
     private ArrayList<Setting> settingsList;
     private final LayoutInflater mInflater;
 
-    public CustomSettingsAdapter(Context c, ArrayList<Setting> list) {
+    CustomSettingsAdapter(Context c, ArrayList<Setting> list) {
         settingsList = list;
         mInflater = LayoutInflater.from(c);
     }

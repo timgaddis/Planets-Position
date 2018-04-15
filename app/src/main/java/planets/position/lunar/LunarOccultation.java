@@ -129,10 +129,17 @@ public class LunarOccultation extends Fragment {
                 R.array.occult_array, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_drop_item);
         planetsSpinner.setAdapter(adapter);
-
+        planetsSpinner.setSelection(planetNum - 1);
         planetsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    next.setVisible(false);
+                    previous.setVisible(false);
+                } else {
+                    next.setVisible(true);
+                    previous.setVisible(true);
+                }
                 if (spinnerPos != position) {
                     spinnerPos = position;
                     planetNum = position + 1;
@@ -182,22 +189,17 @@ public class LunarOccultation extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         jdUTC = new JDUTC();
-
         // Get date and time formats from system
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
-
         // Restore preferences
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         firstDate = settings.getFloat("loFirstDate", 0);
         lastDate = settings.getFloat("loLastDate", 0);
         allPlanets = settings.getBoolean("loAllPlanets", true);
         planetNum = settings.getInt("loPlanetNum", 1);
-
         setHasOptionsMenu(true);
     }
 
@@ -400,13 +402,16 @@ public class LunarOccultation extends Fragment {
     }
 
     private void loadLocation() {
-        // read location from Shared Preferences
-        g[1] = settings.getFloat("latitude", 0);
-        g[0] = settings.getFloat("longitude", 0);
-        g[2] = settings.getFloat("elevation", 0);
-        offset = settings.getFloat("offset", 0);
-        newLoc = settings.getBoolean("newLocation", true);
-        zoneID = settings.getInt("zoneID", 0);
+        newLoc = true;
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        g[1] = loc.getDouble("latitude");
+        g[0] = loc.getDouble("longitude");
+        g[2] = loc.getDouble("elevation");
+        offset = loc.getDouble("offset");
+        zoneID = loc.getInt("zoneID");
     }
 
     private void launchTask(double time, double back, int planet) {

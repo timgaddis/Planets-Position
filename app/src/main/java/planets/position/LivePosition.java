@@ -24,7 +24,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -39,6 +38,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import planets.position.database.PlanetsDatabase;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
@@ -54,8 +54,8 @@ public class LivePosition extends Fragment {
     private Calendar utc;
     private JDUTC jdUTC;
     private PositionFormat pf;
-    private SharedPreferences settings;
     private FragmentListener mCallbacks;
+    private PlanetsDatabase planetsDB;
     private Intent intent;
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -69,11 +69,8 @@ public class LivePosition extends Fragment {
 
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        intent = new Intent(getActivity().getApplicationContext(),
-                LivePositionService.class);
-
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        intent = new Intent(getActivity().getApplicationContext(), LivePositionService.class);
+        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
 
         if (savedInstanceState == null) {
             // load data passed from Sky Position activity
@@ -157,8 +154,7 @@ public class LivePosition extends Fragment {
         intent.putExtra("elevation", g[2]);
         intent.putExtra("planetNum", planetNum);
         getActivity().getApplicationContext().startService(intent);
-        getActivity().getApplicationContext().registerReceiver(
-                broadcastReceiver,
+        getActivity().getApplicationContext().registerReceiver(broadcastReceiver,
                 new IntentFilter(LivePositionService.BROADCAST_ACTION));
     }
 
@@ -171,11 +167,14 @@ public class LivePosition extends Fragment {
     }
 
     private void loadLocation() {
-        // read location from Shared Preferences
-        g[1] = settings.getFloat("latitude", 0);
-        g[0] = settings.getFloat("longitude", 0);
-        g[2] = settings.getFloat("elevation", 0);
-        offset = settings.getFloat("offset", 0);
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        g[1] = loc.getDouble("latitude");
+        g[0] = loc.getDouble("longitude");
+        g[2] = loc.getDouble("elevation");
+        offset = loc.getDouble("offset");
     }
 
     private void updateUI(Intent intent) {

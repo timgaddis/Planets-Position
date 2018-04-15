@@ -34,7 +34,7 @@ public class TimeZoneDB extends SQLiteOpenHelper {
     private final String CITIES_TABLE = "worldcities";
     private final String ZONE_TABLE = "zone";
 
-    public final static String DB_NAME = "timezoneDB.db";
+    public final static String DB_NAME = "timezone.db";
     private final Context myContext;
     private SQLiteDatabase timezoneDatabase;
 
@@ -94,10 +94,8 @@ public class TimeZoneDB extends SQLiteOpenHelper {
         c.moveToFirst();
         if (c.getCount() > 0) {
             offset = c.getInt(c.getColumnIndex("gmt_offset"));
-//            dst = c.getInt(c.getColumnIndex("dst"));
         } else {
             offset = -1;
-//            dst = -1;
         }
         c.close();
         return offset;

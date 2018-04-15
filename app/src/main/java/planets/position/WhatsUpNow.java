@@ -121,16 +121,21 @@ public class WhatsUpNow extends Fragment {
         planetsList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = null;
+                if (getFragmentManager() != null) {
+                    ft = getFragmentManager().beginTransaction();
+                }
                 WhatsUpData data = new WhatsUpData();
                 Bundle args = new Bundle();
                 args.putLong("planetNum", id);
                 args.putLong("dateTime", lastUpdate);
                 args.putInt("zoneID", zoneID);
                 data.setArguments(args);
-                ft.replace(R.id.content_frame, data);
-                ft.addToBackStack(null);
-                ft.commit();
+                if (ft != null) {
+                    ft.replace(R.id.content_frame, data);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
         });
 
@@ -180,12 +185,8 @@ public class WhatsUpNow extends Fragment {
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat
                 .getTimeFormat(getActivity().getApplicationContext());
-
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         lastUpdate = settings.getLong("lastUpdate", 0);
-
         setHasOptionsMenu(true);
         setRetainInstance(true);
     }
@@ -278,12 +279,15 @@ public class WhatsUpNow extends Fragment {
     }
 
     private void loadLocation() {
-        // read location from Shared Preferences
-        g[1] = settings.getFloat("latitude", 0);
-        g[0] = settings.getFloat("longitude", 0);
-        g[2] = settings.getFloat("elevation", 0);
-        zoneID = settings.getInt("zoneID", 0);
-        newLoc = settings.getBoolean("newLocation", true);
+        newLoc = true;
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        g[1] = loc.getDouble("latitude");
+        g[0] = loc.getDouble("longitude");
+        g[2] = loc.getDouble("elevation");
+        zoneID = loc.getInt("zoneID");
         tzDB.open();
         int off = tzDB.getZoneOffset(zoneID, Calendar.getInstance().getTimeInMillis() / 1000L);
         tzDB.close();

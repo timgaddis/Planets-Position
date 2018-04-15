@@ -260,31 +260,13 @@ public class LunarOccultData extends Fragment {
                 loEndText.setText("");
             }
             temp = b.getDouble(LunarOccultationTable.COLUMN_MOONS_AZ, 0);
-            if (temp > 0) {
-                loMoonSAzText.setText(pf.formatAZ(temp));
-            } else {
-                loMoonSAzText.setText("");
-            }
+            loMoonSAzText.setText(pf.formatAZ(temp));
             temp = b.getDouble(LunarOccultationTable.COLUMN_MOONS_ALT, 0);
-            if (temp > 0) {
-                loMoonSAltText.setText(pf.formatALT(temp));
-            } else {
-                loMoonSAltText.setText("");
-            }
+            loMoonSAltText.setText(pf.formatALT(temp));
             temp = b.getDouble(LunarOccultationTable.COLUMN_MOONE_AZ, 0);
             loMoonEAzText.setText(pf.formatAZ(temp));
-//            if (temp > 0) {
-//                loMoonEAzText.setText(pf.formatAZ(temp));
-//            } else {
-//                loMoonEAzText.setText("");
-//            }
             temp = b.getDouble(LunarOccultationTable.COLUMN_MOONE_ALT, 0);
             loMoonEAltText.setText(pf.formatALT(temp));
-//            if (temp > 0) {
-//                loMoonEAltText.setText(pf.formatALT(temp));
-//            } else {
-//                loMoonEAltText.setText("");
-//            }
         } else {
             // global occultation
             temp = b.getDouble(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, 0);

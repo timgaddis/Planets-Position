@@ -211,17 +211,19 @@ public class SolarEclipseTask extends DialogFragment {
                     eclType = "Other";
 
                 // save the beginning time of the eclipse
-                if (i == 0)
+                if (i == 0) {
                     if (back == 0)
                         firstEcl = data1[3];
                     else
                         lastEcl = data1[4];
+                }
                 // save the ending time of the eclipse
-                if (i == 9)
+                if (i == 9) {
                     if (back == 0)
                         lastEcl = data1[4];
                     else
                         firstEcl = data1[3];
+                }
 
                 if (Math.abs(data2[1] - data1[1]) <= 1.0) {
                     // if local eclipse time is within one day of the global

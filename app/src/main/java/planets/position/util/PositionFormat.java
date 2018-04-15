@@ -28,11 +28,11 @@ import java.util.Locale;
 import planets.position.PlanetsMain;
 
 public class PositionFormat {
-    private final SharedPreferences sharedPref;
+    private final SharedPreferences settings;
 
     public PositionFormat(Activity activity) {
         super();
-        sharedPref = activity.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = activity.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
     }
 
     // Input value examples
@@ -53,7 +53,7 @@ public class PositionFormat {
         Locale locale = Locale.getDefault();
         double ra, ras;
         int rah, ram;
-        index = sharedPref.getInt("raFormat", 0);
+        index = settings.getInt("raFormat", 0);
         switch (index) {
             case 0: // HH MM SS
                 ra = value;
@@ -92,7 +92,7 @@ public class PositionFormat {
         double dec, decs;
         int decd, decm;
         char decSign;
-        index = sharedPref.getInt("decFormat", 0);
+        index = settings.getInt("decFormat", 0);
         switch (index) {
             case 0: // DD MM SS
                 dec = value;
@@ -154,7 +154,7 @@ public class PositionFormat {
         double az, azs;
         int azd, azm;
         Locale locale = Locale.getDefault();
-        index = sharedPref.getInt("azFormat", 0);
+        index = settings.getInt("azFormat", 0);
         switch (index) {
             case 0: // DDD MM SS
                 az = value;
@@ -221,7 +221,7 @@ public class PositionFormat {
         Locale locale = Locale.getDefault();
         double alt, alts;
         int altd, altm;
-        index = sharedPref.getInt("altFormat", 0);
+        index = settings.getInt("altFormat", 0);
         switch (index) {
             case 0: // DD MM SS
                 alt = value;

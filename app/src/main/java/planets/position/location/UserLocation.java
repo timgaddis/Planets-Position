@@ -24,7 +24,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -58,7 +57,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import planets.position.BuildConfig;
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LocationTable;
 import planets.position.database.PlanetsDatabase;
@@ -82,7 +80,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private double latitude, longitude, elevation, offset;
     private String zoneName;
     private boolean edit = false, startLoc = false;
-    private SharedPreferences settings;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
 
@@ -112,7 +109,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         timezoneEdit.setInputType(InputType.TYPE_NULL);
         timezoneEdit.setFocusable(false);
 
-        settings = getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         tzDB = new TimeZoneDB(getApplicationContext());
         planetsDB = new PlanetsDatabase(getApplicationContext());
@@ -282,28 +278,16 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     }
 
     private void loadLocation() {
-
-        if (settings.contains("latitude")) {
-            // read location from Shared Preferences
-            latitude = settings.getFloat("latitude", 0);
-            longitude = settings.getFloat("longitude", 0);
-            elevation = settings.getFloat("elevation", 0);
-            zoneName = settings.getString("zoneName", "");
-            zoneID = settings.getInt("zoneID", 0);
-            offset = settings.getFloat("offset", 0);
-        } else {
-            // Read location from database
-            planetsDB.open();
-            Bundle loc = planetsDB.getLocation();
-            planetsDB.close();
-
-            latitude = loc.getDouble("latitude");
-            longitude = loc.getDouble("longitude");
-            elevation = loc.getDouble("elevation");
-            offset = loc.getDouble("offset");
-            zoneID = loc.getInt("zoneID");
-            zoneName = loc.getString("zoneName");
-        }
+        // Read location from database
+        planetsDB.open();
+        Bundle loc = planetsDB.getLocation();
+        planetsDB.close();
+        latitude = loc.getDouble("latitude");
+        longitude = loc.getDouble("longitude");
+        elevation = loc.getDouble("elevation");
+        offset = loc.getDouble("offset");
+        zoneID = loc.getInt("zoneID");
+        zoneName = loc.getString("zoneName");
         displayLocation();
     }
 
@@ -327,19 +311,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private boolean saveLocation() {
 
         long date = Calendar.getInstance().getTimeInMillis();
-
-        // save to Shared Preferences
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putFloat("latitude", (float) latitude);
-        editor.putFloat("longitude", (float) longitude);
-        editor.putFloat("elevation", (float) elevation);
-        editor.putFloat("offset", (float) offset);
-        editor.putString("zoneName", zoneName);
-        editor.putInt("zoneID", zoneID);
-        editor.putLong("date", date);
-        editor.putBoolean("newLocation", true);
-        boolean out = editor.commit();
-
         // save to database
         ContentValues values = new ContentValues();
         values.put(LocationTable.COLUMN_NAME, "Default");
@@ -358,7 +329,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         long row = planetsDB.addLocation(values);
         planetsDB.close();
 
-        return row > -1 && out;
+        return row > -1;
     }
 
     // UserTimezoneDialog

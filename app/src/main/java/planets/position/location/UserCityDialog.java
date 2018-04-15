@@ -135,8 +135,6 @@ public class UserCityDialog extends DialogFragment {
         spinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Cursor c = (Cursor) parent.getItemAtPosition(position);
-//                city = c.getString(c.getColumnIndex("city"));
                 cityID = id;
             }
 

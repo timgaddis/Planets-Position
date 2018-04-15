@@ -20,7 +20,6 @@
 
 package planets.position.settings;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -81,10 +80,7 @@ public class Settings extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        settings = getActivity()
-                .getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
+        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
         raFormat = settings.getInt("raFormat", 0);
         decFormat = settings.getInt("decFormat", 0);
         azFormat = settings.getInt("azFormat", 0);

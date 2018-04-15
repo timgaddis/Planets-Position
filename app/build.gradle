@@ -30,12 +30,17 @@ android {
         versionCode 33
         versionName "2.2"
 
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
         externalNativeBuild {
             cmake {
                 cppFlags ""
+            }
+        }
+        splits {
+            abi {
+                enable true
+                reset()
+                include 'armeabi-v7a', 'armeabi', "x86"
+                universalApk false
             }
         }
     }

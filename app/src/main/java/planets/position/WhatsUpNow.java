@@ -154,22 +154,7 @@ public class WhatsUpNow extends Fragment {
         if (taskFragment != null) {
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
         } else {
-            now = Calendar.getInstance().getTimeInMillis();
-            // if no value or old value greater than UPDATE_WAIT
-            if (lastUpdate == 0 || (now - lastUpdate > UPDATE_WAIT || newLoc)) {
-                if (newLoc) {
-                    // if new location then compute eclipses
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean("newLocation", false);
-                    editor.apply();
-                    newLoc = false;
-                }
-                lastUpdate = now;
-                planetsList.setVisibility(View.INVISIBLE);
-                launchTask(offset);
-            } else {
-                loadPlanets(viewIndex);
-            }
+            loadPlanets(viewIndex);
         }
 
         return v;
@@ -207,12 +192,15 @@ public class WhatsUpNow extends Fragment {
     @Override
     public void onResume() {
         loadLocation();
-        if (newLoc) {
+        now = Calendar.getInstance().getTimeInMillis();
+        // if no value or old value greater than UPDATE_WAIT
+        if (lastUpdate == 0 || (now - lastUpdate > UPDATE_WAIT || newLoc)) {
             // if new location then compute eclipses
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("newLocation", false);
             editor.apply();
             newLoc = false;
+            lastUpdate = now;
             planetsList.setVisibility(View.INVISIBLE);
             launchTask(offset);
         } else if (lastUpdate > 0)
@@ -270,12 +258,15 @@ public class WhatsUpNow extends Fragment {
     }
 
     private void launchTask(double offset) {
-        taskFragment = new WhatsUpTask();
-        taskFragment.setData(taskFragment.new ComputePlanetsTask(), g,
-                offset);
-        taskFragment.setTargetFragment(this, TASK_FRAGMENT);
-        taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        taskFragment.show(mFM, TASK_FRAGMENT_TAG);
+        taskFragment = (WhatsUpTask) mFM.findFragmentByTag(TASK_FRAGMENT_TAG);
+        if (taskFragment == null) {
+            taskFragment = new WhatsUpTask();
+            taskFragment.setData(taskFragment.new ComputePlanetsTask(), g,
+                    offset);
+            taskFragment.setTargetFragment(this, TASK_FRAGMENT);
+            taskFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            taskFragment.show(mFM, TASK_FRAGMENT_TAG);
+        }
     }
 
     private void loadLocation() {

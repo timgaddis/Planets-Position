@@ -79,7 +79,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private int zoneID;
     private double latitude, longitude, elevation, offset;
     private String zoneName;
-    private boolean edit = false, startLoc = false;
+    private boolean edit = false, startLoc = false, manualEdit;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
 
@@ -152,7 +152,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         buttonCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // launch UserCityDialog
                 cityDialog = UserCityDialog.newInstance();
                 cityDialog.show(getSupportFragmentManager(), "cityDialog");
             }
@@ -161,6 +160,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                manualEdit = true;
                 // Show the EditTexts
                 latitudeText.setVisibility(View.GONE);
                 layoutLat.setVisibility(View.VISIBLE);
@@ -220,19 +220,24 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                 editLoc.setVisible(true);
                 saveLoc.setVisible(false);
 
-                latitude = Double.parseDouble(latitudeEdit.getText().toString());
-                if (spinnerLat.getSelectedItemPosition() == 1)
-                    latitude *= -1.0;
+                if (manualEdit) {
+                    latitude = Double.parseDouble(latitudeEdit.getText().toString());
+                    if (spinnerLat.getSelectedItemPosition() == 1)
+                        latitude *= -1.0;
+                }
                 latitudeText.setVisibility(View.VISIBLE);
                 layoutLat.setVisibility(View.GONE);
 
-                longitude = Double.parseDouble(longitudeEdit.getText().toString());
-                if (spinnerLong.getSelectedItemPosition() == 1)
-                    longitude *= -1.0;
+                if (manualEdit) {
+                    longitude = Double.parseDouble(longitudeEdit.getText().toString());
+                    if (spinnerLong.getSelectedItemPosition() == 1)
+                        longitude *= -1.0;
+                }
                 longitudeText.setVisibility(View.VISIBLE);
                 layoutLong.setVisibility(View.GONE);
 
-                elevation = Double.parseDouble(elevationEdit.getText().toString());
+                if (manualEdit)
+                    elevation = Double.parseDouble(elevationEdit.getText().toString());
                 elevationText.setVisibility(View.VISIBLE);
                 elevationEdit.setVisibility(View.GONE);
 
@@ -257,6 +262,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                 return true;
             case R.id.action_edit:
                 edit = true;
+                manualEdit = false;
                 layoutEdit.setVisibility(View.VISIBLE);
                 editLoc.setVisible(false);
                 saveLoc.setVisible(true);

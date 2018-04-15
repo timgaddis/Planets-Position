@@ -52,12 +52,12 @@ android {
         beta {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            def formattedDate = new Date().format('yyyyMMddHHmmss')
-            android.applicationVariants.all { variant ->
-                variant.outputs.all {
-                    outputFileName = "${variant.name}-${variant.versionName}-${formattedDate}.apk"
-                }
-            }
+//            def formattedDate = new Date().format('yyyyMMddHHmmss')
+//            android.applicationVariants.all { variant ->
+//                variant.outputs.all {
+//                    outputFileName = "${variant.name}-${variant.versionName}-${formattedDate}.apk"
+//                }
+//            }
         }
     }
     externalNativeBuild {

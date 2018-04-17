@@ -23,6 +23,8 @@ package planets.position.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.Locale;
+
 public class PlanetsTable {
 
     public static final String TABLE_NAME = "planets";
@@ -42,7 +44,12 @@ public class PlanetsTable {
     private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s text not null, %s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real);", TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_NUMBER, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_RISE_TIME, COLUMN_TRANSIT);
 
     public static void onCreate(SQLiteDatabase database) {
+        String ip1;
         database.execSQL(DATABASE_CREATE);
+        for (int i = 0; i < 10; i++) {
+            ip1 = String.format(Locale.getDefault(), "insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (%d,%s,%d,%f,%f,%f,%f,%f,%d,%d,%d,%d);", TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_NUMBER, COLUMN_RA, COLUMN_DEC, COLUMN_AZ, COLUMN_ALT, COLUMN_DISTANCE, COLUMN_MAGNITUDE, COLUMN_SET_TIME, COLUMN_RISE_TIME, COLUMN_TRANSIT, i, "\"P\"", 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0);
+            database.execSQL(ip1);
+        }
     }
 
     static void onUpgrade(SQLiteDatabase database, int oldVersion,

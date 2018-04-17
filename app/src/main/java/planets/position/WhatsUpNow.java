@@ -203,8 +203,7 @@ public class WhatsUpNow extends Fragment {
             lastUpdate = now;
             planetsList.setVisibility(View.INVISIBLE);
             launchTask(offset);
-        } else if (lastUpdate > 0)
-            loadPlanets(viewIndex);
+        }
         super.onResume();
     }
 

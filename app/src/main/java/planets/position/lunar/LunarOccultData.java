@@ -56,7 +56,7 @@ import planets.position.util.PositionFormat;
 public class LunarOccultData extends Fragment {
 
     private TextView loDateText, loPlanetText, loStartText, loMaxText,
-            loEndText, loMoonSAzText, loMoonSAltText, loMoonEAzText,
+            loEndText, loMoonSAzText, loMoonSAltText, loMoonEAzText,loLocalTime,
             loMoonEAltText, loMoonRiseText, loMoonSetText, loLocalVisible;
     private ConstraintLayout loLocalLayout, loMoonLayout;
     private long occultNum = 0, eclStart, eclEnd;
@@ -76,6 +76,7 @@ public class LunarOccultData extends Fragment {
         View v = inflater.inflate(R.layout.fragment_occult_data, container, false);
         loDateText = v.findViewById(R.id.lo_date);
         loPlanetText = v.findViewById(R.id.lo_planet);
+        loLocalTime=v.findViewById(R.id.lo_local_time);
         loStartText = v.findViewById(R.id.lo_start_text);
         loMaxText = v.findViewById(R.id.lo_max_text);
         loEndText = v.findViewById(R.id.lo_end_text);
@@ -211,6 +212,7 @@ public class LunarOccultData extends Fragment {
         local = b.getInt(LunarOccultationTable.COLUMN_LOCAL, -1);
         if (local > 0) {
             // local occultation
+            loLocalTime.setText(R.string.ecl_local);
             moonRise = b.getDouble(LunarOccultationTable.COLUMN_MOONRISE, 0);
             if (moonRise > 0) {
                 gc.setTimeInMillis(jdUTC.jdmills(moonRise, offset));
@@ -269,6 +271,7 @@ public class LunarOccultData extends Fragment {
             loMoonEAltText.setText(pf.formatALT(temp));
         } else {
             // global occultation
+            loLocalTime.setText(R.string.ecl_universal);
             temp = b.getDouble(LunarOccultationTable.COLUMN_GLOBAL_BEGIN, 0);
             if (temp > 0) {
                 eclStart = jdUTC.jdmills(temp, offset);

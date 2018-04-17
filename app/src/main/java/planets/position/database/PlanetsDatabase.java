@@ -29,7 +29,7 @@ import android.os.Bundle;
 public class PlanetsDatabase {
 
     private SQLiteDatabase database;
-    private final PlanetsDatabaseHelper dbHelper;
+    private PlanetsDatabaseHelper dbHelper;
 
     private final String[] locationColumns = {LocationTable.COLUMN_ID,
             LocationTable.COLUMN_LATITUDE, LocationTable.COLUMN_LONGITUDE,
@@ -117,7 +117,7 @@ public class PlanetsDatabase {
             LunarOccultationTable.COLUMN_OCCULT_PLANET};
 
     public PlanetsDatabase(Context context) {
-        dbHelper = PlanetsDatabaseHelper.getInstance(context);
+        dbHelper = new PlanetsDatabaseHelper(context);
     }
 
     public void open() {
@@ -128,12 +128,9 @@ public class PlanetsDatabase {
         database.close();
     }
 
-    public void eraseTable(String table) {
-        database.delete(table, null, null);
-    }
-
     public long addLocation(ContentValues values) {
-        return database.insert(LocationTable.TABLE_NAME, null, values);
+        return database.update(LocationTable.TABLE_NAME, values,
+                LocationTable.COLUMN_ID + " = ?", new String[]{String.valueOf(0)});
     }
 
     public Bundle getLocation() {
@@ -193,8 +190,9 @@ public class PlanetsDatabase {
         return out;
     }
 
-    public void addPlanet(ContentValues values) {
-        database.insert(PlanetsTable.TABLE_NAME, null, values);
+    public void addPlanet(ContentValues values, int row) {
+        database.update(PlanetsTable.TABLE_NAME, values, PlanetsTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
     }
 
     public Cursor getSolarEclipseList() {
@@ -239,8 +237,9 @@ public class PlanetsDatabase {
         return out;
     }
 
-    public void addSolarEclipse(ContentValues values) {
-        database.insert(SolarEclipseTable.TABLE_NAME, null, values);
+    public void addSolarEclipse(ContentValues values, int row) {
+        database.update(SolarEclipseTable.TABLE_NAME, values, SolarEclipseTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
     }
 
     public Cursor getLunarEclipseList() {
@@ -248,8 +247,9 @@ public class PlanetsDatabase {
                 null, null, null, LunarEclipseTable.COLUMN_MAX_ECLIPSE);
     }
 
-    public void addLunarEclipse(ContentValues values) {
-        database.insert(LunarEclipseTable.TABLE_NAME, null, values);
+    public void addLunarEclipse(ContentValues values, int row) {
+        database.update(LunarEclipseTable.TABLE_NAME, values, LunarEclipseTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
     }
 
     public Bundle getLunarEclipse(long lunar) {
@@ -284,14 +284,15 @@ public class PlanetsDatabase {
     }
 
     public Cursor getLunarOccultList() {
-        return database.query(LunarOccultationTable.TABLE_NAME, lunarOccultColumns, null,
-                null, null, null,
-                LunarOccultationTable.COLUMN_OCCULT_PLANET + "," +
-                        LunarOccultationTable.COLUMN_GLOBAL_MAX);
+        return database.query(LunarOccultationTable.TABLE_NAME, lunarOccultColumns,
+                LunarOccultationTable.COLUMN_OCCULT_PLANET + " > ?",
+                new String[]{String.valueOf(-1)}, null, null,
+                LunarOccultationTable.COLUMN_OCCULT_PLANET + "," + LunarOccultationTable.COLUMN_GLOBAL_MAX);
     }
 
-    public void addLunarOccult(ContentValues values) {
-        database.insert(LunarOccultationTable.TABLE_NAME, null, values);
+    public void addLunarOccult(ContentValues values, int row) {
+        database.update(LunarOccultationTable.TABLE_NAME, values, LunarOccultationTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(row)});
     }
 
     public Bundle getLunarOccult(long occult) {

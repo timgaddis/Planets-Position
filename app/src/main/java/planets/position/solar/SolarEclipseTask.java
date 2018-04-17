@@ -163,7 +163,6 @@ public class SolarEclipseTask extends DialogFragment {
             planetsDB.open();
             back = (int) Math.round(params[1]);
             start = params[0];
-            planetsDB.eraseTable(SolarEclipseTable.TABLE_NAME);
 
             // compute first local eclipse
             data2 = solarDataLocal(start, g, back);
@@ -325,7 +324,7 @@ public class SolarEclipseTask extends DialogFragment {
                     else
                         start = data1[3];
                 }
-                planetsDB.addSolarEclipse(values);
+                planetsDB.addSolarEclipse(values, i);
                 publishProgress(i);
             }
             planetsDB.close();

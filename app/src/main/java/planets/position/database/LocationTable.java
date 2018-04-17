@@ -23,6 +23,8 @@ package planets.position.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.Locale;
+
 public class LocationTable {
 
     public static final String TABLE_NAME = "location";
@@ -39,13 +41,15 @@ public class LocationTable {
     public static final String COLUMN_ZONE_NAME = "zone_name";
 
     private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key" +
-                    " autoincrement, %s text not null, %s real,%s real, %s real, %s real, %s real," +
+                    " autoincrement, %s text not null, %s real, %s real, %s real, %s real, %s real," +
                     " %s integer, %s real, %s integer, %s text);", TABLE_NAME, COLUMN_ID, COLUMN_NAME,
             COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE,
             COLUMN_OFFSET, COLUMN_ZONE_ID, COLUMN_ZONE_NAME);
 
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
+        String ip1 = String.format(Locale.getDefault(), "insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (%d,%s,%f,%f,%f,%f,%f,%d,%f,%d,%s);", TABLE_NAME, COLUMN_ID, COLUMN_NAME, COLUMN_LATITUDE, COLUMN_LONGITUDE, COLUMN_ELEVATION, COLUMN_TEMP, COLUMN_PRESSURE, COLUMN_DATE, COLUMN_OFFSET, COLUMN_ZONE_ID, COLUMN_ZONE_NAME, 0, "\"default\"", -91.0, 0.0, 0.0, 0.0, 0.0, 0, 0.0, 0, "\"zone\"");
+        database.execSQL(ip1);
     }
 
     static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {

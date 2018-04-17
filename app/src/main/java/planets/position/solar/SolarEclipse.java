@@ -303,7 +303,7 @@ public class SolarEclipse extends Fragment {
         g[1] = loc.getDouble("latitude");
         g[0] = loc.getDouble("longitude");
         g[2] = loc.getDouble("elevation");
-        offset = loc.getDouble("offset");
+        offset = loc.getDouble("offset") * 60.0;
         zoneID = loc.getInt("zoneID");
     }
 

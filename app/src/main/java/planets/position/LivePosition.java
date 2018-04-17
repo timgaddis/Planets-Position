@@ -201,16 +201,16 @@ public class LivePosition extends Fragment {
         if (data[4] <= 0) {
             pRise.setText(R.string.data_rise);
             pBelowText.setVisibility(View.VISIBLE);
-            utc.setTimeInMillis(jdUTC.jdmills(riseT, offset));
+            utc.setTimeInMillis(jdUTC.jdmills(riseT, offset * 60.0));
         } else {
             pRise.setText(R.string.data_set);
             pBelowText.setVisibility(View.GONE);
-            utc.setTimeInMillis(jdUTC.jdmills(setT, offset));
+            utc.setTimeInMillis(jdUTC.jdmills(setT, offset * 60.0));
         }
         pRiseText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
                 mTimeFormat.format(utc.getTime())));
 
-        utc.setTimeInMillis(jdUTC.jdmills(transitT, offset));
+        utc.setTimeInMillis(jdUTC.jdmills(transitT, offset * 60.0));
         pTransitText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
                 mTimeFormat.format(utc.getTime())));
     }

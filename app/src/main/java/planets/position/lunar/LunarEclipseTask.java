@@ -164,7 +164,6 @@ public class LunarEclipseTask extends DialogFragment {
             planetsDB.open();
             back = (int) Math.round(params[1]);
             start = params[0];
-            planetsDB.eraseTable(LunarEclipseTable.TABLE_NAME);
 
             // compute first local eclipse
             data2 = lunarDataLocal(start, g, back);
@@ -293,7 +292,7 @@ public class LunarEclipseTask extends DialogFragment {
                     else
                         start = data1[7];
                 }
-                planetsDB.addLunarEclipse(values);
+                planetsDB.addLunarEclipse(values, i);
                 publishProgress(i);
             }
             planetsDB.close();

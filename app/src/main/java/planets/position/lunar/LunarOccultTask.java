@@ -182,7 +182,6 @@ public class LunarOccultTask extends DialogFragment {
             planetsDB.open();
             back = (int) Math.round(params[1]);
             start = params[0];
-            planetsDB.eraseTable(LunarOccultationTable.TABLE_NAME);
 
             if (planetNum > 1) {
                 // compute occultations for the given planet
@@ -311,7 +310,7 @@ public class LunarOccultTask extends DialogFragment {
                         else
                             start = data1[1] - 2.0;
                     }
-                    planetsDB.addLunarOccult(values);
+                    planetsDB.addLunarOccult(values, i);
                     publishProgress(i + 1, planetNum, 1);
                 }
             } else {
@@ -411,10 +410,15 @@ public class LunarOccultTask extends DialogFragment {
                         values.put(LunarOccultationTable.COLUMN_OCCULT_DATE, data1[1]);
                         values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, i + 2);
                     }
-                    planetsDB.addLunarOccult(values);
+                    planetsDB.addLunarOccult(values, i + 2);
                     if (i + 1 < 8)
                         publishProgress(i + 1, i + 3, 0);
                 }
+                // clears values in database for sun and moon
+                values.clear();
+                values.put(LunarOccultationTable.COLUMN_OCCULT_PLANET, -1);
+                planetsDB.addLunarOccult(values, 0);
+                planetsDB.addLunarOccult(values, 1);
             }
             planetsDB.close();
             return null;

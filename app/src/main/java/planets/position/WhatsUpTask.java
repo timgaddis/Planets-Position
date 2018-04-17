@@ -157,7 +157,6 @@ public class WhatsUpTask extends DialogFragment {
         @Override
         protected Void doInBackground(Void... params) {
             planetsDB.open();
-            planetsDB.eraseTable(PlanetsTable.TABLE_NAME);
             for (int i = 0; i < 10; i++) {
                 if (this.isCancelled()) {
                     if (getTargetFragment() != null) {
@@ -211,7 +210,7 @@ public class WhatsUpTask extends DialogFragment {
                 values.put(PlanetsTable.COLUMN_RISE_TIME, r);
                 values.put(PlanetsTable.COLUMN_TRANSIT, transit);
 
-                planetsDB.addPlanet(values);
+                planetsDB.addPlanet(values, i);
                 publishProgress(i + 1, i);
             }
             planetsDB.close();

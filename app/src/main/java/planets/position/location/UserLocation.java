@@ -246,7 +246,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                 tzDB.open();
                 int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
                 tzDB.close();
-                offset = off / 3600;
+                offset = off / 3600.0;
 
                 timezoneText.setVisibility(View.VISIBLE);
                 timezoneEdit.setVisibility(View.GONE);
@@ -331,7 +331,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         values.put(LocationTable.COLUMN_ZONE_NAME, zoneName);
 
         planetsDB.open();
-        planetsDB.eraseTable(LocationTable.TABLE_NAME);
         long row = planetsDB.addLocation(values);
         planetsDB.close();
 
@@ -349,7 +348,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         tzDB.open();
         int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
         tzDB.close();
-        offset = off / 3600;
+        offset = off / 3600.0;
 
         if (saveLocation()) {
             Toast.makeText(getApplicationContext(),
@@ -377,7 +376,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         zoneName = data.getString("timezone", "");
         zoneID = tzDB.getZoneID(zoneName);
         int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
-        offset = off / 3600;
+        offset = off / 3600.0;
         tzDB.close();
 
         if (saveLocation()) {
@@ -440,7 +439,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                             tzDB.open();
                             zoneID = tzDB.getZoneID(zoneName);
                             int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
-                            offset = off / 3600;
+                            offset = off / 3600.0;
                             tzDB.close();
 
                             startLoc = false;

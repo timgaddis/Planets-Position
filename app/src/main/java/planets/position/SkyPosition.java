@@ -277,7 +277,7 @@ public class SkyPosition extends Fragment {
         g[1] = loc.getDouble("latitude");
         g[0] = loc.getDouble("longitude");
         g[2] = loc.getDouble("elevation");
-        offset = loc.getDouble("offset");
+        offset = loc.getDouble("offset") * 60.0;
         zoneID = loc.getInt("zoneID");
     }
 
@@ -344,7 +344,7 @@ public class SkyPosition extends Fragment {
                 return;
             }
             utc.setTimeInMillis(jdUTC.jdmills(t, offset));
-            pSetText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
+            pSetText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
             t = riseSet.getRise(d, planetNum);
@@ -353,7 +353,7 @@ public class SkyPosition extends Fragment {
                 return;
             }
             utc.setTimeInMillis(jdUTC.jdmills(t, offset));
-            pRiseText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
+            pRiseText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
             t = riseSet.getTransit(d, planetNum);
@@ -362,7 +362,7 @@ public class SkyPosition extends Fragment {
                 return;
             }
             utc.setTimeInMillis(jdUTC.jdmills(t, offset));
-            pTransitText.setText(String.format("%s %s", mDateFormat.format(utc.getTime()),
+            pTransitText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
             if (data[4] <= 0.0) {

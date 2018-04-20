@@ -26,10 +26,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 215;
+    private static final int DATABASE_VERSION = 217;
+    private static PlanetsDatabaseHelper sInstance;
 
-    PlanetsDatabaseHelper(Context context) {
+    private PlanetsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized PlanetsDatabaseHelper getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new PlanetsDatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     @Override

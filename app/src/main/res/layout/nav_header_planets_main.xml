@@ -35,13 +35,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_saturn" />
 
     <TextView
+        android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/data_card"
         android:text="@string/app_name"
-        android:textAppearance="@style/MapInfo" />
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/label_text"
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake --build /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/release/armeabi --target clean"
+  ],
+  "libraries": {
+    "planets_swiss-Release-armeabi": {
+      "artifactName": "planets_swiss",
+      "buildCommand": "/media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake --build /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/release/armeabi --target planets_swiss",
+      "abi": "armeabi",
+      "output": "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/build/intermediates/cmake/release/obj/armeabi/libplanets_swiss.so"
+    }
+  }
+}

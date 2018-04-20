@@ -117,7 +117,7 @@ public class PlanetsDatabase {
             LunarOccultationTable.COLUMN_OCCULT_PLANET};
 
     public PlanetsDatabase(Context context) {
-        dbHelper = new PlanetsDatabaseHelper(context);
+        dbHelper = PlanetsDatabaseHelper.getInstance(context);
     }
 
     public void open() {

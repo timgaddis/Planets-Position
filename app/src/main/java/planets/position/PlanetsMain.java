@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -43,7 +44,6 @@ import android.view.MenuItem;
 import java.io.File;
 import java.util.List;
 
-import planets.position.database.PlanetsDatabase;
 import planets.position.database.TimeZoneDB;
 import planets.position.location.LocationDialog;
 import planets.position.location.UserLocation;
@@ -56,13 +56,13 @@ public class PlanetsMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentListener,
         FileCopyTask.FileCopyCallback {
 
-//    public static final String TAG = "PlanetsMain";
-    public static final String MAIN_PREFS = "MainPrefsFile";
+    //    public static final String TAG = "PlanetsMain";
+    private static final int LOCATION = 200;
 
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     private FileCopyTask copyTask;
-    private PlanetsDatabase planetsDB;
+    private SharedPreferences settings;
     private int fragIndex;
     private double latitude, longitude;
     private CharSequence actionTitle;
@@ -79,7 +79,6 @@ public class PlanetsMain extends AppCompatActivity
             getDelegate().setSupportActionBar(toolbar);
         }
 
-        planetsDB = new PlanetsDatabase(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -93,7 +92,7 @@ public class PlanetsMain extends AppCompatActivity
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences settings = getSharedPreferences(MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         PackageInfo packageInfo = null;
         int versionNumber;
@@ -110,7 +109,7 @@ public class PlanetsMain extends AppCompatActivity
         if (!settings.contains("appVersion")) {
             SharedPreferences.Editor editor = settings.edit();
             editor.clear();
-            editor.putInt("appVerion", versionNumber);
+            editor.putInt("appVersion", versionNumber);
             editor.apply();
         }
 
@@ -214,18 +213,39 @@ public class PlanetsMain extends AppCompatActivity
         return true;
     }
 
-    private void loadLocation() {
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        if (!loc.isEmpty()) {
-            latitude = loc.getDouble("latitude");
-            longitude = loc.getDouble("longitude");
-        } else {
-            latitude = -91.0;
-            longitude = 0.0;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION) {
+            if (resultCode == RESULT_OK) {
+                Bundle b = data.getExtras();
+                // save to Shared Preferences
+                if (b != null) {
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putFloat("latitude", (float) b.getDouble("latitude"));
+                    editor.putFloat("longitude", (float) b.getDouble("longitude"));
+                    editor.putFloat("elevation", (float) b.getDouble("elevation"));
+                    editor.putFloat("offset", (float) b.getDouble("offset"));
+                    editor.putInt("zoneID", b.getInt("zoneID"));
+                    editor.putString("zoneName", b.getString("zoneName"));
+                    editor.putLong("date", b.getLong("date"));
+                    editor.putBoolean("newLocation", b.getBoolean("newLocation"));
+                    editor.apply();
+                }
+            }
         }
+        DialogFragment newFragment = (DialogFragment) fm.findFragmentByTag("locationDialog");
+        if (newFragment != null)
+            newFragment.dismiss();
+        onToolbarTitleChange("Planet's Position", 0);
+        selectItem(0, false, false);
+        loadLocation();
+    }
+
+    private void loadLocation() {
+        // read location from Shared Preferences
+        latitude = settings.getFloat("latitude", (float) -91.0);
+        longitude = settings.getFloat("longitude", 0);
     }
 
     public void navigate(int position) {
@@ -277,7 +297,7 @@ public class PlanetsMain extends AppCompatActivity
                 b.putBoolean("loc", location);
                 Intent i = new Intent(this, UserLocation.class);
                 i.putExtras(b);
-                startActivity(i);
+                startActivityForResult(i, LOCATION);
                 break;
             case 8: // Settings
                 ft.replace(R.id.content_frame, new Settings());
@@ -400,4 +420,5 @@ public class PlanetsMain extends AppCompatActivity
         List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
         return activities.size() > 0;
     }
+
 }

@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -50,7 +51,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
@@ -151,7 +151,7 @@ public class SolarEclipse extends Fragment {
                 .getDateFormat(getActivity().getApplicationContext());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         // Restore preferences
         firstRun = settings.getBoolean("seFirstRun", true);
         firstDate = settings.getFloat("seFirstDate", 0);
@@ -226,6 +226,7 @@ public class SolarEclipse extends Fragment {
                     lastDate = data.getDoubleExtra("last", 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean("seFirstRun", false);
+                    editor.putBoolean("newLocation", false);
                     editor.putFloat("seFirstDate", (float) firstDate);
                     editor.putFloat("seLastDate", (float) lastDate);
                     editor.apply();
@@ -295,16 +296,13 @@ public class SolarEclipse extends Fragment {
     }
 
     private void loadLocation() {
-        newLoc = true;
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        g[1] = loc.getDouble("latitude");
-        g[0] = loc.getDouble("longitude");
-        g[2] = loc.getDouble("elevation");
-        offset = loc.getDouble("offset") * 60.0;
-        zoneID = loc.getInt("zoneID");
+        // read location from Shared Preferences
+        g[1] = settings.getFloat("latitude", 0);
+        g[0] = settings.getFloat("longitude", 0);
+        g[2] = settings.getFloat("elevation", 0);
+        offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
+        newLoc = settings.getBoolean("newLocation", true);
     }
 
     private void launchTask(double time, double back) {

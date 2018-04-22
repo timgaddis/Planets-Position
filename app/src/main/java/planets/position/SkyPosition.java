@@ -22,7 +22,9 @@ package planets.position;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -45,7 +47,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import planets.position.database.PlanetsDatabase;
 import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PlanetDatePicker;
@@ -71,7 +72,7 @@ public class SkyPosition extends Fragment {
     private PlanetDatePicker datePickerFragment;
     private PlanetTimePicker timePickerFragment;
     private FragmentListener mCallbacks;
-    private PlanetsDatabase planetsDB;
+    private SharedPreferences settings;
     private PositionFormat pf;
 
     // load c library
@@ -186,7 +187,7 @@ public class SkyPosition extends Fragment {
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat
                 .getTimeFormat(getActivity().getApplicationContext());
-        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         setHasOptionsMenu(true);
         setRetainInstance(true);
@@ -270,15 +271,12 @@ public class SkyPosition extends Fragment {
     }
 
     private void loadLocation() {
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        g[1] = loc.getDouble("latitude");
-        g[0] = loc.getDouble("longitude");
-        g[2] = loc.getDouble("elevation");
-        offset = loc.getDouble("offset") * 60.0;
-        zoneID = loc.getInt("zoneID");
+        // read location from Shared Preferences
+        g[1] = settings.getFloat("latitude", 0);
+        g[0] = settings.getFloat("longitude", 0);
+        g[2] = settings.getFloat("elevation", 0);
+        offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
     }
 
     // updates the date and time in the Buttons

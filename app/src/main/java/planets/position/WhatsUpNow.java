@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -170,7 +171,7 @@ public class WhatsUpNow extends Fragment {
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat
                 .getTimeFormat(getActivity().getApplicationContext());
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         lastUpdate = settings.getLong("lastUpdate", 0);
         setHasOptionsMenu(true);
         setRetainInstance(true);
@@ -269,15 +270,14 @@ public class WhatsUpNow extends Fragment {
     }
 
     private void loadLocation() {
-        newLoc = true;
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        g[1] = loc.getDouble("latitude");
-        g[0] = loc.getDouble("longitude");
-        g[2] = loc.getDouble("elevation");
-        zoneID = loc.getInt("zoneID");
+        // read location from Shared Preferences
+        g[1] = settings.getFloat("latitude", 0);
+        g[0] = settings.getFloat("longitude", 0);
+        g[2] = settings.getFloat("elevation", 0);
+        offset = settings.getFloat("offset", 0) * 60.0;
+        zoneID = settings.getInt("zoneID", 0);
+        newLoc = settings.getBoolean("newLocation", true);
+
         tzDB.open();
         int off = tzDB.getZoneOffset(zoneID, Calendar.getInstance().getTimeInMillis() / 1000L);
         tzDB.close();

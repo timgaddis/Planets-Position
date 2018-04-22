@@ -26,7 +26,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 217;
+    private static final int DATABASE_VERSION = 219;
     private static PlanetsDatabaseHelper sInstance;
 
     private PlanetsDatabaseHelper(Context context) {
@@ -42,7 +42,6 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        LocationTable.onCreate(database);
         PlanetsTable.onCreate(database);
         SolarEclipseTable.onCreate(database);
         LunarEclipseTable.onCreate(database);
@@ -52,7 +51,6 @@ class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion,
                           int newVersion) {
-        LocationTable.onUpgrade(database, oldVersion, newVersion);
         PlanetsTable.onUpgrade(database, oldVersion, newVersion);
         SolarEclipseTable.onUpgrade(database, oldVersion, newVersion);
         LunarEclipseTable.onUpgrade(database, oldVersion, newVersion);

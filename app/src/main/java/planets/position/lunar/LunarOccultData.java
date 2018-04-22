@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.annotation.NonNull;
@@ -45,7 +46,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
@@ -56,7 +56,7 @@ import planets.position.util.PositionFormat;
 public class LunarOccultData extends Fragment {
 
     private TextView loDateText, loPlanetText, loStartText, loMaxText,
-            loEndText, loMoonSAzText, loMoonSAltText, loMoonEAzText,loLocalTime,
+            loEndText, loMoonSAzText, loMoonSAltText, loMoonEAzText, loLocalTime,
             loMoonEAltText, loMoonRiseText, loMoonSetText, loLocalVisible;
     private ConstraintLayout loLocalLayout, loMoonLayout;
     private long occultNum = 0, eclStart, eclEnd;
@@ -76,7 +76,7 @@ public class LunarOccultData extends Fragment {
         View v = inflater.inflate(R.layout.fragment_occult_data, container, false);
         loDateText = v.findViewById(R.id.lo_date);
         loPlanetText = v.findViewById(R.id.lo_planet);
-        loLocalTime=v.findViewById(R.id.lo_local_time);
+        loLocalTime = v.findViewById(R.id.lo_local_time);
         loStartText = v.findViewById(R.id.lo_start_text);
         loMaxText = v.findViewById(R.id.lo_max_text);
         loEndText = v.findViewById(R.id.lo_end_text);
@@ -91,9 +91,6 @@ public class LunarOccultData extends Fragment {
         loLocalLayout = v.findViewById(R.id.lo_data_layout);
         planetArray = Arrays.asList(getResources().getStringArray(
                 R.array.planets_array));
-
-        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
 
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Lunar Occultation", 4);
@@ -120,6 +117,8 @@ public class LunarOccultData extends Fragment {
         super.onCreate(savedInstanceState);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
+        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat

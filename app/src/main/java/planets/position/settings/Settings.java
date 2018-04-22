@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,7 +36,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
 import planets.position.R;
 
 public class Settings extends Fragment {
@@ -80,7 +80,7 @@ public class Settings extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         raFormat = settings.getInt("raFormat", 0);
         decFormat = settings.getInt("decFormat", 0);
         azFormat = settings.getInt("azFormat", 0);

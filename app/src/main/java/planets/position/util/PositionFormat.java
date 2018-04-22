@@ -22,17 +22,16 @@ package planets.position.util;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import java.util.Locale;
-
-import planets.position.PlanetsMain;
 
 public class PositionFormat {
     private final SharedPreferences settings;
 
     public PositionFormat(Activity activity) {
         super();
-        settings = activity.getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
     }
 
     // Input value examples

@@ -22,12 +22,14 @@ package planets.position.location;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -58,8 +60,6 @@ import java.util.TimeZone;
 
 import planets.position.BuildConfig;
 import planets.position.R;
-import planets.position.database.LocationTable;
-import planets.position.database.PlanetsDatabase;
 import planets.position.database.TimeZoneDB;
 
 public class UserLocation extends AppCompatActivity implements UserTimezoneDialog.TimezoneDialogListener, UserCityDialog.CityDialogListener {
@@ -75,7 +75,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private UserTimezoneDialog timezoneDialog;
     private UserCityDialog cityDialog;
     private TimeZoneDB tzDB;
-    private PlanetsDatabase planetsDB;
+    private SharedPreferences settings;
     private int zoneID;
     private double latitude, longitude, elevation, offset;
     private String zoneName;
@@ -111,7 +111,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         tzDB = new TimeZoneDB(getApplicationContext());
-        planetsDB = new PlanetsDatabase(getApplicationContext());
+        settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         Toolbar myToolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(myToolbar);
@@ -284,16 +284,13 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     }
 
     private void loadLocation() {
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        latitude = loc.getDouble("latitude");
-        longitude = loc.getDouble("longitude");
-        elevation = loc.getDouble("elevation");
-        offset = loc.getDouble("offset");
-        zoneID = loc.getInt("zoneID");
-        zoneName = loc.getString("zoneName");
+        // read location from Shared Preferences
+        latitude = settings.getFloat("latitude", 0);
+        longitude = settings.getFloat("longitude", 0);
+        elevation = settings.getFloat("elevation", 0);
+        offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
+        zoneName = settings.getString("zoneName", "");
         displayLocation();
     }
 
@@ -316,25 +313,24 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
 
     private boolean saveLocation() {
 
+        Intent data = new Intent();
+
         long date = Calendar.getInstance().getTimeInMillis();
-        // save to database
-        ContentValues values = new ContentValues();
-        values.put(LocationTable.COLUMN_NAME, "Default");
-        values.put(LocationTable.COLUMN_LATITUDE, latitude);
-        values.put(LocationTable.COLUMN_LONGITUDE, longitude);
-        values.put(LocationTable.COLUMN_TEMP, 0.0);
-        values.put(LocationTable.COLUMN_PRESSURE, 0.0);
-        values.put(LocationTable.COLUMN_ELEVATION, elevation);
-        values.put(LocationTable.COLUMN_DATE, date);
-        values.put(LocationTable.COLUMN_OFFSET, offset);
-        values.put(LocationTable.COLUMN_ZONE_ID, zoneID);
-        values.put(LocationTable.COLUMN_ZONE_NAME, zoneName);
+        Bundle b = new Bundle();
+        b.putDouble("latitude", latitude);
+        b.putDouble("longitude", longitude);
+        b.putDouble("elevation", elevation);
+        b.putDouble("offset", offset);
+        b.putInt("zoneID", zoneID);
+        b.putString("zoneName", zoneName);
+        b.putLong("date", date);
+        b.putBoolean("newLocation", true);
+        data.putExtras(b);
 
-        planetsDB.open();
-        long row = planetsDB.addLocation(values);
-        planetsDB.close();
+        setResult(Activity.RESULT_OK, data);
+        finish();
 
-        return row > -1;
+        return true;
     }
 
     // UserTimezoneDialog

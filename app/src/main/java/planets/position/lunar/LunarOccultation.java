@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -54,7 +55,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
@@ -195,7 +195,7 @@ public class LunarOccultation extends Fragment {
                 .getDateFormat(getActivity().getApplicationContext());
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         // Restore preferences
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         firstDate = settings.getFloat("loFirstDate", 0);
         lastDate = settings.getFloat("loLastDate", 0);
         allPlanets = settings.getBoolean("loAllPlanets", true);
@@ -293,6 +293,7 @@ public class LunarOccultation extends Fragment {
                         allPlanets = data.getBooleanExtra("allPlanets", true);
                         editor = settings.edit();
                         editor.putBoolean("loFirstRun", false);
+                        editor.putBoolean("newLocation", false);
                         editor.putFloat("loFirstDate", (float) firstDate);
                         editor.putFloat("loLastDate", (float) lastDate);
                         editor.putBoolean("loAllPlanets", allPlanets);
@@ -402,16 +403,13 @@ public class LunarOccultation extends Fragment {
     }
 
     private void loadLocation() {
-        newLoc = true;
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        g[1] = loc.getDouble("latitude");
-        g[0] = loc.getDouble("longitude");
-        g[2] = loc.getDouble("elevation");
-        offset = loc.getDouble("offset") * 60.0;
-        zoneID = loc.getInt("zoneID");
+        // read location from Shared Preferences
+        g[1] = settings.getFloat("latitude", 0);
+        g[0] = settings.getFloat("longitude", 0);
+        g[2] = settings.getFloat("elevation", 0);
+        offset = settings.getFloat("offset", 0) * 60.0;
+        zoneID = settings.getInt("zoneID", 0);
+        newLoc = settings.getBoolean("newLocation", true);
     }
 
     private void launchTask(double time, double back, int planet) {

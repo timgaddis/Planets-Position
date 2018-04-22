@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -50,7 +51,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarEclipseTable;
 import planets.position.database.PlanetsDatabase;
@@ -149,7 +149,7 @@ public class LunarEclipse extends Fragment {
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         firstRun = settings.getBoolean("leFirstRun", true);
         firstDate = settings.getFloat("leFirstDate", 0);
         lastDate = settings.getFloat("leLastDate", 0);
@@ -294,16 +294,13 @@ public class LunarEclipse extends Fragment {
     }
 
     private void loadLocation() {
-        newLoc = true;
-        // Read location from database
-        planetsDB.open();
-        Bundle loc = planetsDB.getLocation();
-        planetsDB.close();
-        g[1] = loc.getDouble("latitude");
-        g[0] = loc.getDouble("longitude");
-        g[2] = loc.getDouble("elevation");
-        offset = loc.getDouble("offset");
-        zoneID = loc.getInt("zoneID");
+        // read location from Shared Preferences
+        g[1] = settings.getFloat("latitude", 0);
+        g[0] = settings.getFloat("longitude", 0);
+        g[2] = settings.getFloat("elevation", 0);
+        offset = settings.getFloat("offset", 0);
+        zoneID = settings.getInt("zoneID", 0);
+        newLoc = settings.getBoolean("newLocation", true);
     }
 
     private void launchTask(double time, double back) {

@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.annotation.NonNull;
@@ -44,7 +45,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import planets.position.FragmentListener;
-import planets.position.PlanetsMain;
 import planets.position.R;
 import planets.position.database.LunarEclipseTable;
 import planets.position.database.PlanetsDatabase;
@@ -102,9 +102,6 @@ public class LunarEclipseData extends Fragment {
         lePartialLayout = v.findViewById(R.id.le_partial_layout);
         leTotalLayout = v.findViewById(R.id.le_total_layout);
 
-        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
-        settings = getActivity().getSharedPreferences(PlanetsMain.MAIN_PREFS, 0);
-
         if (mCallbacks != null) {
             mCallbacks.onToolbarTitleChange("Lunar Eclipse", 3);
         }
@@ -137,6 +134,8 @@ public class LunarEclipseData extends Fragment {
         super.onCreate(savedInstanceState);
         jdUTC = new JDUTC();
         pf = new PositionFormat(getActivity());
+        planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat

@@ -31,10 +31,6 @@ public class PlanetsDatabase {
     private SQLiteDatabase database;
     private PlanetsDatabaseHelper dbHelper;
 
-    private final String[] locationColumns = {LocationTable.COLUMN_ID,
-            LocationTable.COLUMN_LATITUDE, LocationTable.COLUMN_LONGITUDE,
-            LocationTable.COLUMN_ELEVATION, LocationTable.COLUMN_OFFSET,
-            LocationTable.COLUMN_ZONE_ID, LocationTable.COLUMN_ZONE_NAME};
     private final String[] whatsUpColumns = {PlanetsTable.COLUMN_NUMBER,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
             PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME, PlanetsTable.COLUMN_ID};
@@ -126,29 +122,6 @@ public class PlanetsDatabase {
 
     public void close() {
         database.close();
-    }
-
-    public long addLocation(ContentValues values) {
-        return database.update(LocationTable.TABLE_NAME, values,
-                LocationTable.COLUMN_ID + " = ?", new String[]{String.valueOf(0)});
-    }
-
-    public Bundle getLocation() {
-        Bundle out = new Bundle();
-        Cursor c = database.query(LocationTable.TABLE_NAME, locationColumns,
-                null, null, null, null, null);
-        c.moveToFirst();
-        if (c.getCount() > 0) {
-            out.putDouble("latitude", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_LATITUDE)));
-            out.putDouble("longitude", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_LONGITUDE)));
-            out.putDouble("elevation", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_ELEVATION)));
-            out.putDouble("offset", c.getDouble(c.getColumnIndex(LocationTable.COLUMN_OFFSET)));
-            out.putInt("zoneID", c.getInt(c.getColumnIndex(LocationTable.COLUMN_ZONE_ID)));
-            out.putString("zoneName", c.getString(c.getColumnIndex(LocationTable.COLUMN_ZONE_NAME)));
-        }
-        c.close();
-
-        return out;
     }
 
     public Cursor getPlanetsSet() {

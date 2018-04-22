@@ -23,8 +23,6 @@ package planets.position.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.Locale;
-
 public class LunarEclipseTable {
 
     public static final String TABLE_NAME = "lunarEclipse";
@@ -53,11 +51,12 @@ public class LunarEclipseTable {
     private static final String DATABASE_CREATE = String.format("create table %s(%s integer primary key autoincrement, %s integer, %s integer,%s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s integer, %s integer, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s real, %s text);", TABLE_NAME, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_UMBRAL_MAG, COLUMN_PENUMBRAL_MAG, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MAX_ECLIPSE, COLUMN_PARTIAL_BEGIN, COLUMN_PARTIAL_END, COLUMN_TOTAL_BEGIN, COLUMN_TOTAL_END, COLUMN_PENUMBRAL_BEGIN, COLUMN_PENUMBRAL_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
 
     public static void onCreate(SQLiteDatabase database) {
-        String ip1;
+        String ip1, ip2;
         database.execSQL(DATABASE_CREATE);
+        ip1 = String.format("insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (", TABLE_NAME, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_UMBRAL_MAG, COLUMN_PENUMBRAL_MAG, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MAX_ECLIPSE, COLUMN_PARTIAL_BEGIN, COLUMN_PARTIAL_END, COLUMN_TOTAL_BEGIN, COLUMN_TOTAL_END, COLUMN_PENUMBRAL_BEGIN, COLUMN_PENUMBRAL_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE);
+        ip2 = ",0,0,0,0,0,0.0,0.0,0.0,0.0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,'T');";
         for (int i = 0; i < 10; i++) {
-            ip1 = String.format(Locale.getDefault(), "insert into %s(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (%d,%d,%d,%d,%d,%d,%f,%f,%f,%f,%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%s);", TABLE_NAME, COLUMN_ID, COLUMN_LOCAL_TYPE, COLUMN_GLOBAL_TYPE, COLUMN_LOCAL, COLUMN_UMBRAL_MAG, COLUMN_PENUMBRAL_MAG, COLUMN_MOON_AZ, COLUMN_MOON_ALT, COLUMN_MOONRISE, COLUMN_MOONSET, COLUMN_SAROS_NUM, COLUMN_SAROS_MEMBER_NUM, COLUMN_MAX_ECLIPSE, COLUMN_PARTIAL_BEGIN, COLUMN_PARTIAL_END, COLUMN_TOTAL_BEGIN, COLUMN_TOTAL_END, COLUMN_PENUMBRAL_BEGIN, COLUMN_PENUMBRAL_END, COLUMN_ECLIPSE_DATE, COLUMN_ECLIPSE_TYPE, i, 0, 0, -1, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, "\"T\"");
-            database.execSQL(ip1);
+            database.execSQL(ip1 + i + ip2);
         }
     }
 

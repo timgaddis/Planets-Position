@@ -32,7 +32,7 @@ import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,7 +42,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
 
 import planets.position.database.TimeZoneDB;
 import planets.position.location.LocationDialog;
@@ -65,8 +67,9 @@ public class PlanetsMain extends AppCompatActivity
     private SharedPreferences settings;
     private int fragIndex;
     private double latitude, longitude;
+    private boolean isRunning;
     private CharSequence actionTitle;
-    private FragmentManager fm;
+    private Queue<DeferredFragmentTransaction> deferredFragmentTransactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,8 @@ public class PlanetsMain extends AppCompatActivity
         assert getDelegate().getSupportActionBar() != null;
         getDelegate().getSupportActionBar().setHomeButtonEnabled(true);
         getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        deferredFragmentTransactions = new ArrayDeque<>();
 
         navigationView = findViewById(R.id.nav_view);
         assert navigationView != null;
@@ -115,8 +120,7 @@ public class PlanetsMain extends AppCompatActivity
 
         loadLocation();
 
-        fm = getSupportFragmentManager();
-        copyTask = (FileCopyTask) fm.findFragmentByTag("copyTask");
+        copyTask = (FileCopyTask) getSupportFragmentManager().findFragmentByTag("copyTask");
 
         if (!checkFiles(TimeZoneDB.DB_NAME))
             startCopyFileTask();
@@ -162,6 +166,26 @@ public class PlanetsMain extends AppCompatActivity
         outState.putInt("frag", fragIndex);
         outState.putCharSequence("title", actionTitle);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRunning = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        while (!deferredFragmentTransactions.isEmpty()) {
+            deferredFragmentTransactions.remove().commit();
+        }
     }
 
     @Override
@@ -234,9 +258,10 @@ public class PlanetsMain extends AppCompatActivity
                 }
             }
         }
-        DialogFragment newFragment = (DialogFragment) fm.findFragmentByTag("locationDialog");
+        DialogFragment newFragment = (DialogFragment)
+                getSupportFragmentManager().findFragmentByTag("locationDialog");
         if (newFragment != null)
-            newFragment.dismiss();
+            replaceFragment(-2, null, newFragment, "", false);
         onToolbarTitleChange("Planet's Position", 0);
         selectItem(0, false, false);
         loadLocation();
@@ -253,43 +278,31 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     private void selectItem(int position, boolean edit, boolean location) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         switch (position) {
             case 0: // Main navigaton
-                ft.replace(R.id.content_frame, new Navigation());
-                ft.commit();
+                replaceFragment(R.id.content_frame, new Navigation(), null, "", false);
                 break;
             case 1: // Solar Eclipse
                 if (longitude == 0)
                     loadLocation();
-                ft.replace(R.id.content_frame, new SolarEclipse());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new SolarEclipse(), null, "", true);
                 break;
             case 3: // Lunar Eclipse
-                ft.replace(R.id.content_frame, new LunarEclipse());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new LunarEclipse(), null, "", true);
                 break;
             case 4: // Lunar Occultation
-                ft.replace(R.id.content_frame, new LunarOccultation());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new LunarOccultation(), null, "", true);
                 break;
             case 5: // Sky Position
                 if (longitude == 0)
                     loadLocation();
-                ft.replace(R.id.content_frame, new SkyPosition());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new SkyPosition(), null, "", true);
                 break;
             case 6: // Rise / Set
                 if (longitude == 0)
                     loadLocation();
-                ft.replace(R.id.content_frame, new WhatsUpNow());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new WhatsUpNow(), null, "", true);
                 break;
             case 7: // User Location
                 Bundle b = new Bundle();
@@ -300,14 +313,10 @@ public class PlanetsMain extends AppCompatActivity
                 startActivityForResult(i, LOCATION);
                 break;
             case 8: // Settings
-                ft.replace(R.id.content_frame, new Settings());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new Settings(), null, "", true);
                 break;
             case 9: // About
-                ft.replace(R.id.content_frame, new About());
-                ft.addToBackStack(null);
-                ft.commit();
+                replaceFragment(R.id.content_frame, new About(), null, "", true);
                 break;
             default:
                 break;
@@ -360,6 +369,52 @@ public class PlanetsMain extends AppCompatActivity
         }
     }
 
+    public void replaceFragment(int contentFrameId, Fragment replacingFragment, DialogFragment dialogFragment,
+                                String tag, final boolean back) {
+
+        if (!isRunning) {
+            DeferredFragmentTransaction deferredFragmentTransaction = new DeferredFragmentTransaction() {
+                @Override
+                public void commit() {
+                    if (getContentFrameId() > 0) {
+                        replaceFragmentInternal(getContentFrameId(), getReplacingFragment(), back);
+                    } else {
+                        dialogFragmentInternal(getContentFrameId(), getDialogFragment(), getContentTag());
+                    }
+                }
+            };
+
+            deferredFragmentTransaction.setContentFrameId(contentFrameId);
+            deferredFragmentTransaction.setReplacingFragment(replacingFragment);
+            deferredFragmentTransaction.setDialogFragment(dialogFragment);
+            deferredFragmentTransaction.setContentTag(tag);
+
+            deferredFragmentTransactions.add(deferredFragmentTransaction);
+        } else {
+            if (contentFrameId > 0) {
+                replaceFragmentInternal(contentFrameId, replacingFragment, back);
+            } else {
+                dialogFragmentInternal(contentFrameId, dialogFragment, tag);
+            }
+        }
+    }
+
+    private void replaceFragmentInternal(int contentFrameId, Fragment replacingFragment, boolean backStack) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(contentFrameId, replacingFragment);
+        if (backStack)
+            ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    private void dialogFragmentInternal(int contentID, DialogFragment dialogFragment, String tag) {
+        if (contentID == -1) {
+            dialogFragment.show(getSupportFragmentManager(), tag);
+        } else if (contentID == -2) {
+            dialogFragment.dismiss();
+        }
+    }
+
     // ********************************
     // ***** Location dialog code *****
     // ********************************
@@ -381,7 +436,7 @@ public class PlanetsMain extends AppCompatActivity
         DialogFragment newFragment = new LocationDialog();
         newFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         newFragment.setCancelable(false);
-        newFragment.show(getSupportFragmentManager(), "locationDialog");
+        replaceFragment(-1, null, newFragment, "locationDialog", false);
     }
 
     private void startCopyFileTask() {
@@ -390,7 +445,7 @@ public class PlanetsMain extends AppCompatActivity
             copyTask = new FileCopyTask();
             copyTask.setTask(copyTask.new CopyFilesTask());
             copyTask.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-            copyTask.show(fm, "copyTask");
+            replaceFragment(-1, null, copyTask, "copyTask", false);
         }
     }
 

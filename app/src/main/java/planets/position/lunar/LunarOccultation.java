@@ -201,6 +201,7 @@ public class LunarOccultation extends Fragment {
         allPlanets = settings.getBoolean("loAllPlanets", true);
         planetNum = settings.getInt("loPlanetNum", 1);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
     }
 
     @Override

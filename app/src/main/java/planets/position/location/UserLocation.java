@@ -34,6 +34,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -54,11 +55,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Queue;
 import java.util.TimeZone;
 
 import planets.position.BuildConfig;
+import planets.position.DeferredFragmentTransaction;
 import planets.position.R;
 import planets.position.database.TimeZoneDB;
 
@@ -79,9 +83,10 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private int zoneID;
     private double latitude, longitude, elevation, offset;
     private String zoneName;
-    private boolean edit = false, startLoc = false, manualEdit;
+    private boolean edit = false, startLoc = false, manualEdit, isRunning;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
+    private Queue<DeferredFragmentTransaction> deferredFragmentTransactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +126,8 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
 
+        deferredFragmentTransactions = new ArrayDeque<>();
+
         if (savedInstanceState == null) {
             // load data passed from main activity
             Bundle b = getIntent().getExtras();
@@ -145,7 +152,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
             @Override
             public void onClick(View v) {
                 timezoneDialog = UserTimezoneDialog.newInstance();
-                timezoneDialog.show(getSupportFragmentManager(), "timezoneDialog");
+                dialogShow(timezoneDialog, "timezoneDialog");
             }
         });
 
@@ -153,7 +160,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
             @Override
             public void onClick(View v) {
                 cityDialog = UserCityDialog.newInstance();
-                cityDialog.show(getSupportFragmentManager(), "cityDialog");
+                dialogShow(cityDialog, "cityDialog");
             }
         });
 
@@ -187,6 +194,26 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                 timezoneEdit.setText(zoneName);
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRunning = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        while (!deferredFragmentTransactions.isEmpty()) {
+            deferredFragmentTransactions.remove().commit();
+        }
     }
 
     @Override
@@ -331,6 +358,29 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         finish();
 
         return true;
+    }
+
+    public void dialogShow(DialogFragment dialogFragment, String tag) {
+
+        if (!isRunning) {
+            DeferredFragmentTransaction deferredFragmentTransaction = new DeferredFragmentTransaction() {
+                @Override
+                public void commit() {
+                    dialogFragmentInternal(getDialogFragment(), getContentTag());
+                }
+            };
+
+            deferredFragmentTransaction.setDialogFragment(dialogFragment);
+            deferredFragmentTransaction.setContentTag(tag);
+
+            deferredFragmentTransactions.add(deferredFragmentTransaction);
+        } else {
+            dialogFragmentInternal(dialogFragment, tag);
+        }
+    }
+
+    private void dialogFragmentInternal(DialogFragment dialogFragment, String tag) {
+        dialogFragment.show(getSupportFragmentManager(), tag);
     }
 
     // UserTimezoneDialog

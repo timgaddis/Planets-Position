@@ -341,7 +341,7 @@ public class SkyPosition extends Fragment {
                 Log.e("Position error", "planetPosData set error");
                 return;
             }
-            utc.setTimeInMillis(jdUTC.jdmills(t, offset));
+            utc.setTimeInMillis(jdUTC.jdmills(t, offset * 60.0));
             pSetText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
@@ -350,7 +350,7 @@ public class SkyPosition extends Fragment {
                 Log.e("Position error", "planetPosData rise error");
                 return;
             }
-            utc.setTimeInMillis(jdUTC.jdmills(t, offset));
+            utc.setTimeInMillis(jdUTC.jdmills(t, offset * 60.0));
             pRiseText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 
@@ -359,7 +359,7 @@ public class SkyPosition extends Fragment {
                 Log.e("Position error", "planetPosData transit error");
                 return;
             }
-            utc.setTimeInMillis(jdUTC.jdmills(t, offset));
+            utc.setTimeInMillis(jdUTC.jdmills(t, offset * 60.0));
             pTransitText.setText(String.format("%s\n%s", mDateFormat.format(utc.getTime()),
                     mTimeFormat.format(utc.getTime())));
 

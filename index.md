@@ -1,10 +1,10 @@
 ## Installation
 
-1. Install Android Studio [(link)](http://developer.android.com/sdk/index.html)
+1. Install Android Studio [(link)](https://developer.android.com/studio/)
 2. Download the project form the link on the right side of this page.
 3. Import the project into Android Studio.
 
-The Android NDK is required to build this project.  Download it [here](http://developer.android.com/tools/sdk/ndk/index.html).
+The Android NDK is required to build this project. 
 
 ## Google Maps
 
@@ -28,18 +28,16 @@ The file should contain the following:
 
 - Jupiter's and Saturn's moon positions.
 - Multiple locations
-- Lunar Eclipse Map
 - Eclipse simulations
 
 ## Links
 
-- [Google+](http://gplus.to/planetpos)
 - [Twitter](https://twitter.com/planetsposition)
 - [Bug tracker](https://github.com/timgaddis/Planets-Position/issues)
 
 ## License
 
-Copyright (C) 2016 Tim Gaddis
+Copyright (C) 2018 Tim Gaddis
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

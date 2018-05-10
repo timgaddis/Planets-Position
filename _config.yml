@@ -1,0 +1,8 @@
+title: Planet's Position
+description: Android app that calculates the position and times of the planets, lunar and solar eclipses, and lunar occultations in the sky.
+google_analytics: UA-74780745-1
+show_downloads: true
+theme: jekyll-theme-hacker
+
+gems:
+  - jekyll-mentions

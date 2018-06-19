@@ -49,6 +49,9 @@
 
         Swiss Ephemeris code is used in this program for planetary position
         calculations.\n
-        http://www.astro.com/swisseph/swephinfo_e.htm?lang=e\n\n</string>
+        http://www.astro.com/swisseph/swephinfo_e.htm?lang=e\n\n
 
+        Timezone data from TimeZoneDB.\n
+        https://timezonedb.com/\n\n
+    </string>
 </resources>

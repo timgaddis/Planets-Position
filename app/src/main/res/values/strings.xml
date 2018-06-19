@@ -119,4 +119,6 @@
     <string name="no_location_detected">
         No location detected. Make sure location is enabled on the device.
     </string>
+    <string name="location_required">Settings->Location needs to be enabled to fetch the location.</string>
+    <string name="gps_string">Searching for GPS location…</string>
 </resources>

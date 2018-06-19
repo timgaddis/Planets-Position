@@ -118,6 +118,7 @@ public class PlanetsDatabase {
 
     public void open() {
         database = dbHelper.getWritableDatabase();
+        database.enableWriteAheadLogging();
     }
 
     public void close() {

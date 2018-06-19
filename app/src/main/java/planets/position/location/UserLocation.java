@@ -24,6 +24,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -35,6 +36,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -50,9 +52,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayDeque;
@@ -69,6 +78,7 @@ import planets.position.database.TimeZoneDB;
 public class UserLocation extends AppCompatActivity implements UserTimezoneDialog.TimezoneDialogListener, UserCityDialog.CityDialogListener {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 500;
+    private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final String TAG = "UserLocation";
 
     private TextView latitudeText, longitudeText, elevationText, timezoneText, gmtOffsetText;
@@ -84,8 +94,12 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private double latitude, longitude, elevation, offset;
     private String zoneName;
     private boolean edit = false, startLoc = false, manualEdit, isRunning;
+    private GPSDialog gpsDialog;
+    private LocationRequest mLocationRequest;
+    private LocationCallback mLocationCallback;
+    private boolean mRequestingLocationUpdates = false;
+    Task<LocationSettingsResponse> result;
     private FusedLocationProviderClient mFusedLocationClient;
-    private Location mLastLocation;
     private Queue<DeferredFragmentTransaction> deferredFragmentTransactions;
 
     @Override
@@ -114,7 +128,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         timezoneEdit.setInputType(InputType.TYPE_NULL);
         timezoneEdit.setFocusable(false);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         tzDB = new TimeZoneDB(getApplicationContext());
         settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
@@ -128,16 +141,64 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
 
         deferredFragmentTransactions = new ArrayDeque<>();
 
+        initLocation();
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                mRequestingLocationUpdates = false;
+                stopLocationUpdates();
+                FragmentManager fm = getSupportFragmentManager();
+                gpsDialog = (GPSDialog) fm.findFragmentByTag("GPSDialog");
+                if (gpsDialog != null)
+                    gpsDialog.dismiss();
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    elevation = location.getAltitude();
+
+                    Calendar c = Calendar.getInstance();
+                    TimeZone t = TimeZone.getDefault();
+                    zoneName = t.getID();
+                    tzDB.open();
+                    zoneID = tzDB.getZoneID(zoneName);
+                    int off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
+                    offset = off / 3600.0;
+                    tzDB.close();
+
+                    startLoc = false;
+                    if (saveLocation()) {
+                        Toast.makeText(getApplicationContext(),
+                                "Location saved.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Location not saved.", Toast.LENGTH_SHORT).show();
+                    }
+                    displayLocation();
+                } else {
+                    Log.i(TAG, "Location NULL");
+                    Toast.makeText(getApplicationContext(),
+                            "Location not saved.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
         if (savedInstanceState == null) {
             // load data passed from main activity
             Bundle b = getIntent().getExtras();
             if (b != null) {
                 edit = b.getBoolean("edit");
                 startLoc = b.getBoolean("loc");
+                mRequestingLocationUpdates = false;
             }
         } else {
             edit = savedInstanceState.getBoolean("edit");
             startLoc = savedInstanceState.getBoolean("loc");
+            mRequestingLocationUpdates = savedInstanceState.getBoolean("locationUpdates");
         }
 
         if (edit)
@@ -196,16 +257,57 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         });
     }
 
+    private void initLocation() {
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(2000);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+        result = LocationServices.getSettingsClient(this)
+                .checkLocationSettings(locationSettingsRequest);
+
+        result.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(UserLocation.this,
+                                REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         isRunning = false;
+        stopLocationUpdates();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         isRunning = true;
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+
     }
 
     @Override
@@ -220,6 +322,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("edit", edit);
         outState.putBoolean("loc", startLoc);
+        outState.putBoolean("locationUpdates", mRequestingLocationUpdates);
         if (edit)
             saveLocation();
         super.onSaveInstanceState(outState);
@@ -302,12 +405,42 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        startGPS();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        showSnackbar(getString(R.string.location_required));
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
     private void startGPS() {
         if (!checkPermissions()) {
             requestPermissions();
         } else {
             getLastLocation();
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void startLocationUpdates() {
+        gpsDialog = GPSDialog.newInstance();
+        dialogShow(gpsDialog, "GPSDialog");
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,
+                null /* Looper */);
+    }
+
+    private void stopLocationUpdates() {
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
     private void loadLocation() {
@@ -470,14 +603,14 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
         mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            mLastLocation = task.getResult();
-                            latitude = mLastLocation.getLatitude();
-                            longitude = mLastLocation.getLongitude();
-                            elevation = mLastLocation.getAltitude();
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            mRequestingLocationUpdates = false;
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            elevation = location.getAltitude();
 
                             Calendar c = Calendar.getInstance();
                             TimeZone t = TimeZone.getDefault();
@@ -498,8 +631,17 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                             }
                             displayLocation();
                         } else {
-                            showSnackbar(getString(R.string.no_location_detected));
+                            mRequestingLocationUpdates = true;
+                            startLocationUpdates();
                         }
+                    }
+                });
+
+        mFusedLocationClient.getLastLocation()
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showSnackbar(getString(R.string.no_location_detected));
                     }
                 });
     }

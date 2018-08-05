@@ -57,10 +57,11 @@ import planets.position.database.PlanetsDatabase;
 import planets.position.database.PlanetsTable;
 import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
+import planets.position.util.PositionFormat;
 
 public class WhatsUpNow extends Fragment {
 
-    private static final int TASK_FRAGMENT = 0;
+    public static final int TASK_FRAGMENT = 10;
     private static final String TASK_FRAGMENT_TAG = "upTask";
     private static final int UPDATE_WAIT = 300000;// 5 min
 
@@ -69,7 +70,7 @@ public class WhatsUpNow extends Fragment {
     private WhatsUpTask taskFragment;
     private long lastUpdate = 0, now;
     private double offset;
-    private int viewIndex, zoneID;
+    private int zoneID, viewIndex;
     private final double[] g = new double[3];
     private boolean newLoc;
     private SharedPreferences settings;
@@ -78,7 +79,6 @@ public class WhatsUpNow extends Fragment {
     private ListView planetsList;
     private DateFormat mDateFormat, mTimeFormat;
     private TimeZoneDB tzDB;
-    private JDUTC jdUTC;
     private PlanetsDatabase planetsDB;
     private final int[] images = {R.drawable.ic_planet_sun,
             R.drawable.ic_planet_moon, R.drawable.ic_planet_mercury,
@@ -150,7 +150,7 @@ public class WhatsUpNow extends Fragment {
 
         loadLocation();
 
-        viewIndex = settings.getInt("viewIndex", 2);
+        viewIndex = settings.getInt("viewIndex", 1);
 
         if (taskFragment != null) {
             taskFragment.setTargetFragment(this, TASK_FRAGMENT);
@@ -166,7 +166,6 @@ public class WhatsUpNow extends Fragment {
         super.onCreate(savedInstanceState);
         tzDB = new TimeZoneDB(getActivity().getApplicationContext());
         planetsDB = new PlanetsDatabase(getActivity().getApplicationContext());
-        jdUTC = new JDUTC();
         mDateFormat = android.text.format.DateFormat
                 .getDateFormat(getActivity().getApplicationContext());
         mTimeFormat = android.text.format.DateFormat
@@ -286,8 +285,10 @@ public class WhatsUpNow extends Fragment {
 
     private void loadPlanets(int index) {
         Cursor plCursor;
-        SimpleCursorAdapter cursorAdapter;
+        final SimpleCursorAdapter cursorAdapter;
         Calendar gc = new GregorianCalendar();
+        final PositionFormat pf = new PositionFormat(getActivity());
+        final JDUTC jdUTC = new JDUTC();
         gc.clear();
         gc.setTimeInMillis(lastUpdate);
         planetsDB.open();
@@ -311,18 +312,16 @@ public class WhatsUpNow extends Fragment {
                 allRadio.setChecked(true);
                 break;
         }
-        String[] from = new String[]{PlanetsTable.COLUMN_NUMBER,
-                PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
+        String[] from = new String[]{PlanetsTable.COLUMN_NUMBER, PlanetsTable.COLUMN_NAME,
+                PlanetsTable.COLUMN_AZ, PlanetsTable.COLUMN_ALT, PlanetsTable.COLUMN_RISE,
                 PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME};
-        int[] to = new int[]{R.id.rowImage, R.id.rowName, R.id.rowRiseSet,
-                R.id.rowRSDate, R.id.rowRSTime};
+        int[] to = new int[]{R.id.rowImage, R.id.rowName, R.id.rowAZ, R.id.rowALT, R.id.rowRiseSet,
+                R.id.rowRSDate};
         cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
                 R.layout.whats_up_row, plCursor, from, to, 0);
         cursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int column) {
-                double alt = cursor.getDouble(cursor
-                        .getColumnIndex(PlanetsTable.COLUMN_ALT));
                 Calendar c = Calendar.getInstance();
                 double time;
                 if (column == 0) {// image
@@ -338,36 +337,40 @@ public class WhatsUpNow extends Fragment {
                     tv.setText(name);
                     return true;
                 }
-                if (column == 2) {// rise/set label
+                if (column == 2) {// Azimuth
                     TextView tv = (TextView) view;
-                    if (alt > 0)
+                    double az = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_AZ));
+                    tv.setText(pf.formatAZ(az));
+                    return true;
+                }
+                if (column == 3) {// Altitude
+                    TextView tv = (TextView) view;
+                    double alt = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_ALT));
+                    tv.setText(pf.formatALT(alt));
+                    return true;
+                }
+                if (column == 4) {// rise
+                    TextView tv = (TextView) view;
+                    int rise = cursor.getInt(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE));
+                    if (rise > 0) {
                         tv.setText(R.string.data_set);
-                    else
+                    } else {
                         tv.setText(R.string.data_rise);
+                    }
                     return true;
                 }
-                if (column == 3) {// rise/set date
+                if (column == 5) {// rise/set date & time
                     TextView tv = (TextView) view;
-                    if (alt > 0) {
+                    int rise = cursor.getInt(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE));
+                    if (rise > 0) {
                         time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_SET_TIME));
                     } else {
                         time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
                     }
                     c.clear();
                     c.setTimeInMillis(jdUTC.jdmills(time, offset));
-                    tv.setText(mDateFormat.format(c.getTime()));
-                    return true;
-                }
-                if (column == 4) {// rise/set time
-                    TextView tv = (TextView) view;
-                    if (alt > 0) {
-                        time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_SET_TIME));
-                    } else {
-                        time = cursor.getDouble(cursor.getColumnIndex(PlanetsTable.COLUMN_RISE_TIME));
-                    }
-                    c.clear();
-                    c.setTimeInMillis(jdUTC.jdmills(time, offset));
-                    tv.setText(mTimeFormat.format(c.getTime()));
+                    tv.setText(String.format("%s %s", mDateFormat.format(c.getTime()),
+                            mTimeFormat.format(c.getTime())));
                     return true;
                 }
                 return false;

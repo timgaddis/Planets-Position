@@ -125,7 +125,8 @@ public class WhatsUpTask extends DialogFragment {
             dismiss();
         mTask = null;
         if (getTargetFragment() != null)
-            getTargetFragment().onActivityResult(0, Activity.RESULT_OK, null);
+            getTargetFragment().onActivityResult(WhatsUpNow.TASK_FRAGMENT,
+                    Activity.RESULT_OK, null);
     }
 
     public class ComputePlanetsTask extends AsyncTask<Void, Integer, Void> {
@@ -157,6 +158,7 @@ public class WhatsUpTask extends DialogFragment {
         @Override
         protected Void doInBackground(Void... params) {
             planetsDB.open();
+            int rise;
             for (int i = 0; i < 10; i++) {
                 if (this.isCancelled()) {
                     if (getTargetFragment() != null) {
@@ -198,8 +200,11 @@ public class WhatsUpTask extends DialogFragment {
                 // convert ra to hours
                 ra = ra / 15;
 
+                rise = (data[4] > 0) ? 1 : -1;
+
                 values.put(PlanetsTable.COLUMN_NAME, planetNames.get(i));
                 values.put(PlanetsTable.COLUMN_NUMBER, i);
+                values.put(PlanetsTable.COLUMN_RISE, rise);
                 values.put(PlanetsTable.COLUMN_RA, ra);
                 values.put(PlanetsTable.COLUMN_DEC, data[1]);
                 values.put(PlanetsTable.COLUMN_AZ, data[3]);

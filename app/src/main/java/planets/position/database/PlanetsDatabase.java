@@ -31,8 +31,8 @@ public class PlanetsDatabase {
     private SQLiteDatabase database;
     private PlanetsDatabaseHelper dbHelper;
 
-    private final String[] whatsUpColumns = {PlanetsTable.COLUMN_NUMBER,
-            PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_ALT,
+    private final String[] whatsUpColumns = {PlanetsTable.COLUMN_NUMBER, PlanetsTable.COLUMN_NAME,
+            PlanetsTable.COLUMN_AZ, PlanetsTable.COLUMN_ALT, PlanetsTable.COLUMN_RISE,
             PlanetsTable.COLUMN_RISE_TIME, PlanetsTable.COLUMN_SET_TIME, PlanetsTable.COLUMN_ID};
     private final String[] planetDataColumns = {PlanetsTable.COLUMN_ID,
             PlanetsTable.COLUMN_NAME, PlanetsTable.COLUMN_RA,

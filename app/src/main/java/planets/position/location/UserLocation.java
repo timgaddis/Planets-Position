@@ -329,14 +329,17 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        editLoc.setVisible(!edit);
+        saveLoc.setVisible(edit);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.location_menu, menu);
         editLoc = menu.findItem(R.id.action_edit);
         saveLoc = menu.findItem(R.id.action_save);
-        if (edit) {
-            editLoc.setVisible(false);
-            saveLoc.setVisible(true);
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -345,29 +348,47 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         // Handle actionbar item selection
         switch (item.getItemId()) {
             case R.id.action_save:
+                if (manualEdit) {
+                    try {
+                        latitude = Double.parseDouble(latitudeEdit.getText().toString());
+                        if (spinnerLat.getSelectedItemPosition() == 1)
+                            latitude *= -1.0;
+                    } catch (NumberFormatException nfe) {
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter a value for the latitude.", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
+                    try {
+                        longitude = Double.parseDouble(longitudeEdit.getText().toString());
+                        if (spinnerLong.getSelectedItemPosition() == 1)
+                            longitude *= -1.0;
+                    } catch (NumberFormatException nfe) {
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter a value for the longitude.", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
+                    try {
+                        elevation = Double.parseDouble(elevationEdit.getText().toString());
+                    } catch (NumberFormatException nfe) {
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter a value for the elevation.", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    manualEdit = false;
+                }
+
                 edit = false;
                 layoutEdit.setVisibility(View.GONE);
-                editLoc.setVisible(true);
-                saveLoc.setVisible(false);
+                invalidateOptionsMenu();
 
-                if (manualEdit) {
-                    latitude = Double.parseDouble(latitudeEdit.getText().toString());
-                    if (spinnerLat.getSelectedItemPosition() == 1)
-                        latitude *= -1.0;
-                }
                 latitudeText.setVisibility(View.VISIBLE);
                 layoutLat.setVisibility(View.GONE);
 
-                if (manualEdit) {
-                    longitude = Double.parseDouble(longitudeEdit.getText().toString());
-                    if (spinnerLong.getSelectedItemPosition() == 1)
-                        longitude *= -1.0;
-                }
                 longitudeText.setVisibility(View.VISIBLE);
                 layoutLong.setVisibility(View.GONE);
 
-                if (manualEdit)
-                    elevation = Double.parseDouble(elevationEdit.getText().toString());
                 elevationText.setVisibility(View.VISIBLE);
                 elevationEdit.setVisibility(View.GONE);
 
@@ -394,8 +415,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                 edit = true;
                 manualEdit = false;
                 layoutEdit.setVisibility(View.VISIBLE);
-                editLoc.setVisible(false);
-                saveLoc.setVisible(true);
+                invalidateOptionsMenu();
                 return true;
             case R.id.action_gps:
                 startGPS();
@@ -544,8 +564,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     public void onDialogPositiveClick(long id) {
         edit = false;
         layoutEdit.setVisibility(View.GONE);
-        editLoc.setVisible(true);
-        saveLoc.setVisible(false);
+        invalidateOptionsMenu();
         tzDB.open();
         Bundle data = tzDB.getCityData(id);
         Calendar c = Calendar.getInstance();

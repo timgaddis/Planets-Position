@@ -133,13 +133,8 @@ public class LunarOccultation extends Fragment {
         planetsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    next.setVisible(false);
-                    previous.setVisible(false);
-                } else {
-                    next.setVisible(true);
-                    previous.setVisible(true);
-                }
+                allPlanets = (position == 0);
+                getActivity().invalidateOptionsMenu();
                 if (spinnerPos != position) {
                     spinnerPos = position;
                     planetNum = position + 1;
@@ -248,13 +243,8 @@ public class LunarOccultation extends Fragment {
         switch (requestCode) {
             case PLANETS_DIALOG:
                 planetNum = resultCode + 1;
-                if (resultCode == 0) {
-                    next.setVisible(false);
-                    previous.setVisible(false);
-                } else {
-                    next.setVisible(true);
-                    previous.setVisible(true);
-                }
+                allPlanets=(resultCode==0);
+                getActivity().invalidateOptionsMenu();
                 c = Calendar.getInstance();
                 tzDB.open();
                 off = tzDB.getZoneOffset(zoneID, c.getTimeInMillis() / 1000L);
@@ -369,13 +359,8 @@ public class LunarOccultation extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (allPlanets) {
-            next.setVisible(false);
-            previous.setVisible(false);
-        } else {
-            next.setVisible(true);
-            previous.setVisible(true);
-        }
+        next.setVisible(!allPlanets);
+        previous.setVisible(!allPlanets);
     }
 
     @Override

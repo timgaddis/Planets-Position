@@ -26,7 +26,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class PlanetsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PlanetsDatabase.db";
-    private static final int DATABASE_VERSION = 220;
+    private static final int DATABASE_VERSION = 221;
     private static PlanetsDatabaseHelper sInstance;
 
     private PlanetsDatabaseHelper(Context context) {

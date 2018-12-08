@@ -98,7 +98,6 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
     private boolean mRequestingLocationUpdates = false;
-    Task<LocationSettingsResponse> result;
     private FusedLocationProviderClient mFusedLocationClient;
     private Queue<DeferredFragmentTransaction> deferredFragmentTransactions;
 
@@ -269,7 +268,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
-        result = LocationServices.getSettingsClient(this)
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(this)
                 .checkLocationSettings(locationSettingsRequest);
 
         result.addOnFailureListener(new OnFailureListener() {
@@ -513,7 +512,7 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         return true;
     }
 
-    public void dialogShow(DialogFragment dialogFragment, String tag) {
+    private void dialogShow(DialogFragment dialogFragment, String tag) {
 
         if (!isRunning) {
             DeferredFragmentTransaction deferredFragmentTransaction = new DeferredFragmentTransaction() {
@@ -607,14 +606,13 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
     /**
      * Shows a {@link Snackbar}.
      *
-     * @param mainTextStringId The id for the string resource for the Snackbar text.
-     * @param actionStringId   The text of the action item.
-     * @param listener         The listener associated with the Snackbar action.
+     * @param actionStringId The text of the action item.
+     * @param listener       The listener associated with the Snackbar action.
      */
-    private void showSnackbar(final int mainTextStringId, final int actionStringId,
+    private void showSnackbar(final int actionStringId,
                               View.OnClickListener listener) {
         Snackbar.make(findViewById(android.R.id.content),
-                getString(mainTextStringId),
+                getString(R.string.permission_reason),
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(actionStringId), listener).show();
     }
@@ -691,14 +689,13 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.");
 
-            showSnackbar(R.string.permission_reason, android.R.string.ok,
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Request permission
-                            startLocationPermissionRequest();
-                        }
-                    });
+            showSnackbar(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Request permission
+                    startLocationPermissionRequest();
+                }
+            });
 
         } else {
             Log.i(TAG, "Requesting permission");
@@ -726,21 +723,20 @@ public class UserLocation extends AppCompatActivity implements UserTimezoneDialo
                 getLastLocation();
             } else {
                 // Permission denied.
-                showSnackbar(R.string.permission_reason, R.string.action_settings,
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
-                                Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        });
+                showSnackbar(R.string.action_settings, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Build intent that displays the App settings screen.
+                        Intent intent = new Intent();
+                        intent.setAction(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package",
+                                BuildConfig.APPLICATION_ID, null);
+                        intent.setData(uri);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
             }
         }
     }

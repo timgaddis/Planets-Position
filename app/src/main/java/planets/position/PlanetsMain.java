@@ -20,12 +20,15 @@
 
 package planets.position;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
@@ -43,6 +46,7 @@ import android.view.MenuItem;
 
 import java.io.File;
 import java.util.ArrayDeque;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Queue;
 
@@ -99,22 +103,17 @@ public class PlanetsMain extends AppCompatActivity
 
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-        PackageInfo packageInfo = null;
-        int versionNumber;
+        long versionNumber;
         try {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionNumber = getAppVersionCode(this);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (packageInfo != null) {
-            versionNumber = packageInfo.versionCode;
-        } else {
             versionNumber = -1;
         }
+
         if (!settings.contains("appVersion")) {
             SharedPreferences.Editor editor = settings.edit();
             editor.clear();
-            editor.putInt("appVersion", versionNumber);
+            editor.putInt("appVersion", (int) versionNumber);
             editor.apply();
         }
 
@@ -122,7 +121,7 @@ public class PlanetsMain extends AppCompatActivity
 
         copyTask = (FileCopyTask) getSupportFragmentManager().findFragmentByTag("copyTask");
 
-        if (!checkFiles(TimeZoneDB.DB_NAME))
+        if (!checkFiles())
             startCopyFileTask();
 
         if (latitude < -90) {
@@ -136,6 +135,19 @@ public class PlanetsMain extends AppCompatActivity
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("hasCalendar", checkForCalendar());
         editor.apply();
+    }
+
+    @TargetApi(Build.VERSION_CODES.P)
+    private static long getAppVersionCode(Context context) throws PackageManager.NameNotFoundException {
+        PackageInfo pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        long returnValue;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+                && !"P".equals(Build.VERSION.CODENAME)) {
+            returnValue = pinfo.versionCode;
+        } else {
+            returnValue = pinfo.getLongVersionCode();
+        }
+        return returnValue;
     }
 
     @Override
@@ -268,9 +280,26 @@ public class PlanetsMain extends AppCompatActivity
     }
 
     private void loadLocation() {
+        double offset;
+        int zoneID;
+        TimeZoneDB tzDB = new TimeZoneDB(getApplicationContext());
+
         // read location from Shared Preferences
         latitude = settings.getFloat("latitude", (float) -91.0);
         longitude = settings.getFloat("longitude", 0);
+        zoneID = settings.getInt("zoneID", -1);
+
+        if (zoneID > 0) {
+            // Update GMT offset
+            tzDB.open();
+            int off = tzDB.getZoneOffset(zoneID, Calendar.getInstance().getTimeInMillis() / 1000L);
+            tzDB.close();
+            offset = off / 3600.0;
+
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putFloat("offset", (float) offset);
+            editor.apply();
+        }
     }
 
     public void navigate(int position) {
@@ -369,8 +398,8 @@ public class PlanetsMain extends AppCompatActivity
         }
     }
 
-    public void replaceFragment(int contentFrameId, Fragment replacingFragment, DialogFragment dialogFragment,
-                                String tag, final boolean back) {
+    private void replaceFragment(int contentFrameId, Fragment replacingFragment, DialogFragment dialogFragment,
+                                 String tag, final boolean back) {
 
         if (!isRunning) {
             DeferredFragmentTransaction deferredFragmentTransaction = new DeferredFragmentTransaction() {
@@ -452,12 +481,11 @@ public class PlanetsMain extends AppCompatActivity
     /**
      * Checks to see if the given file exists in internal storage.
      *
-     * @param name file name to check
      * @return true if exists, false otherwise
      */
-    private boolean checkFiles(String name) {
+    private boolean checkFiles() {
         String p = getApplicationContext().getFilesDir().getAbsolutePath() +
-                File.separator + "databases" + File.separator + name;
+                File.separator + "databases" + File.separator + TimeZoneDB.DB_NAME;
         File f = new File(p);
         return f.exists();
     }

@@ -26,7 +26,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import planets.position.R;
 
@@ -46,8 +45,6 @@ public class GPSDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_gpsdialog, container, false);
-        ProgressBar pb = v.findViewById(R.id.progressGPS);
-//        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
         getDialog().setCanceledOnTouchOutside(false);
         return v;
     }

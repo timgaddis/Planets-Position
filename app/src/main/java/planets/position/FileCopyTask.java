@@ -167,26 +167,29 @@ public class FileCopyTask extends DialogFragment {
     private void copyFile(String filename) throws IOException {
         InputStream myInput;
         OutputStream myOutput;
-
+        boolean deleted = true;
         String p = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() +
                 File.separator + "databases";
 
         File dir = new File(p);
         if (dir.mkdirs() || dir.isDirectory()) {
             File f = new File(dir.getAbsolutePath() + File.separator + filename);
-            if (!f.exists()) {
-                myInput = getActivity().getAssets().open(filename);
-                myOutput = new FileOutputStream(f);
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = myInput.read(buffer)) > 0) {
-                    myOutput.write(buffer, 0, length);
+            if (!f.exists() || f.length() != 1916928) {
+                if (f.exists())
+                    deleted = f.delete();
+                if (deleted) {
+                    myInput = getActivity().getAssets().open(filename);
+                    myOutput = new FileOutputStream(f);
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = myInput.read(buffer)) > 0) {
+                        myOutput.write(buffer, 0, length);
+                    }
+                    // Close the streams
+                    myOutput.flush();
+                    myOutput.close();
+                    myInput.close();
                 }
-                // Close the streams
-                myOutput.flush();
-                myOutput.close();
-                myInput.close();
-
             }
         }
     }

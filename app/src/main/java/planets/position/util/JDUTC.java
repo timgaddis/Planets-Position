@@ -54,17 +54,6 @@ public class JDUTC {
     }
 
     /**
-     * Calls the jd2utc JNI c function. Converts a jullian date to a normal
-     * date.
-     *
-     * @param jdate a ut1 jullian date
-     * @return string containing the date in "_y_m_d_hr_min_sec_" format
-     */
-    public String jdutc(double jdate) {
-        return jd2utc(jdate);
-    }
-
-    /**
      * Returns the given Julian date in milliseconds in local time.
      *
      * @param jdate  The given date in Jullian format.

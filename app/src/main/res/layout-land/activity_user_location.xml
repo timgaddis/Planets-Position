@@ -97,7 +97,8 @@
                         android:inputType="number|numberSigned|numberDecimal"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/label_text"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        android:importantForAutofill="no" />
 
                     <Spinner
                         android:id="@+id/spinnerLat"
@@ -142,7 +143,8 @@
                         android:gravity="center_horizontal"
                         android:inputType="number|numberSigned|numberDecimal"
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/label_text" />
+                        android:textSize="@dimen/label_text"
+                        android:importantForAutofill="no" />
 
                     <Spinner
                         android:id="@+id/spinnerLong"
@@ -189,7 +191,8 @@
                     android:inputType="number|numberSigned|numberDecimal"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/label_text"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:id="@+id/newGMTOffset"
@@ -237,7 +240,8 @@
             android:inputType="text"
             android:textColor="@color/text_color"
             android:textSize="@dimen/label_text"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:importantForAutofill="no" />
 
         <LinearLayout
             android:id="@+id/layoutEdit"

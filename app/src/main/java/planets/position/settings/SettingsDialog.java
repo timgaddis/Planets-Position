@@ -58,7 +58,7 @@ public class SettingsDialog extends DialogFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("array", array);
         outState.putInt("title", title);
         outState.putInt("pos", position);

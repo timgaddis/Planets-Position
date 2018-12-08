@@ -11,7 +11,7 @@
  * Output: double array with Julian date in ut1 and tt values.
  */
 jdoubleArray
-Java_planets_position_util_JDUTC_utc2jd(JNIEnv *env, jobject this, jint m, jint d, jint y, jint hr,
+Java_planets_position_util_JDUTC_utc2jd(JNIEnv *env, jclass type, jint m, jint d, jint y, jint hr,
                                         jint min, jdouble sec) {
 
     char serr[256];
@@ -44,7 +44,7 @@ Java_planets_position_util_JDUTC_utc2jd(JNIEnv *env, jobject this, jint m, jint 
  * Input: Julian date
  * Output: String containing a calendar date
  */
-jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jobject this, jdouble juldate) {
+jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jclass type, jdouble juldate) {
 
     char *outFormat = "_%i_%i_%i_%i_%i_%2.1f_";
     char output[30];
@@ -67,7 +67,7 @@ jstring Java_planets_position_util_JDUTC_jd2utc(JNIEnv *env, jobject this, jdoub
  * Output: Julian date as a double
  */
 jdouble
-Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jdouble d_ut, jint p,
+Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jclass type, jdouble d_ut, jint p,
                                               jdoubleArray loc) {
 
     char serr[256];
@@ -100,7 +100,7 @@ Java_planets_position_util_RiseSet_planetRise(JNIEnv *env, jobject this, jdouble
  * Output: Julian date as a double
  */
 jdouble
-Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jdouble d_ut, jint p,
+Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jclass type, jdouble d_ut, jint p,
                                              jdoubleArray loc) {
 
     char serr[256];
@@ -133,7 +133,7 @@ Java_planets_position_util_RiseSet_planetSet(JNIEnv *env, jobject this, jdouble 
  * Output: Julian date as a double
  */
 jdouble
-Java_planets_position_util_RiseSet_planetTransit(JNIEnv *env, jobject this, jdouble d_ut, jint p,
+Java_planets_position_util_RiseSet_planetTransit(JNIEnv *env, jclass type, jdouble d_ut, jint p,
                                                  jdoubleArray loc) {
 
     char serr[256];
@@ -238,7 +238,7 @@ Java_planets_position_SkyPosition_planetPosData(JNIEnv *env, jobject this, jdoub
  * 		magnitude, set time, and rise time of planet.
  */
 jdoubleArray
-Java_planets_position_LivePositionService_planetLiveData(JNIEnv *env, jobject this, jdouble d_ut,
+Java_planets_position_LivePositionService_planetLiveData(JNIEnv *env, jclass type, jdouble d_ut,
                                                          jint p, jdoubleArray loc) {
 
     char serr[256];

@@ -21,7 +21,7 @@ ANDROID_ABI:UNINITIALIZED=armeabi-v7a
 ANDROID_NDK:UNINITIALIZED=/media/Storage/Android/android-sdk-linux/ndk-bundle
 
 //No help, variable specified on the command line.
-ANDROID_PLATFORM:UNINITIALIZED=android-15
+ANDROID_PLATFORM:UNINITIALIZED=android-16
 
 //Archiver
 CMAKE_AR:FILEPATH=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar
@@ -193,10 +193,10 @@ Project_BINARY_DIR:STATIC=/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsP
 Project_SOURCE_DIR:STATIC=/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app
 
 //Path to a library.
-log-lib:FILEPATH=/media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so
+log-lib:FILEPATH=/media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-16/arch-arm/usr/lib/liblog.so
 
 //Dependencies for the target
-planets_swiss_LIB_DEPENDS:STATIC=general;/media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-15/arch-arm/usr/lib/liblog.so;
+planets_swiss_LIB_DEPENDS:STATIC=general;/media/Storage/Android/android-sdk-linux/ndk-bundle/platforms/android-16/arch-arm/usr/lib/liblog.so;
 
 
 ########################

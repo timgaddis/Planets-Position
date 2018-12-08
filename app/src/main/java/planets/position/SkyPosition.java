@@ -291,15 +291,14 @@ public class SkyPosition extends Fragment {
         if (planetNum >= 0 && planetNum < 10) {
             double[] data;
             double ra, dec, t, d;
-            int m;
             Calendar utc;
 
             utc = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute, 0);
             tzDB.open();
             int off = tzDB.getZoneOffset(zoneID, utc.getTimeInMillis() / 1000L);
-            m = (off / 60);
+            offset = off / 3600.0;
             tzDB.close();
-            utc.add(Calendar.MINUTE, m * -1);
+            utc.add(Calendar.MINUTE, (int) (offset * -60));
 
             data = jdUTC.utcjd(utc.get(Calendar.MONTH) + 1,
                     utc.get(Calendar.DAY_OF_MONTH), utc.get(Calendar.YEAR),

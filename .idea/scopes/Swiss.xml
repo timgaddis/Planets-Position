@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Swiss" pattern="file[app]:src/main//*&amp;&amp;!file[app]:src/main/jni/swiss//*&amp;&amp;!file[app]:src/main/libs/armeabi//*&amp;&amp;!file[app]:src/main/assets//*" />
+</component>

@@ -25,7 +25,7 @@ rule CUSTOM_COMMAND
 rule C_COMPILER__planets_swiss
   depfile = $DEP_FILE
   deps = gcc
-  command = /media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang  --target=aarch64-none-linux-android21 --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $IN_ABS
+  command = /media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang  --target=aarch64-none-linux-android21 --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64 $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $IN_ABS
   description = Building C object $out
 
 
@@ -33,7 +33,7 @@ rule C_COMPILER__planets_swiss
 # Rule for linking C shared library.
 
 rule C_SHARED_LIBRARY_LINKER__planets_swiss
-  command = $PRE_LINK && /media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang  --target=aarch64-none-linux-android21 --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 --sysroot=/media/Storage/Android/android-sdk-linux/ndk-bundle/sysroot -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -shared $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  command = $PRE_LINK && /media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang  --target=aarch64-none-linux-android21 --gcc-toolchain=/media/Storage/Android/android-sdk-linux/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64 -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -shared $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
   description = Linking C shared library $TARGET_FILE
   restat = $RESTAT
 
@@ -42,7 +42,7 @@ rule C_SHARED_LIBRARY_LINKER__planets_swiss
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake -H/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app -B/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/debug/arm64-v8a
+  command = /media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake -H/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni -B/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/debug/arm64-v8a
   description = Re-running CMake...
   generator = 1
 

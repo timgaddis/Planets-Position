@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2018 Tim Gaddis
+  ~ Copyright (c) 2019 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -36,8 +36,8 @@
         android:id="@+id/rowImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:contentDescription="@string/wup_desc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +48,8 @@
         android:id="@+id/rowName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:textColor="@color/text_color"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/rowAZtext"
@@ -61,8 +61,8 @@
         android:id="@+id/rowAZtext"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:text="@string/data_az"
         android:textColor="@color/alt_text_color"
         android:textSize="14sp"
@@ -74,8 +74,8 @@
         android:id="@+id/rowAZ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:textColor="@color/alt_text_color"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/rowAZtext"
@@ -85,8 +85,8 @@
         android:id="@+id/rowALTtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:text="@string/data_alt"
         android:textColor="@color/alt_text_color"
         android:textSize="14sp"
@@ -118,10 +118,10 @@
         android:id="@+id/rowRSDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:textColor="@color/alt_text_color"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

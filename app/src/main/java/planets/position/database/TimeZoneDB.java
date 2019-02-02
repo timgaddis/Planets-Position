@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2018 Tim Gaddis
+ * Copyright (c) 2019 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@ public class TimeZoneDB extends SQLiteOpenHelper {
     private final String ZONE_TABLE = "zone";
 
     public final static String DB_NAME = "timezone.db";
+    public final static int DB_VERSION = 2;
+
     private final Context myContext;
     private SQLiteDatabase timezoneDatabase;
 
@@ -51,7 +53,7 @@ public class TimeZoneDB extends SQLiteOpenHelper {
         timezoneDatabase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
     }
 
-    public  void close() {
+    public void close() {
         super.close();
         if (timezoneDatabase != null)
             timezoneDatabase.close();

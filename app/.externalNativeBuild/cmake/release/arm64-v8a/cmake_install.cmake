@@ -1,4 +1,4 @@
-# Install script for directory: /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app
+# Install script for directory: /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

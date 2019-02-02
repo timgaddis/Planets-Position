@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2018 Tim Gaddis
+ * Copyright (c) 2019 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -243,7 +243,7 @@ public class LunarOccultation extends Fragment {
         switch (requestCode) {
             case PLANETS_DIALOG:
                 planetNum = resultCode + 1;
-                allPlanets=(resultCode==0);
+                allPlanets = (resultCode == 0);
                 getActivity().invalidateOptionsMenu();
                 c = Calendar.getInstance();
                 tzDB.open();

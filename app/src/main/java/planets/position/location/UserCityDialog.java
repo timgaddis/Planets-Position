@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2018 Tim Gaddis
+ * Copyright (c) 2019 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ public class UserCityDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tzDB=new TimeZoneDB(getActivity().getApplicationContext());
+        tzDB = new TimeZoneDB(getActivity().getApplicationContext());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class UserCityDialog extends DialogFragment {
                 country = (String) parent.getItemAtPosition(position);
                 spinState.setVisibility(View.VISIBLE);
                 tzDB.open();
-                Cursor states=tzDB.getStateList(country);
+                Cursor states = tzDB.getStateList(country);
                 SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
                         R.layout.spinner_item, states, new String[]{"state"},
                         new int[]{R.id.spinText}, 0);
@@ -118,7 +118,7 @@ public class UserCityDialog extends DialogFragment {
                 state = c.getString(c.getColumnIndex("state"));
                 spinCity.setVisibility(View.VISIBLE);
                 tzDB.open();
-                Cursor cities=tzDB.getCityList(country,state);
+                Cursor cities = tzDB.getCityList(country, state);
                 SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
                         R.layout.spinner_item, cities, new String[]{"city"},
                         new int[]{R.id.spinText}, 0);

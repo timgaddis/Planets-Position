@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2018 Tim Gaddis
+ * Copyright (c) 2019 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@ package planets.position;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -45,6 +47,7 @@ public class FileCopyTask extends DialogFragment {
     private FileCopyCallback mCallbacks;
     private CopyFilesTask mTask;
     private boolean mRunning = false;
+    private SharedPreferences settings;
 
     public interface FileCopyCallback {
         void onCopyFinished();
@@ -70,6 +73,7 @@ public class FileCopyTask extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
         start();
     }
@@ -132,7 +136,7 @@ public class FileCopyTask extends DialogFragment {
     }
 
     /**
-     * AsyncTask to copy files from the assets directory to the sdcard.
+     * AsyncTask to copy files from the assets directory to the internal memory.
      *
      * @author tgaddis
      */
@@ -170,11 +174,11 @@ public class FileCopyTask extends DialogFragment {
         boolean deleted = true;
         String p = getActivity().getApplicationContext().getFilesDir().getAbsolutePath() +
                 File.separator + "databases";
-
+        int version = settings.getInt("timezoneVersion", -1);
         File dir = new File(p);
         if (dir.mkdirs() || dir.isDirectory()) {
             File f = new File(dir.getAbsolutePath() + File.separator + filename);
-            if (!f.exists() || f.length() != 1916928) {
+            if (!f.exists() || (TimeZoneDB.DB_VERSION != version)) {
                 if (f.exists())
                     deleted = f.delete();
                 if (deleted) {
@@ -189,6 +193,10 @@ public class FileCopyTask extends DialogFragment {
                     myOutput.flush();
                     myOutput.close();
                     myInput.close();
+
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("timezoneVersion", TimeZoneDB.DB_VERSION);
+                    editor.apply();
                 }
             }
         }

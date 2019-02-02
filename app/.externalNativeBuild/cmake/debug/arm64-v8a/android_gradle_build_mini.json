@@ -1,6 +1,6 @@
 {
   "buildFiles": [
-    "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/CMakeLists.txt"
+    "/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/src/main/jni/CMakeLists.txt"
   ],
   "cleanCommands": [
     "/media/Storage/Android/android-sdk-linux/cmake/3.6.4111459/bin/cmake --build /home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/.externalNativeBuild/cmake/debug/arm64-v8a --target clean"

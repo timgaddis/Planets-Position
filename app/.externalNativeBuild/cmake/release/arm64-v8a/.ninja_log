@@ -1,0 +1,11 @@
+# ninja log v5
+1	132	0	CMakeFiles/planets_swiss.dir/planets_swiss.c.o	7addd6664d1b4521
+1	136	0	CMakeFiles/planets_swiss.dir/swiss/swedate.c.o	842ad4fa38a3fe6a
+1	189	0	CMakeFiles/planets_swiss.dir/swiss/swemmoon.c.o	beafbade9fb5921f
+1	241	0	CMakeFiles/planets_swiss.dir/swiss/swemplan.c.o	6ea993ce0052962f
+1	305	0	CMakeFiles/planets_swiss.dir/swiss/swejpl.c.o	4ecc6e73bf7ac402
+1	503	0	CMakeFiles/planets_swiss.dir/swiss/swehouse.c.o	7d137f140961acd9
+1	685	0	CMakeFiles/planets_swiss.dir/swiss/swephlib.c.o	e65ed47f4b6266b8
+1	1097	0	CMakeFiles/planets_swiss.dir/swiss/swecl.c.o	bddc80241b1e0fb6
+1	1346	0	CMakeFiles/planets_swiss.dir/swiss/sweph.c.o	ab7aadcd1240aad3
+1346	1386	0	/home/tgaddis/SpiderOak/AndroidStudioProjects/PlanetsPosition/app/build/intermediates/cmake/release/obj/arm64-v8a/libplanets_swiss.so	7a14d1aad5f42dd7

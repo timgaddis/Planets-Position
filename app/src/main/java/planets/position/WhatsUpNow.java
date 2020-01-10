@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2019 Tim Gaddis
+ * Copyright (c) 2020 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,6 +41,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -59,9 +60,9 @@ import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-public class WhatsUpNow extends Fragment {
+class WhatsUpNow extends Fragment {
 
-    public static final int TASK_FRAGMENT = 10;
+    static final int TASK_FRAGMENT = 10;
     private static final String TASK_FRAGMENT_TAG = "upTask";
     private static final int UPDATE_WAIT = 300000;// 5 min
 
@@ -177,7 +178,7 @@ public class WhatsUpNow extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (getTargetFragment() == null) {
             // attach to PlanetsMain
@@ -232,7 +233,7 @@ public class WhatsUpNow extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.whats_up_menu, menu);
     }
@@ -240,20 +241,18 @@ public class WhatsUpNow extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar menu item selection
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                lastUpdate = Calendar.getInstance().getTimeInMillis();
-                now = lastUpdate;
-                tzDB.open();
-                int off = tzDB.getZoneOffset(zoneID, now / 1000L);
-                tzDB.close();
-                offset = off / 60.0;
-                planetsList.setVisibility(View.INVISIBLE);
-                launchTask(offset);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_refresh) {
+            lastUpdate = Calendar.getInstance().getTimeInMillis();
+            now = lastUpdate;
+            tzDB.open();
+            int off = tzDB.getZoneOffset(zoneID, now / 1000L);
+            tzDB.close();
+            offset = off / 60.0;
+            planetsList.setVisibility(View.INVISIBLE);
+            launchTask(offset);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void launchTask(double offset) {

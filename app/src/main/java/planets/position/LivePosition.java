@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2019 Tim Gaddis
+ * Copyright (c) 2020 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +26,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -43,7 +44,7 @@ import java.util.Locale;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-public class LivePosition extends Fragment {
+class LivePosition extends Fragment {
 
     private TextView pDateText, pTimeText, pRAText, pDecText,
             pMagText, pRiseText, pRise, pAzText, pAltText, pDistText,
@@ -127,7 +128,7 @@ public class LivePosition extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (getTargetFragment() == null) {
             // attach to PlanetsMain

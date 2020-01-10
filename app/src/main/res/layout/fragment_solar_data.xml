@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2019 Tim Gaddis
+  ~ Copyright (c) 2020 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@
     android:layout_height="match_parent"
     android:background="@color/main_back">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/se_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/se_guide1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,13 +167,13 @@
             app:layout_constraintStart_toStartOf="@+id/se_end"
             app:layout_constraintTop_toBottomOf="@+id/se_end" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/se_total_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/se_start_text">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/se_guide4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                 app:layout_constraintStart_toStartOf="@+id/se_tend"
                 app:layout_constraintTop_toBottomOf="@+id/se_tend" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/se_max"
@@ -256,13 +256,13 @@
             app:layout_constraintStart_toStartOf="@+id/se_max"
             app:layout_constraintTop_toBottomOf="@+id/se_max" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/se_sun_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/se_max_text">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/se_guide2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -316,7 +316,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/se_sunset"
                 app:layout_constraintStart_toStartOf="@+id/se_sunset"
                 app:layout_constraintTop_toBottomOf="@+id/se_sunset" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/se_view2"
@@ -342,13 +342,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/se_view2" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/se_data_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/eclData">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/se_guide3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -514,7 +514,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/se_sarosm"
                 app:layout_constraintStart_toStartOf="@+id/se_sarosm"
                 app:layout_constraintTop_toBottomOf="@+id/se_sarosm" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/se_no_visible"
@@ -533,6 +533,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/se_data_layout" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

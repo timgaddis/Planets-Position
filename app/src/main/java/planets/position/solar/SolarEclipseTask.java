@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2019 Tim Gaddis
+ * Copyright (c) 2020 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +36,15 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
 import planets.position.R;
 import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
 import planets.position.util.RiseSet;
 
-public class SolarEclipseTask extends DialogFragment {
+class SolarEclipseTask extends DialogFragment {
 
     private ComputeEclipseTask mTask;
     private double firstEcl, lastEcl, startTime, backward;
@@ -86,7 +88,7 @@ public class SolarEclipseTask extends DialogFragment {
         pb = v.findViewById(R.id.progressBar);
         tv.setText(R.string.eclipse_dialog);
         pb.setMax(10);
-        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
+        pb.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN));
         getDialog().setCanceledOnTouchOutside(false);
         riseSet = new RiseSet(g);
         return v;
@@ -104,7 +106,7 @@ public class SolarEclipseTask extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mTask != null) {
             mTask.cancel(false);
@@ -138,7 +140,6 @@ public class SolarEclipseTask extends DialogFragment {
         SolarEclipseTask mFragment;
         PlanetsDatabase planetsDB;
         private ContentValues values;
-        private String eclType;
 
         void setFragment(SolarEclipseTask fragment) {
             mFragment = fragment;
@@ -198,6 +199,7 @@ public class SolarEclipseTask extends DialogFragment {
                 }
                 // create type string use data1[0] (global type)
                 val = (int) data1[0];
+                String eclType;
                 if ((val & 4) == 4) // SE_ECL_TOTAL
                     eclType = "Total";
                 else if ((val & 8) == 8) // SE_ECL_ANNULAR

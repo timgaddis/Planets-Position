@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2019 Tim Gaddis
+ * Copyright (c) 2020 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,14 +25,15 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.preference.PreferenceManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +43,7 @@ import java.io.OutputStream;
 
 import planets.position.database.TimeZoneDB;
 
-public class FileCopyTask extends DialogFragment {
+class FileCopyTask extends DialogFragment {
 
     private FileCopyCallback mCallbacks;
     private CopyFilesTask mTask;
@@ -59,7 +60,7 @@ public class FileCopyTask extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         // attach to PlanetsMain
         if (!(context instanceof FileCopyCallback)) {
@@ -101,7 +102,7 @@ public class FileCopyTask extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mTask != null) {
             mTask.cancel(false);

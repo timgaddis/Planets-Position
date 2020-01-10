@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2019 Tim Gaddis
+  ~ Copyright (c) 2020 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@
     android:layout_height="match_parent"
     android:background="@color/main_back">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/le_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/le_guide1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -148,13 +148,13 @@
             app:layout_constraintStart_toStartOf="@+id/le_end"
             app:layout_constraintTop_toBottomOf="@+id/le_end" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/le_partial_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/le_start_text">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/le_guide6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -211,15 +211,15 @@
                 app:layout_constraintStart_toStartOf="@+id/le_pend"
                 app:layout_constraintTop_toBottomOf="@id/le_pend" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/le_total_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/le_partial_layout">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/le_guide7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -276,7 +276,7 @@
                 app:layout_constraintStart_toStartOf="@+id/le_tend"
                 app:layout_constraintTop_toBottomOf="@id/le_tend" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/le_max"
@@ -303,7 +303,7 @@
             app:layout_constraintStart_toStartOf="@+id/le_max"
             app:layout_constraintTop_toBottomOf="@+id/le_max" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/le_moon_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -311,7 +311,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/le_max_text">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/le_guide5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -367,7 +367,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/le_moonset"
                 app:layout_constraintStart_toStartOf="@+id/le_moonset"
                 app:layout_constraintTop_toBottomOf="@+id/le_moonset" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/le_view2"
@@ -391,7 +391,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/le_view2" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/le_data_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -400,7 +400,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eclData">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/le_guide2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -571,7 +571,7 @@
                 app:layout_constraintStart_toStartOf="@+id/le_sarosm"
                 app:layout_constraintTop_toBottomOf="@+id/le_sarosm" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/le_no_visible"
@@ -590,6 +590,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/le_data_layout" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

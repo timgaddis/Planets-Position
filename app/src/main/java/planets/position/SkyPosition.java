@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2019 Tim Gaddis
+ * Copyright (c) 2020 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,6 +37,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -54,7 +55,7 @@ import planets.position.util.PlanetTimePicker;
 import planets.position.util.PositionFormat;
 import planets.position.util.RiseSet;
 
-public class SkyPosition extends Fragment {
+class SkyPosition extends Fragment {
 
     private static final int TIME_DIALOG = 200;
     private static final int DATE_DIALOG = 300;
@@ -194,33 +195,30 @@ public class SkyPosition extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.live_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_live_position:
-                // launch live position activity
-                FragmentTransaction ft = null;
-                if (getFragmentManager() != null) {
-                    ft = getFragmentManager().beginTransaction();
-                }
-                LivePosition livePos = new LivePosition();
-                Bundle args = new Bundle();
-                args.putInt("planetNum", planetNum);
-                livePos.setArguments(args);
-                if (ft != null) {
-                    ft.replace(R.id.content_frame, livePos, "livePosition");
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_live_position) {// launch live position activity
+            FragmentTransaction ft = null;
+            if (getFragmentManager() != null) {
+                ft = getFragmentManager().beginTransaction();
+            }
+            LivePosition livePos = new LivePosition();
+            Bundle args = new Bundle();
+            args.putInt("planetNum", planetNum);
+            livePos.setArguments(args);
+            if (ft != null) {
+                ft.replace(R.id.content_frame, livePos, "livePosition");
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -258,7 +256,7 @@ public class SkyPosition extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (getTargetFragment() == null) {
             // attach to PlanetsMain

@@ -2,7 +2,7 @@
   ~ Planet's Position
   ~ A program to calculate the position of the planets in the night sky based
   ~ on a given location on Earth.
-  ~ Copyright (c) 2019 Tim Gaddis
+  ~ Copyright (c) 2020 Tim Gaddis
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@
     android:layout_height="match_parent"
     android:background="@color/main_back">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lo_main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/lo_guide1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
             app:layout_constraintStart_toStartOf="@+id/lo_max"
             app:layout_constraintTop_toBottomOf="@+id/lo_max" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lo_moon_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lo_max_text">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/lo_guide2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -239,7 +239,7 @@
                 app:layout_constraintStart_toStartOf="@+id/lo_moonset"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moonset" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/lo_view2"
@@ -263,7 +263,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lo_view2" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lo_data_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lo_data">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/lo_guide3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -418,7 +418,7 @@
                 app:layout_constraintStart_toStartOf="@+id/lo_moone_alt"
                 app:layout_constraintTop_toBottomOf="@+id/lo_moone_alt" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/lo_no_visible"
@@ -437,6 +437,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lo_data_layout" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

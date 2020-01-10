@@ -2,7 +2,7 @@
  * Planet's Position
  * A program to calculate the position of the planets in the night sky based
  * on a given location on Earth.
- * Copyright (c) 2019 Tim Gaddis
+ * Copyright (c) 2020 Tim Gaddis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,16 +25,18 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +46,7 @@ import planets.position.database.PlanetsTable;
 import planets.position.util.JDUTC;
 import planets.position.util.RiseSet;
 
-public class WhatsUpTask extends DialogFragment {
+class WhatsUpTask extends DialogFragment {
 
     private ComputePlanetsTask mTask;
     private List<String> planetNames;
@@ -88,7 +90,8 @@ public class WhatsUpTask extends DialogFragment {
         tv = v.findViewById(R.id.progress_text);
         pb = v.findViewById(R.id.progressBar);
         pb.setMax(10);
-        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
+//        pb.getProgressDrawable().setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN);
+        pb.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_IN));
         getDialog().setCanceledOnTouchOutside(false);
 
         return v;
@@ -106,7 +109,7 @@ public class WhatsUpTask extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mTask != null) {
             mTask.cancel(false);

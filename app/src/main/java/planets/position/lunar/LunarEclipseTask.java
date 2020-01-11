@@ -44,7 +44,7 @@ import planets.position.database.LunarEclipseTable;
 import planets.position.database.PlanetsDatabase;
 import planets.position.util.RiseSet;
 
-class LunarEclipseTask extends DialogFragment {
+public class LunarEclipseTask extends DialogFragment {
 
     private ComputeEclipseTask mTask;
     private double firstEcl, lastEcl, startTime, backward;

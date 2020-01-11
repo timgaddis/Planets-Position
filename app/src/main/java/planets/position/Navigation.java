@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-class Navigation extends Fragment {
+public class Navigation extends Fragment {
 
     private FragmentListener mCallbacks;
 

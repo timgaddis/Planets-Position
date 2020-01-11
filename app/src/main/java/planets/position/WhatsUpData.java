@@ -39,7 +39,7 @@ import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-class WhatsUpData extends Fragment {
+public class WhatsUpData extends Fragment {
 
     private TextView pRAText, pDecText, pMagText, pSetText, pAzText, pSet;
     private TextView pAltText, pDistText, pNameText, pDate, pTime, pTransitText;

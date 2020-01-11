@@ -44,7 +44,7 @@ import planets.position.database.PlanetsDatabase;
 import planets.position.database.SolarEclipseTable;
 import planets.position.util.RiseSet;
 
-class SolarEclipseTask extends DialogFragment {
+public class SolarEclipseTask extends DialogFragment {
 
     private ComputeEclipseTask mTask;
     private double firstEcl, lastEcl, startTime, backward;

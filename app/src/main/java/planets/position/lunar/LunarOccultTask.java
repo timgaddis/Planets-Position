@@ -47,7 +47,7 @@ import planets.position.database.LunarOccultationTable;
 import planets.position.database.PlanetsDatabase;
 import planets.position.util.RiseSet;
 
-class LunarOccultTask extends DialogFragment {
+public class LunarOccultTask extends DialogFragment {
 
     private ComputeOccultTask mTask;
     private double firstEcl, lastEcl, startTime, backward;

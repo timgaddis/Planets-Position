@@ -54,7 +54,7 @@ import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-class LunarEclipseData extends Fragment {
+public class LunarEclipseData extends Fragment {
 
     private TextView leDateText, leTypeText, leStartText, leTStartText, leLocalVisible,
             lePStartText, leMaxText, leTEndText, lePEndText, leEndText, leMoonRise, leMoonSet,

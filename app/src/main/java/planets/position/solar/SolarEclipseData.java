@@ -53,7 +53,7 @@ import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-class SolarEclipseData extends Fragment {
+public class SolarEclipseData extends Fragment {
 
     private TextView seDateText, seTypeText, seStartText, seTStartText, seMaxText, seTEndText,
             seEndText, seAzText, seAltText, seLocalTypeText, seCoverText, seMagText,

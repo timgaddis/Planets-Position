@@ -43,7 +43,7 @@ import java.io.OutputStream;
 
 import planets.position.database.TimeZoneDB;
 
-class FileCopyTask extends DialogFragment {
+public class FileCopyTask extends DialogFragment {
 
     private FileCopyCallback mCallbacks;
     private CopyFilesTask mTask;

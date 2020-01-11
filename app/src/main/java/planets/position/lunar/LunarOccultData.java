@@ -54,7 +54,7 @@ import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-class LunarOccultData extends Fragment {
+public class LunarOccultData extends Fragment {
 
     private TextView loDateText, loPlanetText, loStartText, loMaxText,
             loEndText, loMoonSAzText, loMoonSAltText, loMoonEAzText, loLocalTime,

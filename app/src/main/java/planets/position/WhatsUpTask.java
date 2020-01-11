@@ -46,7 +46,7 @@ import planets.position.database.PlanetsTable;
 import planets.position.util.JDUTC;
 import planets.position.util.RiseSet;
 
-class WhatsUpTask extends DialogFragment {
+public class WhatsUpTask extends DialogFragment {
 
     private ComputePlanetsTask mTask;
     private List<String> planetNames;

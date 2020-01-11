@@ -34,7 +34,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
-class About extends Fragment {
+public class About extends Fragment {
 
     private FragmentListener mCallbacks;
 

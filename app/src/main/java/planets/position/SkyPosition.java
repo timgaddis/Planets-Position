@@ -55,7 +55,7 @@ import planets.position.util.PlanetTimePicker;
 import planets.position.util.PositionFormat;
 import planets.position.util.RiseSet;
 
-class SkyPosition extends Fragment {
+public class SkyPosition extends Fragment {
 
     private static final int TIME_DIALOG = 200;
     private static final int DATE_DIALOG = 300;

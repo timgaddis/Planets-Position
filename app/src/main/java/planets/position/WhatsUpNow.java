@@ -60,7 +60,7 @@ import planets.position.database.TimeZoneDB;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-class WhatsUpNow extends Fragment {
+public class WhatsUpNow extends Fragment {
 
     static final int TASK_FRAGMENT = 10;
     private static final String TASK_FRAGMENT_TAG = "upTask";

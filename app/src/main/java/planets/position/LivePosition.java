@@ -44,7 +44,7 @@ import java.util.Locale;
 import planets.position.util.JDUTC;
 import planets.position.util.PositionFormat;
 
-class LivePosition extends Fragment {
+public class LivePosition extends Fragment {
 
     private TextView pDateText, pTimeText, pRAText, pDecText,
             pMagText, pRiseText, pRise, pAzText, pAltText, pDistText,

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 import planets.position.R;
 
-class CustomSettingsAdapter extends BaseAdapter {
+public class CustomSettingsAdapter extends BaseAdapter {
     private ArrayList<Setting> settingsList;
     private final LayoutInflater mInflater;
 
